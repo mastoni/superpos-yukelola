@@ -20,6 +20,7 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/storage/framework/demo_sandboxes
 /vendor
 _ide_helper.php
 Homestead.json

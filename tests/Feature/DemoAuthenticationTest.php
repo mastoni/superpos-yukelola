@@ -180,4 +180,33 @@ class DemoAuthenticationTest extends TestCase
         $this->assertTrue(Auth::check());
         $this->assertSame($user->id, Auth::id());
     }
+
+    public function test_login_page_renders_clear_indonesian_demo_options_when_demo_mode_is_enabled(): void
+    {
+        config(['pos.demo.enabled' => true]);
+
+        $response = $this->get('/login');
+
+        $response->assertOk();
+        $response->assertSee('Mode Demo Interaktif');
+        $response->assertSee('Coba sebagai Admin Demo');
+        $response->assertSee('Coba sebagai Kasir Demo');
+        $response->assertSee(route('demo.login', ['role' => 'admin']));
+        $response->assertSee(route('demo.login', ['role' => 'cashier']));
+        $response->assertDontSee('fillCredentials');
+    }
+
+    public function test_login_page_hides_demo_options_when_demo_mode_is_disabled(): void
+    {
+        config(['pos.demo.enabled' => false]);
+
+        $response = $this->get('/login');
+
+        $response->assertOk();
+        $response->assertDontSee('Mode Demo Interaktif');
+        $response->assertDontSee('Coba sebagai Admin Demo');
+        $response->assertDontSee('Coba sebagai Kasir Demo');
+        $response->assertSee('email');
+        $response->assertSee('password');
+    }
 }

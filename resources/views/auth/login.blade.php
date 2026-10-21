@@ -30,16 +30,6 @@
           x-data="{
               submitting: false,
               errorMsg: '',
-              filledRole: null,
-              fillCredentials(role, email, password) {
-                  const form = this.$root;
-                  const emailEl    = form.querySelector('input[name=&quot;email&quot;]');
-                  const passwordEl = form.querySelector('input[name=&quot;password&quot;]');
-                  if (emailEl)    { emailEl.value    = email;    emailEl.dispatchEvent(new Event('input', {bubbles: true})); }
-                  if (passwordEl) { passwordEl.value = password; passwordEl.dispatchEvent(new Event('input', {bubbles: true})); }
-                  this.filledRole = role;
-                  setTimeout(() => { if (this.filledRole === role) this.filledRole = null; }, 1800);
-              },
               async doLogin(evt) {
                   if (this.submitting) return;
                   this.submitting = true;
@@ -96,6 +86,63 @@
                 <span class="alert-icon"><x-icon name="check" class="w-[18px] h-[18px]" /></span>
                 <div class="alert-body">
                     <div class="alert-title">{{ session('status') }}</div>
+                </div>
+            </div>
+        @endif
+
+        {{-- Error alert from redirect flash --}}
+        @if (session('error'))
+            <div class="alert alert-danger mb-5">
+                <span class="alert-icon"><x-icon name="alert" class="w-[18px] h-[18px]" /></span>
+                <div class="alert-body">
+                    <div class="alert-title">{{ session('error') }}</div>
+                </div>
+            </div>
+        @endif
+
+        {{-- Gate C1: 1-Click Interactive Demo Login Options --}}
+        @if (pos_is_demo())
+            <div class="demo-access-panel">
+                <div class="demo-access-header">
+                    <div class="demo-access-badge-row">
+                        <span class="demo-access-badge">
+                            <span class="demo-access-pulse"></span>
+                            {{ __('Mode Demo Interaktif') }}
+                        </span>
+                    </div>
+                    <p class="demo-access-desc">{{ __('Coba fitur lengkap YUKelola tanpa perlu mengetik kredensial:') }}</p>
+                </div>
+
+                <div class="demo-access-grid">
+                    <a href="{{ route('demo.login', ['role' => 'admin']) }}" class="demo-btn demo-btn-admin">
+                        <div class="demo-btn-content">
+                            <div class="demo-btn-icon">
+                                <x-icon name="user" class="w-5 h-5" />
+                            </div>
+                            <div class="demo-btn-text">
+                                <span class="demo-btn-title">{{ __('Coba sebagai Admin Demo') }}</span>
+                                <span class="demo-btn-subtitle">{{ __('Dashboard, Laporan & Kelola Stok') }}</span>
+                            </div>
+                        </div>
+                        <x-icon name="chevron-right" class="w-4 h-4 demo-btn-arrow" />
+                    </a>
+
+                    <a href="{{ route('demo.login', ['role' => 'cashier']) }}" class="demo-btn demo-btn-cashier">
+                        <div class="demo-btn-content">
+                            <div class="demo-btn-icon">
+                                <x-icon name="cart" class="w-5 h-5" />
+                            </div>
+                            <div class="demo-btn-text">
+                                <span class="demo-btn-title">{{ __('Coba sebagai Kasir Demo') }}</span>
+                                <span class="demo-btn-subtitle">{{ __('POS Penjualan, Barcode & Kasir') }}</span>
+                            </div>
+                        </div>
+                        <x-icon name="chevron-right" class="w-4 h-4 demo-btn-arrow" />
+                    </a>
+                </div>
+
+                <div class="demo-access-divider">
+                    <span>{{ __('atau masuk dengan akun terdaftar') }}</span>
                 </div>
             </div>
         @endif
