@@ -4,8 +4,8 @@
 
 .card {
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
   /* Was `overflow: hidden`. Two problems with hidden:
        1. TomSelect dropdowns + popovers opened from inside the card
           get clipped at the card boundary — feels broken.
@@ -13,6 +13,7 @@
      Children that genuinely need their own clipping (image thumbs,
      uploads, brand tiles) carry `overflow: hidden` on themselves. */
   overflow: visible;
+  box-shadow: var(--shadow-card);
 }
 .card-header {
   display: flex; align-items: center; justify-content: space-between;

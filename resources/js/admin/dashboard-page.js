@@ -119,7 +119,7 @@ export function dashboardPage() {
             const areaPath = linePath + ` L ${w} ${h} L 0 ${h} Z`;
             const last = pts[pts.length - 1];
             const uid = 'hg';
-            const fmt = v => window.posFormatMoney ? window.posFormatMoney(v) : '$' + v.toFixed(2);
+            const fmt = v => window.posFormatMoney ? window.posFormatMoney(v) : 'Rp ' + Math.round(v).toLocaleString('id-ID');
             let hitBars = '';
             data.forEach((v, i) => {
                 const cx = i * stepX;
@@ -178,12 +178,12 @@ export function dashboardPage() {
             const curLine  = this.smoothPath(curPts);
             const prevLine = this.smoothPath(prevPts);
             const curArea  = curLine + ` L ${w - padR} ${h - padB} L ${padL} ${h - padB} Z`;
-            const fmt = v => window.posFormatMoney ? window.posFormatMoney(v) : '$' + v.toFixed(2);
+            const fmt = v => window.posFormatMoney ? window.posFormatMoney(v) : 'Rp ' + Math.round(v).toLocaleString('id-ID');
             let yLabels = '', xLabels = '', hitBars = '';
             for (let i = 0; i <= 4; i++) {
                 const v = minV + range * (1 - i / 4);
                 const y = padT + (i * (h - padT - padB)) / 4;
-                const label = v >= 1000 ? '$' + (v / 1000).toFixed(1) + 'k' : '$' + v.toFixed(0);
+                const label = v >= 1000000 ? (v / 1000000).toFixed(1).replace('.0', '') + ' jt' : (v >= 1000 ? (v / 1000).toFixed(0) + ' rb' : (v > 0 ? String(Math.round(v)) : '0'));
                 yLabels += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end">${label}</text>`;
                 yLabels += `<line x1="${padL}" x2="${w - padR}" y1="${y}" y2="${y}" stroke="var(--border-subtle)" stroke-dasharray="2 3"/>`;
             }
@@ -215,7 +215,7 @@ export function dashboardPage() {
             </svg>`;
         },
 
-        donutColors: ['var(--accent)', '#5E6AD2', '#10B981', '#EAB308', '#EC4899', '#06B6D4', '#8B5CF6', '#F43F5E'],
+        donutColors: ['#078A4B', '#2563EB', '#F59E0B', '#075C39', '#8B5CF6', '#10B981', '#06B6D4', '#F43F5E'],
         donutColor(i) { return this.donutColors[i % this.donutColors.length]; },
 
         donutChart() {
@@ -230,7 +230,7 @@ export function dashboardPage() {
             const r = 60, R = 88, cx = 88, cy = 88;
             let angle = -Math.PI / 2, paths = '';
             const gap = 0.012;
-            const fmt = v => window.posFormatMoney ? window.posFormatMoney(v) : '$' + v.toFixed(2);
+            const fmt = v => window.posFormatMoney ? window.posFormatMoney(v) : 'Rp ' + Math.round(v).toLocaleString('id-ID');
             data.forEach((d, i) => {
                 const portion = (d.rev / total) * Math.PI * 2;
                 const a1 = angle + gap, a2 = angle + portion - gap;
@@ -246,7 +246,7 @@ export function dashboardPage() {
                 }
                 angle += portion;
             });
-            const totalFmt = window.posFormatMoney ? window.posFormatMoney(total) : '$' + total.toFixed(0);
+            const totalFmt = window.posFormatMoney ? window.posFormatMoney(total) : 'Rp ' + Math.round(total).toLocaleString('id-ID');
             // Sub-label reflects the selected range filter, not a fixed "TODAY".
             const subLabel = `TOTAL ${this.periodLabel(this.perfRange).toUpperCase()}`;
             return `<svg viewBox="0 0 176 176" width="176" height="176">
@@ -281,7 +281,7 @@ export function dashboardPage() {
                 }
             }
 
-            const fmtCell = v => window.posFormatMoney ? window.posFormatMoney(v) : '$' + Number(v).toFixed(2);
+            const fmtCell = v => window.posFormatMoney ? window.posFormatMoney(v) : 'Rp ' + Math.round(Number(v)).toLocaleString('id-ID');
             const fmtQty  = v => window.posFormatQty ? window.posFormatQty(v) : String(v);
             let cells = '';
             days.forEach((d, di) => {

@@ -259,7 +259,7 @@
             {{-- Mini KPI stack --}}
             <div class="col-span-12 lg:col-span-5 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-3">
                 <a href="{{ route('admin.sales.index') }}" class="mini-kpi">
-                    <span class="mini-kpi-icon"><x-icon name="cart" class="w-4 h-4" /></span>
+                    <span class="mini-kpi-icon is-blue"><x-icon name="cart" class="w-4 h-4" /></span>
                     <div class="body">
                         <div class="flex items-center justify-between gap-2">
                             <div class="label">{{ __('admin.dashboard.kpi.transactions') }}</div>
@@ -267,7 +267,7 @@
                         </div>
                         <div class="num tnum">{{ number_format($todayTxns) }}</div>
                     </div>
-                    <div class="spark" x-html="miniSparkSmooth(txnByDay, 'var(--positive)')"></div>
+                    <div class="spark" x-html="miniSparkSmooth(txnByDay, 'var(--info)')"></div>
                 </a>
                 <a href="{{ route('admin.customers.index') }}" class="mini-kpi">
                     <span class="mini-kpi-icon"><x-icon name="customers" class="w-4 h-4" /></span>
@@ -281,7 +281,7 @@
                     <div class="spark" x-html="miniSparkSmooth(txnByDay.slice(-14), 'var(--positive)')"></div>
                 </a>
                 <a href="{{ route('admin.sales.index', ['status' => 'refunded']) }}" class="mini-kpi">
-                    <span class="mini-kpi-icon"><x-icon name="refresh" class="w-4 h-4" /></span>
+                    <span class="mini-kpi-icon is-refund"><x-icon name="refresh" class="w-4 h-4" /></span>
                     <div class="body">
                         <div class="flex items-center justify-between gap-2">
                             <div class="label">{{ __('admin.dashboard.kpi.refunds') }}</div>

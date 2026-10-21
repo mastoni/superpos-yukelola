@@ -8,9 +8,10 @@
 /* ─── Getting-started checklist ──────────────────────────── */
 .setup-card {
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
   padding: 18px 20px;
+  box-shadow: var(--shadow-card);
 }
 .setup-card-head {
   display: flex;
@@ -137,8 +138,8 @@
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  border: 1px solid var(--border-subtle);
-  border-radius: 9px;
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
   text-decoration: none;
   color: inherit;
   transition: border-color 100ms ease, background 100ms ease;
@@ -194,8 +195,8 @@ a.setup-step:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-r
 /* ─── Hero stat card ─────────────────────────────────────── */
 .stat-hero {
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
   padding: 20px 20px 0;
   overflow: hidden;
   box-shadow: var(--shadow-card);
@@ -263,8 +264,8 @@ a.setup-step:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-r
   align-items: center;
   gap: 12px;
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
   padding: 14px 16px;
   overflow: hidden;
   box-shadow: var(--shadow-card);
@@ -275,17 +276,25 @@ a.setup-step:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-r
   transition: background .12s, border-color .12s;
 }
 a.mini-kpi { cursor: pointer; }
-a.mini-kpi:hover { background: var(--bg-hover); border-color: var(--border-default); }
+a.mini-kpi:hover { background: var(--bg-hover); border-color: var(--border-strong); }
 .mini-kpi .mini-kpi-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 10px;
   background: var(--accent-soft);
   color: var(--accent);
   flex-shrink: 0;
+}
+.mini-kpi .mini-kpi-icon.is-blue {
+  background: var(--info-soft);
+  color: var(--info);
+}
+.mini-kpi .mini-kpi-icon.is-refund {
+  background: var(--danger-soft);
+  color: var(--danger);
 }
 .mini-kpi .body { flex: 1; min-width: 0; }
 .mini-kpi .body .label {
@@ -308,15 +317,15 @@ a.mini-kpi:hover { background: var(--bg-hover); border-color: var(--border-defau
   align-items: center;
   gap: 12px;
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
   padding: 14px 16px;
   text-decoration: none;
   color: inherit;
   transition: background 120ms;
   box-shadow: var(--shadow-card);
 }
-.ops-tile:hover { background: var(--bg-hover); }
+.ops-tile:hover { background: var(--bg-hover); border-color: var(--border-strong); }
 a.ops-tile { cursor: pointer; }
 .ops-tile .num {
   font-size: 22px;
@@ -350,14 +359,14 @@ a.ops-tile { cursor: pointer; }
 /* ─── Bento widget card ──────────────────────────────────── */
 .bento {
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
   overflow: visible;
   box-shadow: var(--shadow-card);
 }
 .bento .card-header {
   padding: 14px 16px 12px;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-default);
 }
 .bento .card-body { padding: 16px; }
 
@@ -378,7 +387,7 @@ a.ops-tile { cursor: pointer; }
 .var-seg {
   display: inline-flex;
   background: var(--bg-elevated);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-default);
   border-radius: 8px;
   padding: 2px;
   gap: 2px;
@@ -397,7 +406,8 @@ a.ops-tile { cursor: pointer; }
 .var-seg button:hover { color: var(--text-primary); }
 .var-seg button.is-active {
   background: var(--bg-surface);
-  color: var(--text-primary);
+  color: var(--accent);
+  font-weight: 600;
   box-shadow: 0 1px 2px rgba(0,0,0,.06);
 }
 
