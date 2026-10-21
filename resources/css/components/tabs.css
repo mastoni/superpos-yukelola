@@ -3,8 +3,8 @@
    ============================================================ */
 
 .tabs {
-  display: flex; gap: 2px;
-  border-bottom: 1px solid var(--border-subtle);
+  display: flex; gap: 4px;
+  border-bottom: 1px solid var(--border-default);
   /* Scroll the strip horizontally on narrow screens instead of letting
      the tabs overflow the page. Scrollbar hidden for a clean look. */
   overflow-x: auto;
@@ -13,16 +13,17 @@
 }
 .tabs::-webkit-scrollbar { display: none; }
 .tab {
-  height: 38px; padding: 0 14px;
-  font-size: 13px; font-weight: 500;
+  height: 40px; padding: 0 16px;
+  font-size: 13.5px; font-weight: 500;
   color: var(--text-secondary);
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   display: inline-flex; align-items: center; gap: 8px;
   flex-shrink: 0; white-space: nowrap;
+  transition: color 120ms ease, border-color 120ms ease;
 }
 .tab:hover { color: var(--text-primary); }
-.tab.is-active { color: var(--text-primary); border-bottom-color: var(--accent); }
+.tab.is-active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
 
 /* Count pill on a tab ("Pending 3"). Muted until its tab is active, so the
    strip reads as one control rather than a row of competing badges. */

@@ -34,7 +34,7 @@
 /* Border treatments — opt-in stronger rule / full box around the
    filter toolbar (the base only draws a subtle bottom rule). */
 .inv-filter--ruled { border-bottom: 1px solid var(--border-default); }
-.inv-filter--boxed { border: 1px solid var(--border-default); border-radius: 8px; }
+.inv-filter--boxed { border: 1px solid var(--border-default); border-radius: 14px; box-shadow: var(--shadow-sm); }
 
 /* Reset-filters action — outlined button styled like the other
    toolbar inputs (44px, border-default, neutral until hover). Aligns

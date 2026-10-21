@@ -281,9 +281,15 @@ export function productEditor(opts = {}) {
             return Math.round(((this.selling - this.cost) / this.cost) * 100);
         },
 
-        /** Per-unit profit, formatted to 2 decimals for the KPI cell. */
+        /** Per-unit profit as raw number. */
         get profit() {
-            return (this.selling - this.cost).toFixed(2);
+            return (this.selling - this.cost);
+        },
+
+        /** Per-unit profit, formatted in Rupiah for the KPI cell. */
+        get profitFormatted() {
+            const val = Math.round((Number(this.selling) || 0) - (Number(this.cost) || 0));
+            return window.posFormatMoney ? window.posFormatMoney(val) : 'Rp ' + val.toLocaleString('id-ID');
         },
 
         /** Tailwind class hooking the margin number's color into the

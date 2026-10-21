@@ -125,7 +125,7 @@
                 <span class="prod-muted">{{ __('products.list.no_location') }}</span>
             @endif
         </td>
-        <td class="num tnum">{{ format_money_range($priceLow, $priceHigh) }}</td>
+        <td class="num tnum font-semibold text-accent">{{ format_money_range($priceLow, $priceHigh) }}</td>
         <td class="num tnum prod-muted">{{ format_money_range($costLow, $costHigh) }}</td>
         {{-- Margin — computed client-side from the same data-dt-*
              attrs the sort + filter use. Color thresholds match

@@ -15,11 +15,16 @@
 
 .summary-card {
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 14px 16px;
-  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: var(--shadow-sm);
   min-width: 0;
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+.summary-card:hover {
+  box-shadow: var(--shadow-card);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border-default));
 }
 
 .summary-card-label {

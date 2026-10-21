@@ -242,7 +242,7 @@ select.pos-input option:disabled { color: var(--text-tertiary); }
   z-index: 1;
 }
 .pos-money .pos-input {
-  padding-inline-start: 28px;
+  padding-inline-start: 36px;
 }
 
 /* ============================================================

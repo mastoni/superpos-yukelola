@@ -495,7 +495,7 @@
                                                  parent SKU as the user types it on a fresh create. --}}
                                             <input type="text" name="sku" value="{{ $val('sku') }}"
                                                    x-model="parentSku"
-                                                   class="pos-input mono"
+                                                   class="pos-input mono flex-1 min-w-0"
                                                    maxlength="64"
                                                    placeholder="{{ __('products.fields.sku_placeholder') }}">
                                             <button type="button"
@@ -516,7 +516,7 @@
                                         <div class="flex items-center gap-2">
                                             <input type="text" name="barcode" value="{{ $val('barcode') }}"
                                                    x-model="barcode"
-                                                   class="pos-input mono"
+                                                   class="pos-input mono flex-1 min-w-0"
                                                    maxlength="64"
                                                    placeholder="{{ __('products.fields.barcode_placeholder') }}">
                                             <button type="button"
@@ -767,12 +767,7 @@
                                 </div>
                                 <div class="prod-kpi-box">
                                     <div class="prod-kpi-label">{{ __('products.fields.profit_per_unit') }}</div>
-                                    {{-- Currency symbol is static (set from the company's base
-                                         currency at render time); the numeric `profit` is
-                                         reactive — Alpine updates only the number span. --}}
-                                    <div class="prod-kpi-value">
-                                        <span>{{ currency_symbol() }} </span><span x-text="profit"></span>
-                                    </div>
+                                    <div class="prod-kpi-value" x-text="profitFormatted"></div>
                                 </div>
                             </div>
                         </div>
