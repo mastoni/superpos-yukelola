@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Actions\Demo\ResetDemoData;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -26,18 +25,9 @@ class DemoLoginController extends Controller
 
         $role = strtolower(trim($role));
 
-        // Ensure fresh baseline data on entering demo session
-        try {
-            app(ResetDemoData::class)();
-        } catch (\Throwable) {
-            // Ignore if reset fails
-        }
-
         if ($role === 'cashier' || $role === 'kasir') {
             $user = User::where('email', 'kasir@yukelola.id')->first()
-                ?? User::where('email', 'kasir@superpos.test')->first()
-                ?? User::where('is_super_admin', false)->first()
-                ?? User::first();
+                ?? User::where('email', 'kasir@superpos.test')->first();
 
             if (! $user) {
                 return redirect()->route('login')->with('error', 'Akun demo kasir belum dibuat. Silakan hubungi admin.');
@@ -53,8 +43,7 @@ class DemoLoginController extends Controller
         if ($role === 'admin') {
             $user = User::where('email', 'admin@yukelola.id')->first()
                 ?? User::where('email', 'admin@superpos.test')->first()
-                ?? User::where('is_super_admin', true)->first()
-                ?? User::first();
+;
 
             if (! $user) {
                 return redirect()->route('login')->with('error', 'Akun demo admin belum dibuat.');
