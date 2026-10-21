@@ -117,6 +117,10 @@ Schedule::call(fn () => app(RunScheduledBackup::class)())
  * banner can show it. Never downloads or installs anything.
  */
 $daily('update-check', '03:00', function () {
+    if (! config('pos.updater.enabled', false)) {
+        return;
+    }
+
     if (! app_updates()['auto_check'] && ! app_updates()['auto_install']) {
         return;
     }

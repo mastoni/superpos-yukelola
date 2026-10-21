@@ -25,6 +25,10 @@ class UpdateClient
      */
     public function fetchFeed(): ?array
     {
+        if (! config('pos.updater.enabled', false)) {
+            return null;
+        }
+
         $url = (string) apply_filters('updater.feed_url', (string) config('pos.updater.feed_url'));
         if ($url === '') {
             return null;

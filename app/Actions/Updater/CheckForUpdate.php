@@ -32,6 +32,10 @@ class CheckForUpdate
      */
     public function __invoke(): array
     {
+        if (! config('pos.updater.enabled', false)) {
+            return ['ok' => false, 'available' => false, 'version' => null, 'reason' => 'updater_disabled'];
+        }
+
         do_action('updater.before_check_feed');
 
         $company = Company::current();

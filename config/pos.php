@@ -160,9 +160,14 @@ return [
 
     'updater' => [
 
-        // The update feed. env-overridable for forks / staging; defaults to
-        // the canonical endpoint shipped with the product.
-        'feed_url' => env('POS_UPDATE_FEED_URL', 'https://updates.infinitietech.com/pos.json'),
+        // Master switch for auto-updater. Defaults to false to decouple YUKelola
+        // from upstream vendor update infrastructure and prevent automated overwrites.
+        'enabled' => env('POS_UPDATER_ENABLED', false),
+
+        // The update feed URL. Defaults to empty string to ensure no outbound requests
+        // are made to upstream vendor servers (https://updates.infinitietech.com/pos.json).
+        // Official updates must be delivered through controlled YUKelola distribution channels.
+        'feed_url' => env('POS_UPDATE_FEED_URL', ''),
 
         // Base64-encoded Ed25519 public key used to verify release signatures.
         //
