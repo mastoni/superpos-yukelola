@@ -31,7 +31,7 @@
          page boots, enabling: page-loads-while-offline, "Add to home
          screen" install flow, and SW update prompts. --}}
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="{{ $brandColor ?: '#3b82f6' }}">
+    <meta name="theme-color" content="{{ $brandColor ?: '#078A4B' }}">
 
     @if ($faviconUrl)
         <link rel="icon" href="{{ $faviconUrl }}">

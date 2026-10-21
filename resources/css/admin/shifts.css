@@ -5,8 +5,10 @@
 
 .denom-helper {
   border: 1px solid var(--border-default);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--bg-surface);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
 }
 
 .denom-toggle {
@@ -28,7 +30,7 @@
 
 .denom-body {
   padding: 4px 12px 12px;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid var(--border-default);
 }
 
 /* Container-responsive: columns size to the modal/card width, not the
@@ -87,9 +89,9 @@
   color: var(--text-secondary);
 }
 .denom-total-value {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--accent);
 }
 
 /* ── X-report print view ─────────────────────────────────────────── */
