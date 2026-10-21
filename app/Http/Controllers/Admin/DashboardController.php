@@ -249,9 +249,9 @@ class DashboardController extends Controller
                 products.image_path,
                 psl.quantity as qty,
                 COALESCE(psl.reorder_level_override, products.reorder_level, 5) as reorder_at,
-                GREATEST(COALESCE(products.reorder_level, 5) * 2, 10) as par_level
+                CASE WHEN (COALESCE(products.reorder_level, 5) * 2) > 10 THEN (COALESCE(products.reorder_level, 5) * 2) ELSE 10 END as par_level
             ')
-            ->orderByRaw('(psl.quantity / GREATEST(COALESCE(products.reorder_level, 1), 1)) ASC')
+            ->orderByRaw('(psl.quantity / CASE WHEN COALESCE(products.reorder_level, 1) > 1 THEN COALESCE(products.reorder_level, 1) ELSE 1 END) ASC')
             ->limit(6)
             ->get()
             ->map(fn ($r) => [
@@ -283,7 +283,7 @@ class DashboardController extends Controller
         $hmRows = Sale::completed()
             ->forStore($storeId)
             ->where('sale_datetime', '>=', $since7)
-            ->selectRaw('DAYOFWEEK(sale_datetime) as dow, HOUR(sale_datetime) as hr, COALESCE(SUM(grand_total), 0) as rev, COUNT(*) as txns')
+            ->selectRaw("{$this->dayOfWeekSql('sale_datetime')} as dow, {$this->hourSql('sale_datetime')} as hr, COALESCE(SUM(grand_total), 0) as rev, COUNT(*) as txns")
             ->groupBy('dow', 'hr')
             ->get();
 
@@ -315,7 +315,7 @@ class DashboardController extends Controller
                 ->where('sales.status', Sale::STATUS_COMPLETED)
                 ->where('sales.store_id', $storeId)
                 ->where('sales.sale_datetime', '>=', $since7)
-                ->selectRaw('DAYOFWEEK(sales.sale_datetime) as dow, HOUR(sales.sale_datetime) as hr, COALESCE(SUM(sale_items.quantity), 0) as qty')
+                ->selectRaw("{$this->dayOfWeekSql('sales.sale_datetime')} as dow, {$this->hourSql('sales.sale_datetime')} as hr, COALESCE(SUM(sale_items.quantity), 0) as qty")
                 ->groupBy('dow', 'hr')
                 ->get();
             foreach ($itemRows as $row) {
@@ -367,7 +367,7 @@ class DashboardController extends Controller
                 COALESCE(SUM(sales.grand_total), 0) as sales_total
             ')
             ->groupBy('shifts.id', 'shifts.status', 'users.name')
-            ->orderByRaw("FIELD(shifts.status, 'open', 'closed_with_variance', 'closed')")
+            ->orderByRaw("CASE shifts.status WHEN 'open' THEN 1 WHEN 'closed_with_variance' THEN 2 WHEN 'closed' THEN 3 ELSE 4 END")
             ->orderByDesc('sales_total')
             ->get()
             ->map(fn ($u) => [
@@ -523,7 +523,7 @@ class DashboardController extends Controller
             $rows = Sale::completed()
                 ->forStore($storeId)
                 ->whereDate('sale_date', $to->toDateString())
-                ->selectRaw('HOUR(sale_datetime) as hr, COALESCE(SUM(grand_total), 0) as rev')
+                ->selectRaw("{$this->hourSql('sale_datetime')} as hr, COALESCE(SUM(grand_total), 0) as rev")
                 ->groupBy('hr')->orderBy('hr')->get()->keyBy('hr');
 
             $series = $labels = [];
@@ -637,13 +637,13 @@ class DashboardController extends Controller
             $hourlyRevRows = Sale::completed()
                 ->forStore($storeId)
                 ->whereDate('sale_date', $today)
-                ->selectRaw('HOUR(sale_datetime) as hr, COALESCE(SUM(grand_total), 0) as rev')
+                ->selectRaw("{$this->hourSql('sale_datetime')} as hr, COALESCE(SUM(grand_total), 0) as rev")
                 ->groupBy('hr')->orderBy('hr')->get()->keyBy('hr');
 
             $hourlyTxnRows = Sale::completed()
                 ->forStore($storeId)
                 ->whereDate('sale_date', $today)
-                ->selectRaw('HOUR(sale_datetime) as hr, COUNT(*) as cnt')
+                ->selectRaw("{$this->hourSql('sale_datetime')} as hr, COUNT(*) as cnt")
                 ->groupBy('hr')->orderBy('hr')->get()->keyBy('hr');
 
             $revByDay = $txnByDay = $dayLabels = [];
@@ -799,5 +799,27 @@ class DashboardController extends Controller
         }
 
         return $trends;
+    }
+
+    /**
+     * SQL expression to extract the 0-23 hour from a datetime column,
+     * compatible with both MySQL and SQLite.
+     */
+    private function hourSql(string $column): string
+    {
+        return DB::connection()->getDriverName() === 'sqlite'
+            ? "CAST(strftime('%H', {$column}) AS INTEGER)"
+            : "HOUR({$column})";
+    }
+
+    /**
+     * SQL expression to extract the day of week (1=Sun, 2=Mon..7=Sat)
+     * from a datetime column, compatible with both MySQL and SQLite.
+     */
+    private function dayOfWeekSql(string $column): string
+    {
+        return DB::connection()->getDriverName() === 'sqlite'
+            ? "(CAST(strftime('%w', {$column}) AS INTEGER) + 1)"
+            : "DAYOFWEEK({$column})";
     }
 }
