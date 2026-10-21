@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Auth;
  * 1-Click Interactive Demo Login for prospective users and evaluators.
  *
  * Exclusively active when demo mode is enabled (pos_is_demo()).
- * Allows instant, zero-friction testing of both the Cashier POS terminal
- * and the Admin Back-Office without requiring credential typing.
+ * Strictly authenticates ONLY explicitly designated demo accounts.
+ * Generic fallbacks (e.g. User::first()) and destructive GET resets are strictly forbidden.
  */
 class DemoLoginController extends Controller
 {
@@ -24,37 +24,78 @@ class DemoLoginController extends Controller
         }
 
         $role = strtolower(trim($role));
+        $normalizedRole = match ($role) {
+            'admin' => 'admin',
+            'cashier', 'kasir' => 'cashier',
+            default => null,
+        };
 
-        if ($role === 'cashier' || $role === 'kasir') {
-            $user = User::where('email', 'kasir@yukelola.id')->first()
-                ?? User::where('email', 'kasir@superpos.test')->first();
+        if ($normalizedRole === null) {
+            abort(404, 'Role demo tidak valid.');
+        }
 
-            if (! $user) {
-                return redirect()->route('login')->with('error', 'Akun demo kasir belum dibuat. Silakan hubungi admin.');
+        $designatedEmail = $this->resolveDesignatedEmail($normalizedRole);
+        if (! $designatedEmail) {
+            return redirect()->route('login')
+                ->with('error', "Konfigurasi akun demo untuk peran '{$role}' tidak ditemukan.");
+        }
+
+        $user = User::where('email', $designatedEmail)->first();
+
+        if (! $user) {
+            return redirect()->route('login')
+                ->with('error', "Akun demo '{$role}' tidak ditemukan. Silakan hubungi admin.");
+        }
+
+        if (! $user->is_active) {
+            return redirect()->route('login')
+                ->with('error', "Akun demo '{$role}' sedang dinonaktifkan.");
+        }
+
+        if ($normalizedRole === 'admin') {
+            if (! $user->is_super_admin) {
+                return redirect()->route('login')
+                    ->with('error', 'Akun demo admin tidak memiliki hak akses administrator.');
             }
 
             Auth::login($user);
             $request->session()->regenerate();
             $request->session()->put('is_demo_session', true);
 
-            return redirect()->route('cashier.index')->with('success', 'Selamat datang di Demo Kasir YUKelola! Silakan coba transaksi penjualan langsung.');
+            return redirect()->route('admin.dashboard')
+                ->with('success', 'Selamat datang di Demo Admin YUKelola! Anda memiliki akses penuh ke dashboard dan laporan.');
         }
 
-        if ($role === 'admin') {
-            $user = User::where('email', 'admin@yukelola.id')->first()
-                ?? User::where('email', 'admin@superpos.test')->first();
-
-            if (! $user) {
-                return redirect()->route('login')->with('error', 'Akun demo admin belum dibuat.');
+        if ($normalizedRole === 'cashier') {
+            if ($user->is_super_admin) {
+                return redirect()->route('login')
+                    ->with('error', 'Akun demo kasir tidak boleh menggunakan akun administrator.');
             }
 
             Auth::login($user);
             $request->session()->regenerate();
             $request->session()->put('is_demo_session', true);
 
-            return redirect()->route('admin.dashboard')->with('success', 'Selamat datang di Demo Admin YUKelola! Anda memiliki akses penuh ke dashboard dan laporan.');
+            return redirect()->route('cashier.index')
+                ->with('success', 'Selamat datang di Demo Kasir YUKelola! Silakan coba transaksi penjualan langsung.');
         }
 
-        return redirect()->route('landing');
+        return redirect()->route('login');
+    }
+
+    private function resolveDesignatedEmail(string $normalizedRole): ?string
+    {
+        $credentials = config('pos.demo.credentials', []);
+        foreach ($credentials as $cred) {
+            if (($cred['role'] ?? '') === $normalizedRole && ! empty($cred['email'])) {
+                return trim((string) $cred['email']);
+            }
+        }
+
+        return match ($normalizedRole) {
+            'admin' => 'admin@yukelola.id',
+            'cashier' => 'kasir@yukelola.id',
+            default => null,
+        };
     }
 }
