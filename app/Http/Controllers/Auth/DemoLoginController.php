@@ -42,8 +42,7 @@ class DemoLoginController extends Controller
 
         if ($role === 'admin') {
             $user = User::where('email', 'admin@yukelola.id')->first()
-                ?? User::where('email', 'admin@superpos.test')->first()
-;
+                ?? User::where('email', 'admin@superpos.test')->first();
 
             if (! $user) {
                 return redirect()->route('login')->with('error', 'Akun demo admin belum dibuat.');
