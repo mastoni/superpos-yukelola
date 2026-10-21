@@ -3111,7 +3111,8 @@
                                             <span class="denom-x">×</span>
                                             <input type="number" min="0" step="1" inputmode="numeric"
                                                    class="pos-input denom-count num tnum"
-                                                   x-model.number="denomCounts[d]"
+                                                   :value="denomCounts[d] ?? ''"
+                                                   @input="onDenomInput(d, $event)"
                                                    placeholder="0">
                                             <span class="denom-sub tnum" x-text="$formatMoney(denomSubtotal(d))"></span>
                                         </div>

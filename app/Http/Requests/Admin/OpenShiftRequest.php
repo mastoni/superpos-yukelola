@@ -27,6 +27,20 @@ class OpenShiftRequest extends FormRequest
                 $this->merge(['terminal_id' => $cookieTerminal]);
             }
         }
+
+        if ($this->has('opening_denominations') && is_array($this->opening_denominations)) {
+            $cleaned = [];
+            foreach ($this->opening_denominations as $faceValue => $count) {
+                if (! is_numeric($faceValue) || (float) $faceValue <= 0) {
+                    continue;
+                }
+                if ($count === '' || $count === null) {
+                    continue;
+                }
+                $cleaned[$faceValue] = $count;
+            }
+            $this->merge(['opening_denominations' => $cleaned]);
+        }
     }
 
     /** @return array<string, mixed> */

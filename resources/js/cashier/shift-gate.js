@@ -41,14 +41,41 @@ export function shiftGate({
         denoms: denominations || [],
         denomCounts: {},
 
+        normalizeCount(val) {
+            if (val === '' || val === null || val === undefined) return 0;
+            const n = Number(val);
+            if (!Number.isFinite(n) || n <= 0) return 0;
+            return Math.floor(n);
+        },
+
         get denomTotal() {
             let t = 0;
-            for (const d of this.denoms) t += (Number(this.denomCounts[d]) || 0) * Number(d);
+            for (const d of this.denoms) {
+                t += this.normalizeCount(this.denomCounts[d]) * Number(d);
+            }
             return Number(t.toFixed(4));
         },
+
         denomSubtotal(d) {
-            return (Number(this.denomCounts[d]) || 0) * Number(d);
+            return this.normalizeCount(this.denomCounts[d]) * Number(d);
         },
+
+        onDenomInput(d, event) {
+            let val = event.target.value;
+            if (val === '' || val === null) {
+                this.denomCounts[d] = '';
+            } else {
+                let n = parseInt(val, 10);
+                if (isNaN(n) || n < 0) {
+                    n = 0;
+                }
+                this.denomCounts[d] = n;
+                event.target.value = (n === 0 && val === '') ? '' : n;
+            }
+            // Auto-update physical opening cash with calculated total
+            this.openingCash = this.denomTotal;
+        },
+
         applyDenomTotal() {
             this.openingCash = this.denomTotal;
         },
@@ -87,8 +114,8 @@ export function shiftGate({
                 // integer rule on the server.
                 const denoms = {};
                 for (const d of this.denoms) {
-                    const n = Number(this.denomCounts[d]);
-                    if (Number.isFinite(n) && n > 0) denoms[d] = n;
+                    const n = this.normalizeCount(this.denomCounts[d]);
+                    if (n > 0) denoms[d] = n;
                 }
 
                 await posPost(openUrl, {

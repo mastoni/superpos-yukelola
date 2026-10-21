@@ -17,7 +17,9 @@ class Denominations
      */
     public static function forCurrency(string $code): array
     {
-        return self::SETS[strtoupper($code)] ?? self::SETS['_default'];
+        $set = self::SETS[strtoupper($code)] ?? self::SETS['_default'];
+
+        return array_values(array_filter($set, fn ($v) => is_numeric($v) && $v > 0));
     }
 
     /** The list for the company's base currency (what the drawer holds). */
@@ -28,6 +30,7 @@ class Denominations
 
     /** @var array<string, list<float>> */
     private const SETS = [
+        'IDR' => [100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100],
         'INR' => [2000, 500, 200, 100, 50, 20, 10, 5, 2, 1],
         'USD' => [100, 50, 20, 10, 5, 1, 0.25, 0.10, 0.05, 0.01],
         'GBP' => [50, 20, 10, 5, 2, 1, 0.50, 0.20, 0.10, 0.05, 0.02, 0.01],

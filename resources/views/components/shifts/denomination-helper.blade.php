@@ -27,7 +27,8 @@
                     <input type="number" min="0" step="1" inputmode="numeric"
                            class="pos-input denom-count num tnum"
                            :name="field + '[' + d + ']'"
-                           x-model.number="counts[d]"
+                           :value="counts[d] ?? ''"
+                           @input="onInput(d, $event)"
                            placeholder="0">
                     <span class="denom-sub tnum" x-text="$formatMoney(subtotal(d))"></span>
                 </div>

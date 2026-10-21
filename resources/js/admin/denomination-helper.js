@@ -13,16 +13,38 @@ export function denominationHelper({ denominations = [], field = 'opening_denomi
         denoms: denominations,
         counts: {},
 
+        normalizeCount(val) {
+            if (val === '' || val === null || val === undefined) return 0;
+            const n = Number(val);
+            if (!Number.isFinite(n) || n <= 0) return 0;
+            return Math.floor(n);
+        },
+
         get total() {
             let t = 0;
             for (const d of this.denoms) {
-                t += (Number(this.counts[d]) || 0) * Number(d);
+                t += this.normalizeCount(this.counts[d]) * Number(d);
             }
             return Number(t.toFixed(4));
         },
 
         subtotal(d) {
-            return (Number(this.counts[d]) || 0) * Number(d);
+            return this.normalizeCount(this.counts[d]) * Number(d);
+        },
+
+        onInput(d, event) {
+            let val = event.target.value;
+            if (val === '' || val === null) {
+                this.counts[d] = '';
+            } else {
+                let n = parseInt(val, 10);
+                if (isNaN(n) || n < 0) {
+                    n = 0;
+                }
+                this.counts[d] = n;
+                event.target.value = (n === 0 && val === '') ? '' : n;
+            }
+            this.applyTotal();
         },
 
         applyTotal() {

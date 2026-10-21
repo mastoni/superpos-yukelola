@@ -11,6 +11,23 @@ class CloseShiftRequest extends FormRequest
         return $this->user()?->can('close', $this->route('shift')) ?? false;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('closing_denominations') && is_array($this->closing_denominations)) {
+            $cleaned = [];
+            foreach ($this->closing_denominations as $faceValue => $count) {
+                if (! is_numeric($faceValue) || (float) $faceValue <= 0) {
+                    continue;
+                }
+                if ($count === '' || $count === null) {
+                    continue;
+                }
+                $cleaned[$faceValue] = $count;
+            }
+            $this->merge(['closing_denominations' => $cleaned]);
+        }
+    }
+
     /** @return array<string, mixed> */
     public function rules(): array
     {
