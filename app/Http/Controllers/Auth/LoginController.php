@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Actions\Demo\ResetDemoData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Company;
 use App\Services\Auth\SessionRegistry;
+use App\Services\Demo\DemoSandboxManager;
 use App\Services\TerminalReservation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -128,17 +128,18 @@ class LoginController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         $wasDemo = session('is_demo_session') || (pos_is_demo() && ! auth()->user()?->is_super_admin);
+        $sandboxId = $request->session()->get('demo_sandbox_id');
 
         app(TerminalReservation::class)->release($request);
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        if ($wasDemo && pos_is_demo()) {
+        if ($wasDemo && $sandboxId) {
             try {
-                app(ResetDemoData::class)();
+                app(DemoSandboxManager::class)->destroySandbox($sandboxId);
             } catch (\Throwable) {
-                // Ignore if reset fails
+                // Ignore if sandbox file cleanup fails
             }
         }
 

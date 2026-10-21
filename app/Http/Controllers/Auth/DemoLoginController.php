@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 /**
  * 1-Click Interactive Demo Login for prospective users and evaluators.
@@ -61,6 +62,7 @@ class DemoLoginController extends Controller
             Auth::login($user);
             $request->session()->regenerate();
             $request->session()->put('is_demo_session', true);
+            $request->session()->put('demo_sandbox_id', (string) Str::uuid());
 
             return redirect()->route('admin.dashboard')
                 ->with('success', 'Selamat datang di Demo Admin YUKelola! Anda memiliki akses penuh ke dashboard dan laporan.');
@@ -75,6 +77,7 @@ class DemoLoginController extends Controller
             Auth::login($user);
             $request->session()->regenerate();
             $request->session()->put('is_demo_session', true);
+            $request->session()->put('demo_sandbox_id', (string) Str::uuid());
 
             return redirect()->route('cashier.index')
                 ->with('success', 'Selamat datang di Demo Kasir YUKelola! Silakan coba transaksi penjualan langsung.');

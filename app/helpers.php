@@ -299,8 +299,8 @@ if (! function_exists('pos_is_demo_session')) {
             return true;
         }
 
-        // Non-superadmins in demo mode are considered demo sessions
-        if (pos_is_demo() && ! auth()->user()?->is_super_admin) {
+        // Authenticated non-superadmins in demo mode are considered demo sessions
+        if (pos_is_demo() && auth()->check() && ! auth()->user()?->is_super_admin) {
             return true;
         }
 

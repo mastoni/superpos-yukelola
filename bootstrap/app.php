@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\ApplyCompanySettings;
 use App\Http\Middleware\EnsureAppKey;
+use App\Http\Middleware\EnsureDemoSandbox;
 use App\Http\Middleware\EnsureInstalled;
 use App\Http\Middleware\EnsureInstallerStep;
 use App\Http\Middleware\EnsureLicenseActive;
@@ -80,6 +81,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // session happens to expire (SEC #6). No-op for guests.
         $middleware->web(append: [EnsureUserIsActive::class]);
         $middleware->web(append: [EnsureLicenseActive::class]);
+        $middleware->web(append: [EnsureDemoSandbox::class]);
         $middleware->web(append: [PreventDemoDataDeletion::class]);
 
         // Payment gateway webhook routes — Stripe (and future providers)

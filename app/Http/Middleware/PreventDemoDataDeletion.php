@@ -15,6 +15,12 @@ class PreventDemoDataDeletion
     public function handle(Request $request, Closure $next): Response
     {
         if (pos_is_demo_session()) {
+            // When running in an isolated per-session sandbox, allow CRUD deletions
+            // of test records within the visitor's own sandbox.
+            if ($request->session()->has('demo_sandbox_id')) {
+                return $next($request);
+            }
+
             if ($request->isMethod('DELETE') || $this->isDeleteAttempt($request)) {
                 $message = __('Akun demo hanya dapat mengisi data dan tidak dapat menghapus data.');
 
