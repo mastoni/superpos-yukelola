@@ -59,4 +59,32 @@ return [
         'inactive' => 'Nonaktif',
         'rtl' => 'RTL',
     ],
+    'import' => [
+        'title' => 'Impor Terjemahan untuk “:name”',
+        'help' => 'Unggah berkas yang diekspor dengan kolom Terjemahan yang sudah diisi. Sel yang kosong akan mempertahankan teks default bahasa Inggris.',
+    ],
+    'delete' => [
+        'title' => 'Hapus “:name”?',
+        'message' => 'Bahasa dan semua terjemahannya akan dihapus. Tindakan ini tidak dapat dibatalkan.',
+    ],
+    'flash' => [
+        'created' => 'Bahasa “:name” berhasil dibuat.',
+        'updated' => 'Bahasa “:name” berhasil diperbarui.',
+        'deleted' => 'Bahasa “:name” berhasil dihapus.',
+        'default_set' => '“:name” kini menjadi bahasa default.',
+        'activated' => 'Bahasa “:name” diaktifkan.',
+        'deactivated' => 'Bahasa “:name” dinonaktifkan.',
+        'switched' => 'Bahasa diubah ke :name.',
+        'imported' => 'Berhasil mengimpor :imported terjemahan untuk “:name” (:skipped dilewati).',
+    ],
+    'errors' => [
+        'base' => 'Tidak dapat menghapus “:name” — Bahasa Inggris adalah bahasa dasar sistem.',
+        'default' => 'Tidak dapat menghapus “:name” — ini adalah bahasa default. Atur bahasa default lain terlebih dahulu.',
+        'default_active' => 'Tidak dapat menonaktifkan “:name” — ini adalah bahasa default.',
+    ],
+    'switcher' => [
+        'label' => 'Bahasa',
+        'heading' => 'Pilih Bahasa',
+        'manage' => 'Kelola Bahasa',
+    ],
 ];
