@@ -59,7 +59,7 @@ class BackupSettingsController extends Controller
     {
         $this->authorize('settings.update');
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('settings.demo.locked'),
@@ -84,7 +84,7 @@ class BackupSettingsController extends Controller
     {
         $this->authorize('settings.update');
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('settings.demo.locked'),
@@ -120,7 +120,7 @@ class BackupSettingsController extends Controller
 
         // A backup archive is the entire database — never let it be pulled
         // off the public demo.
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return redirect()->route('admin.settings.backup.edit')
                 ->with('error', __('settings.demo.action_locked'));
         }
@@ -140,7 +140,7 @@ class BackupSettingsController extends Controller
     {
         $this->authorize('settings.update');
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('settings.demo.locked'),

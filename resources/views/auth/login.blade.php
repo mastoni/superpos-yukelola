@@ -21,24 +21,6 @@
         $appLogoDarkUrl = $company?->app_logo_dark_url;
         $appName        = $company?->display_app_name ?: config('app.name');
     @endphp
-    {{-- Demo-mode notice — sits OUTSIDE the login card so it reads as a
-         site-level banner rather than a form alert. Renders only when
-         POS_DEMO_MODE=true; link target is POS_DEMO_WEBSITE_URL. --}}
-    @if (config('pos.demo.enabled'))
-        <div class="alert alert-warning auth-demo-banner">
-            <span class="alert-icon"><x-icon name="alert" class="w-[18px] h-[18px]" /></span>
-            <div class="alert-body">
-                <div class="alert-title">
-                    {{-- The translation is escaped before our own anchor is
-                         spliced in — translations are importable, so rendering
-                         one raw is an XSS sink (SEC #19). --}}
-                    {!! trans_with_html('auth.demo.notice', [
-                        'link' => '<a href="' . e(config('pos.demo.website_url')) . '" class="auth-link" target="_blank" rel="noopener">' . e(__('auth.demo.link_text')) . '</a>',
-                    ]) !!}
-                </div>
-            </div>
-        </div>
-    @endif
 
     {{-- novalidate: validation is owned by the server (LoginRequest in
          app/Http/Requests/Auth/LoginRequest.php). The browser's HTML5
@@ -199,53 +181,6 @@
             <span x-text="submitting ? @js(__('auth.signing_in')) : @js(__('auth.sign_in'))"></span>
         </button>
 
-        {{-- Demo credentials — renders below the Sign in button when demo
-             mode is on AND at least one credential pair is filled in via .env.
-             Each entry gets a Copy & Fill button that pastes email + password
-             into the inputs above. --}}
-        @php
-            $demoCredentials = collect(config('pos.demo.credentials', []))
-                ->filter(fn ($c) => ! empty($c['email']) && ! empty($c['password']))
-                ->values();
-        @endphp
-        @if (config('pos.demo.enabled') && $demoCredentials->isNotEmpty())
-            <div class="demo-creds">
-                <div class="demo-creds-head">
-                    <span class="demo-creds-title">{{ __('auth.demo.credentials_title') }}</span>
-                    <span class="demo-creds-badge">{{ __('auth.demo.mode_badge') }}</span>
-                </div>
-
-                @foreach ($demoCredentials as $cred)
-                    @php
-                        $roleKey   = $cred['role'] ?? 'admin';
-                        $roleLabel = __('auth.demo.role.' . $roleKey);
-                        if ($roleLabel === 'auth.demo.role.' . $roleKey) {
-                            $roleLabel = ucfirst($roleKey) . ' ' . __('auth.demo.credentials_title');
-                        }
-                    @endphp
-                    <div class="demo-cred-card">
-                        <div class="demo-cred-card-head">
-                            <span class="demo-cred-role">{{ $roleLabel }}</span>
-                            <button type="button" class="demo-cred-fill-btn"
-                                    @click="fillCredentials({{ \Illuminate\Support\Js::from($roleKey) }}, {{ \Illuminate\Support\Js::from($cred['email']) }}, {{ \Illuminate\Support\Js::from($cred['password']) }})">
-                                <span x-show="filledRole !== @js($roleKey)">{{ __('auth.demo.copy_and_fill') }}</span>
-                                <span x-show="filledRole === @js($roleKey)" x-cloak>{{ __('auth.demo.filled') }}</span>
-                            </button>
-                        </div>
-                        <dl class="demo-cred-fields">
-                            <div>
-                                <dt>{{ __('auth.demo.email_label') }}:</dt>
-                                <dd><span class="demo-cred-chip">{{ $cred['email'] }}</span></dd>
-                            </div>
-                            <div>
-                                <dt>{{ __('auth.demo.password_label') }}:</dt>
-                                <dd><span class="demo-cred-chip">{{ $cred['password'] }}</span></dd>
-                            </div>
-                        </dl>
-                    </div>
-                @endforeach
-            </div>
-        @endif
 
     </form>
 </x-auth-layout>

@@ -48,7 +48,7 @@ class CurrencySettingsController extends Controller
         // setting in the app — `app_currency()` feeds every price, receipt and
         // report — so one visitor switching it re-labels the whole demo for
         // everyone else until the nightly reset (see ResetDemoData).
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('settings.demo.locked'),

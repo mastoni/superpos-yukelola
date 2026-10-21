@@ -1,90 +1,77 @@
 <?php
 
 return [
-    'title' => 'Sync log',
-    'sub' => 'Every cashier-complete round-trip with payload + result. Offline-completed sales show up here once they sync.',
-    'crumb_parent' => 'Insights',
-
+    'title' => 'Log Sinkronisasi (Sync Log)',
+    'sub' => 'Catatan lengkap transmisi kasir beserta data dan hasilnya. Penjualan saat offline akan muncul di sini setelah tersinkronisasi.',
+    'crumb_parent' => 'Wawasan',
     'summary' => [
-        'total' => 'Entries',
-        'success' => 'Success',
-        'conflict' => 'Conflict',
-        'failed' => 'Failed',
+        'total' => 'Total Entri',
+        'success' => 'Berhasil',
+        'conflict' => 'Konflik',
+        'failed' => 'Gagal',
     ],
-    'list_title' => 'Entries',
-
+    'list_title' => 'Daftar Entri',
     'tabs' => [
-        'all' => 'All',
-        'success' => 'Successful',
-        'failed' => 'Failed',
-        'conflict' => 'Conflicts',
+        'all' => 'Semua',
+        'success' => 'Berhasil',
+        'failed' => 'Gagal',
+        'conflict' => 'Konflik',
     ],
-
     'columns' => [
-        'synced_at' => 'Synced at',
-        'entity' => 'Entity',
-        'local_uuid' => 'Local UUID',
-        'result' => 'Result',
-        'user' => 'Cashier',
-        'message' => 'Message',
+        'synced_at' => 'Waktu Sinkron',
+        'entity' => 'Entitas',
+        'local_uuid' => 'UUID Lokal',
+        'result' => 'Hasil',
+        'user' => 'Kasir',
+        'message' => 'Pesan / Status',
     ],
-
     'status' => [
-        'success' => 'Success',
-        'failed' => 'Failed',
-        'conflict' => 'Conflict',
-        'dismissed' => 'Dismissed',
+        'success' => 'Berhasil',
+        'failed' => 'Gagal',
+        'conflict' => 'Konflik',
+        'dismissed' => 'Diabaikan',
     ],
-
     'actions' => [
-        'retry' => 'Retry sync',
-        'dismiss' => 'Dismiss',
-        'undismiss' => 'Un-dismiss',
-        'view' => 'View details',
+        'retry' => 'Coba Sinkron Ulang',
+        'dismiss' => 'Abaikan',
+        'undismiss' => 'Batal Abaikan',
+        'view' => 'Lihat Rincian',
     ],
-
     'confirm_retry' => [
-        'title' => 'Retry this sync?',
-        'message' => 'The stored payload is re-sent to the server exactly as the till recorded it. Safe to repeat — a sale that already landed will not be duplicated.',
-        'confirm' => 'Retry now',
+        'title' => 'Coba sinkronkan ulang entri ini?',
+        'message' => 'Data tersimpan akan dikirimkan kembali ke server persis seperti yang dicatat di kasir. Aman diulang — penjualan yang sudah masuk tidak akan terduplikasi.',
+        'confirm' => 'Sinkronkan Sekarang',
     ],
-
     'confirm_dismiss' => [
-        'title' => 'Dismiss this entry?',
-        'message' => 'Use this when the sale can never sync — the stock genuinely was not there, or it was re-rung by hand. The entry and its payload are kept for audit; it just stops counting as outstanding.',
-        'confirm' => 'Dismiss',
+        'title' => 'Abaikan entri ini?',
+        'message' => 'Gunakan ini jika transaksi tidak mungkin disinkronkan — misalnya stok benar-benar tidak ada atau transaksi sudah diinput manual. Data tetap disimpan untuk audit.',
+        'confirm' => 'Abaikan',
     ],
-
     'flash' => [
-        'retry_success' => 'Synced. The sale is now recorded on the server.',
-        'retry_failed' => 'Retry rejected by the server: :message',
-        'dismissed' => 'Entry dismissed.',
-        'undismissed' => 'Entry reopened.',
+        'retry_success' => 'Berhasil disinkronkan. Transaksi penjualan kini telah tercatat di server.',
+        'retry_failed' => 'Sinkronisasi ulang ditolak server: :message',
+        'dismissed' => 'Entri berhasil diabaikan.',
+        'undismissed' => 'Entri dibuka kembali.',
     ],
-
-    'retry_hint' => 'A retry replays this payload as the original cashier. If your store enforces shifts and theirs has closed, reopen a shift for them first.',
-
+    'retry_hint' => 'Sinkronisasi ulang akan memproses data atas nama kasir asli. Jika shift kasir tersebut telah ditutup, buka shift untuknya terlebih dahulu.',
     'filter' => [
-        'from' => 'From',
-        'to' => 'To',
-        'search' => 'Search UUID or message…',
+        'from' => 'Dari Tanggal',
+        'to' => 'Sampai Tanggal',
+        'search' => 'Cari UUID atau pesan…',
     ],
-
     'fields' => [
-        'entity' => 'Entity',
-        'user' => 'Cashier',
-        'sale' => 'Sale',
-        'grand_total' => 'Grand total',
-        'message' => 'Message',
-        'payload' => 'Original payload',
-        'resolved' => 'Resolved',
-        'resolved_by' => 'Resolved by',
+        'entity' => 'Entitas',
+        'user' => 'Kasir',
+        'sale' => 'Penjualan',
+        'grand_total' => 'Total Transaksi',
+        'message' => 'Pesan',
+        'payload' => 'Data Asli (Payload)',
+        'resolved' => 'Diselesaikan',
+        'resolved_by' => 'Diselesaikan Oleh',
     ],
-
-    'columns_actions' => 'Actions',
-
+    'columns_actions' => 'Aksi',
     'empty' => [
-        'title' => 'No sync events yet',
-        'sub' => 'Cashier completions land here as soon as a sale syncs (online or after an offline outage).',
+        'title' => 'Belum ada peristiwa sinkronisasi',
+        'sub' => 'Setiap transaksi kasir akan tercatat di sini setelah tersinkronisasi (secara langsung maupun setelah offline).',
     ],
 ];

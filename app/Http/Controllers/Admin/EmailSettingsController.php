@@ -34,7 +34,7 @@ class EmailSettingsController extends Controller
         // On the public demo, mask the SMTP host + username so the demo's real
         // mail account isn't exposed. Mutating the in-memory model only (never
         // saved); the password is already write-only, and update() is blocked.
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             $company->mail_host = mask_secret((string) $company->mail_host);
             $company->mail_username = mask_secret((string) $company->mail_username);
         }
@@ -50,7 +50,7 @@ class EmailSettingsController extends Controller
     {
         $this->authorize('settings.update');
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('settings.demo.locked'),
@@ -74,7 +74,7 @@ class EmailSettingsController extends Controller
     {
         $this->authorize('settings.update');
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('settings.demo.locked'),

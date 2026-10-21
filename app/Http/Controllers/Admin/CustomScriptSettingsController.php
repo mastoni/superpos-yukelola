@@ -39,7 +39,7 @@ class CustomScriptSettingsController extends Controller
         $this->authorize('settings.update');
         abort_unless($request->user()?->is_super_admin, 403);
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('settings.demo.locked'),

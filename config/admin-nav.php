@@ -182,7 +182,6 @@ return [
             ['id' => 'sales-channels', 'label' => 'Sales channels',   'icon' => 'external', 'href' => '/admin/commerce/connections',  'permission' => 'commerce.view'],
             ['id' => 'hardware',      'label' => 'Hardware',         'icon' => 'printer',  'href' => '/admin/settings/hardware',      'permission' => 'hardware.diagnostics'],
             ['id' => 'system-health', 'label' => 'System Health',    'icon' => 'shield',   'href' => '/admin/settings/system-health', 'permission' => 'settings.view'],
-            ['id' => 'languages',     'label' => 'Languages',        'icon' => 'globe',    'href' => '/admin/languages',              'permission' => 'settings.view'],
             ['id' => 'settings',      'label' => 'General settings', 'icon' => 'settings', 'href' => '/admin/settings',               'permission' => 'settings.view'],
         ],
     ],

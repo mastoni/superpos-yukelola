@@ -42,10 +42,8 @@ use App\Http\Controllers\Admin\HardwareController;
 use App\Http\Controllers\Admin\JournalEntryController;
 use App\Http\Controllers\Admin\KioskOrderController;
 use App\Http\Controllers\Admin\LabelController;
-use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\LegalPagesSettingsController;
 use App\Http\Controllers\Admin\LicenseController;
-use App\Http\Controllers\Admin\LocaleController;
 use App\Http\Controllers\Admin\LocationSettingsController;
 use App\Http\Controllers\Admin\LowStockReportController;
 use App\Http\Controllers\Admin\LoyaltyPointsReportController;
@@ -119,6 +117,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WhatsAppLogController;
 use App\Http\Controllers\Admin\WhatsAppSendController;
 use App\Http\Controllers\Admin\WhatsAppSettingsController;
+use App\Http\Controllers\Auth\DemoLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Cashier\CustomerDisplayController;
@@ -174,16 +173,9 @@ Route::get('/storage-link', function (LinkPublicStorage $link) {
         ->header('Cache-Control', 'no-store, private');
 })->middleware('auth')->name('maintenance.storage-link');
 
-// Root: if not yet installed, ensure.installed middleware redirects to /install.
-// Once installed, an authenticated user goes to the dashboard and everyone
-// else to login. (Always redirecting to /login looped: /login's `guest`
-// middleware bounces a signed-in user straight back to /.)
+// Root: if in demo mode, show marketing & promo landing page.
+// Otherwise, an authenticated user goes to the dashboard and guests to login.
 Route::get('/', function () {
-    // On the public demo (POS_DEMO_MODE=true) the root URL shows the
-    // marketing landing page first — to everyone, signed in or not — so
-    // visitors who arrive at the live demo see the product pitch before
-    // the app. On a real customer install demo mode is off, so this
-    // collapses back to the usual login / dashboard redirect.
     if (pos_is_demo()) {
         return app(LandingController::class)->index();
     }
@@ -192,6 +184,39 @@ Route::get('/', function () {
         ? redirect()->route('admin.dashboard')
         : redirect()->route('login');
 })->middleware('ensure.installed')->name('landing');
+
+// Direct promo / landing page route (always accessible)
+Route::get('/promo', [LandingController::class, 'index'])
+    ->middleware('ensure.installed')
+    ->name('promo');
+
+// 1-Click Interactive Demo Login for prospective users
+Route::get('/demo-login/{role}', [DemoLoginController::class, 'login'])
+    ->middleware('ensure.installed')
+    ->name('demo.login');
+
+// Direct APK Downloads for YUKelola Mobile
+Route::get('/download/superpos.apk', function () {
+    $path = public_path('download/superpos.apk');
+    if (! file_exists($path)) {
+        abort(404, 'File APK belum tersedia.');
+    }
+
+    return response()->download($path, 'YUKelola-v2.0-release.apk', [
+        'Content-Type' => 'application/vnd.android.package-archive',
+    ]);
+})->name('download.apk');
+
+Route::get('/download/superpos-armv7.apk', function () {
+    $path = public_path('download/superpos-armv7.apk');
+    if (! file_exists($path)) {
+        abort(404, 'File APK belum tersedia.');
+    }
+
+    return response()->download($path, 'YUKelola-v2.0-armv7.apk', [
+        'Content-Type' => 'application/vnd.android.package-archive',
+    ]);
+})->name('download.apk.armv7');
 
 // Lead-gated ebook download for the public demo landing page. The controller
 // refuses requests when demo mode is off, validates the visitor details, and
@@ -838,20 +863,6 @@ Route::middleware(['ensure.installed', 'auth', 'store.selected', 'set.locale'])-
     Route::post('commerce/orders/{order}/retry-allocation', [ChannelOrderController::class, 'retryAllocation'])->name('commerce.orders.retry-allocation');
     Route::post('commerce/orders/{order}/allocations/{allocation}/fulfill', [ChannelOrderController::class, 'fulfill'])->name('commerce.orders.allocations.fulfill');
     Route::post('commerce/orders/{order}/allocations/{allocation}/retry-sync', [ChannelOrderController::class, 'retryFulfillmentSync'])->name('commerce.orders.allocations.retry-sync');
-
-    // Language switch (self-service) + Languages admin (UI translations via
-    // an Excel round-trip — see docs/features/multi-language.md).
-    Route::post('locale/{code}', [LocaleController::class, 'switch'])->name('locale.switch');
-    Route::get('languages', [LanguageController::class, 'index'])->name('languages.index');
-    Route::get('languages/create', [LanguageController::class, 'create'])->name('languages.create');
-    Route::post('languages', [LanguageController::class, 'store'])->name('languages.store');
-    Route::get('languages/{language}/edit', [LanguageController::class, 'edit'])->name('languages.edit');
-    Route::patch('languages/{language}', [LanguageController::class, 'update'])->name('languages.update');
-    Route::patch('languages/{language}/default', [LanguageController::class, 'setDefault'])->name('languages.default');
-    Route::patch('languages/{language}/toggle', [LanguageController::class, 'toggle'])->name('languages.toggle');
-    Route::get('languages/{language}/export', [LanguageController::class, 'export'])->name('languages.export');
-    Route::post('languages/{language}/import', [LanguageController::class, 'import'])->name('languages.import');
-    Route::delete('languages/{language}', [LanguageController::class, 'destroy'])->name('languages.destroy');
 
     // Settings — hub + per-group editors. Currency is the first group;
     // taxes / receipts / stores / users land here as they ship.

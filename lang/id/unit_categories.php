@@ -1,65 +1,65 @@
 <?php
 
 return [
-    'title' => 'Unit Categories',
-    'sub' => 'Organise your measurement categories (count, weight, volume…).',
+    'title' => 'Kategori Satuan',
+    'sub' => 'Kelompokkan jenis pengukuran satuan produk Anda (jumlah, berat, volume…).',
 
-    'crumb_parent' => 'Products',
+    'crumb_parent' => 'Produk',
 
     'list' => [
-        'title' => 'Categories',
-        'empty_title' => 'No unit categories yet',
-        'empty_sub' => 'Add a category to group your measurement units.',
+        'title' => 'Kategori Pengukuran',
+        'empty_title' => 'Belum ada kategori satuan',
+        'empty_sub' => 'Tambahkan kategori untuk mengelompokkan satuan pengukuran Anda.',
     ],
 
     'editor' => [
-        'empty_title' => 'Select a category',
-        'empty_sub' => 'Choose a category from the list to edit it, or create a new one.',
-        'edit_title' => 'Edit category',
+        'empty_title' => 'Pilih kategori',
+        'empty_sub' => 'Pilih kategori dari daftar untuk mengubahnya, atau buat kategori baru.',
+        'edit_title' => 'Ubah kategori',
         'edit_id' => 'ID',
-        'edit_updated' => 'updated',
-        'new_title' => 'New category',
-        'new_sub' => 'Fill in the details and save.',
+        'edit_updated' => 'diperbarui',
+        'new_title' => 'Kategori baru',
+        'new_sub' => 'Lengkapi data kategori satuan lalu simpan.',
     ],
 
     'fields' => [
-        'name' => 'Name',
-        'name_placeholder' => 'e.g. Weight',
-        'slug' => 'Slug',
-        'slug_placeholder' => 'e.g. weight',
-        'slug_help' => 'Used internally. Letters, numbers, dashes only. Cannot be changed once units are assigned.',
-        'sort_order' => 'Sort Order',
-        'is_active' => 'Active (visible in unit picker)',
+        'name' => 'Nama Kategori',
+        'name_placeholder' => 'cth. Berat',
+        'slug' => 'Slug (ID Sistem)',
+        'slug_placeholder' => 'cth. berat',
+        'slug_help' => 'Digunakan oleh sistem. Hanya huruf, angka, dan strip (-). Tidak dapat diubah setelah memiliki satuan.',
+        'sort_order' => 'Nomor Urutan',
+        'is_active' => 'Aktif (ditampilkan pada pemilihan satuan)',
     ],
 
     'actions' => [
-        'new' => 'New Category',
-        'save' => 'Save',
-        'create' => 'Create',
-        'discard' => 'Discard',
-        'delete' => 'Delete',
-        'export' => 'Export',
-        'export_csv' => 'Export CSV',
-        'export_xlsx' => 'Export Excel',
-        'delete_confirm' => 'This will permanently delete this category. If any units are assigned to it, you must reassign them first.',
+        'new' => 'Kategori Baru',
+        'save' => 'Simpan',
+        'create' => 'Buat',
+        'discard' => 'Batalkan',
+        'delete' => 'Hapus',
+        'export' => 'Ekspor',
+        'export_csv' => 'Ekspor CSV',
+        'export_xlsx' => 'Ekspor Excel',
+        'delete_confirm' => 'Tindakan ini akan menghapus kategori ini secara permanen. Jika masih ada satuan di dalamnya, Anda harus memindahkannya terlebih dahulu.',
     ],
 
     'actions_extra' => [
-        'saving' => 'Saving…',
-        'creating' => 'Creating…',
+        'saving' => 'Menyimpan…',
+        'creating' => 'Membuat…',
     ],
 
     'flash' => [
-        'created' => 'Created ":name".',
-        'updated' => 'Updated ":name".',
-        'deleted' => 'Deleted ":name".',
+        'created' => 'Kategori ":name" berhasil dibuat.',
+        'updated' => 'Kategori ":name" berhasil diperbarui.',
+        'deleted' => 'Kategori ":name" berhasil dihapus.',
     ],
 
     'errors' => [
-        'in_use' => 'Cannot delete ":name" — :count unit(s) still use this category.',
+        'in_use' => 'Tidak dapat menghapus ":name" — :count satuan masih menggunakan kategori ini.',
     ],
 
     'badges' => [
-        'inactive' => 'Inactive',
+        'inactive' => 'Tidak Aktif',
     ],
 ];

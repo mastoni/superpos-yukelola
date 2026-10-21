@@ -76,11 +76,18 @@ class PaymentMethod extends Model
         return ! \in_array($this->provider, self::NO_PROVIDER, true);
     }
 
-    /** The merchant's UPI Virtual Payment Address, when one is saved. */
+    /** The merchant's DigiFlash account ID or UPI Virtual Payment Address, when one is saved. */
+    public function digiflashAccount(): ?string
+    {
+        $creds = $this->provider_credentials ?? [];
+        $val = $creds['digiflash_account'] ?? $creds['account_no'] ?? $creds['vpa'] ?? null;
+
+        return \is_string($val) && $val !== '' ? $val : null;
+    }
+
+    /** The merchant's UPI Virtual Payment Address / DigiFlash account, when one is saved. */
     public function upiVpa(): ?string
     {
-        $vpa = ($this->provider_credentials ?? [])['vpa'] ?? null;
-
-        return \is_string($vpa) && $vpa !== '' ? $vpa : null;
+        return $this->digiflashAccount();
     }
 }

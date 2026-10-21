@@ -1,95 +1,62 @@
 <?php
 
 return [
-    'title' => 'Languages',
-    'sub' => 'Translate the app. Add a language, export the labels, translate them in Excel, and re-upload.',
-    'crumb_parent' => 'Configure',
-
+    'title' => 'Bahasa Sistem',
+    'sub' => 'Pengaturan bahasa aplikasi. Sistem telah dikonfigurasi menggunakan Bahasa Indonesia.',
+    'crumb_parent' => 'Konfigurasi',
     'actions' => [
-        'new' => 'New language',
+        'new' => 'Bahasa Baru',
         'edit' => 'Edit',
-        'save' => 'Save changes',
-        'create' => 'Create language',
-        'delete' => 'Delete',
-        'cancel' => 'Cancel',
-        'export' => 'Export',
-        'import' => 'Import',
-        'set_default' => 'Set as default',
-        'activate' => 'Activate',
-        'deactivate' => 'Deactivate',
+        'save' => 'Simpan Perubahan',
+        'create' => 'Tambah Bahasa',
+        'delete' => 'Hapus',
+        'cancel' => 'Batal',
+        'export' => 'Ekspor',
+        'import' => 'Impor',
+        'set_default' => 'Jadikan Default',
+        'activate' => 'Aktifkan',
+        'deactivate' => 'Nonaktifkan',
     ],
-
-    'create' => ['title' => 'New language', 'sub' => 'Add a locale. You can translate it after creating it.'],
-    'edit' => ['title' => 'Edit language', 'sub' => 'Update this language’s details.'],
-
+    'create' => [
+        'title' => 'Bahasa Baru',
+        'sub' => 'Tambah bahasa baru.',
+    ],
+    'edit' => [
+        'title' => 'Edit Bahasa',
+        'sub' => 'Perbarui rincian bahasa ini.',
+    ],
     'fields' => [
-        'code' => 'Code',
-        'code_help' => 'ISO locale code — e.g. en, ar, es, pt-BR.',
-        'name' => 'Name (English)',
-        'name_ph' => 'e.g. Arabic',
-        'native_name' => 'Native name',
-        'native_name_ph' => 'e.g. العربية',
-        'direction' => 'Text direction',
-        'direction_ltr' => 'Left-to-right (LTR)',
-        'direction_rtl' => 'Right-to-left (RTL)',
-        'is_active' => 'Active',
-        'is_active_help' => 'Inactive languages are hidden from the switcher.',
-        'import_file' => 'Translation file (.xlsx or .csv)',
+        'code' => 'Kode Bahasa',
+        'code_help' => 'Kode bahasa ISO — contoh: id, en, ar.',
+        'name' => 'Nama (Inggris)',
+        'name_ph' => 'Contoh: Indonesian',
+        'native_name' => 'Nama Asli (Native)',
+        'native_name_ph' => 'Contoh: Bahasa Indonesia',
+        'direction' => 'Arah Tulisan',
+        'direction_ltr' => 'Kiri ke Kanan (LTR)',
+        'direction_rtl' => 'Kanan ke Kiri (RTL)',
+        'is_active' => 'Aktif',
+        'is_active_help' => 'Bahasa nonaktif disembunyikan dari pilihan.',
+        'import_file' => 'File Terjemahan (.xlsx atau .csv)',
     ],
-
     'list' => [
-        'title' => 'All languages (:count)',
-        'search_ph' => 'Search languages…',
-        'empty_title' => 'No languages yet',
-        'empty_sub' => 'Add a language to start translating.',
-        'keys' => ':count translatable strings',
+        'title' => 'Semua Bahasa (:count)',
+        'search_ph' => 'Cari bahasa…',
+        'empty_title' => 'Belum ada data bahasa',
+        'empty_sub' => 'Bahasa sistem dikelola secara statis.',
+        'keys' => ':count teks terjemahan',
     ],
-
     'columns' => [
-        'language' => 'Language',
-        'direction' => 'Direction',
-        'progress' => 'Translated',
+        'language' => 'Bahasa',
+        'direction' => 'Arah',
+        'progress' => 'Terjemahan',
         'status' => 'Status',
-        'actions' => 'Actions',
+        'actions' => 'Aksi',
     ],
-
     'badges' => [
         'default' => 'Default',
-        'active' => 'Active',
-        'inactive' => 'Inactive',
+        'active' => 'Aktif',
+        'inactive' => 'Nonaktif',
         'rtl' => 'RTL',
-    ],
-
-    'import' => [
-        'title' => 'Import translations for “:name”',
-        'help' => 'Upload the exported file with the Translation column filled in. Empty cells keep the English default.',
-    ],
-
-    'delete' => [
-        'title' => 'Delete “:name”?',
-        'message' => 'The language and all its translations are removed. This can’t be undone.',
-    ],
-
-    'flash' => [
-        'created' => 'Language “:name” created.',
-        'updated' => 'Language “:name” updated.',
-        'deleted' => 'Language “:name” deleted.',
-        'default_set' => '“:name” is now the default language.',
-        'activated' => 'Language “:name” activated.',
-        'deactivated' => 'Language “:name” deactivated.',
-        'switched' => 'Language changed to :name.',
-        'imported' => 'Imported :imported translation(s) for “:name” (:skipped skipped).',
-    ],
-
-    'errors' => [
-        'base' => 'Can’t delete “:name” — English is the base language.',
-        'default' => 'Can’t delete “:name” — it’s the default language. Set another default first.',
-        'default_active' => 'Can’t deactivate “:name” — it’s the default language.',
-    ],
-
-    'switcher' => [
-        'label' => 'Language',
-        'heading' => 'Choose language',
-        'manage' => 'Manage languages',
     ],
 ];

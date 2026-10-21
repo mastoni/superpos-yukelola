@@ -1,130 +1,105 @@
 <?php
 
-/**
- * Self-Ordering Kiosk — Slice 1 strings.
- *
- * Rendered on the customer-operated kiosk. Most are passed to the kiosk JS
- * as pre-translated labels (the kiosk makes no __() calls of its own) so it
- * keeps full locale + RTL parity. See docs/features/kiosk-self-ordering.md.
- */
-
 return [
-
-    'title' => 'Self-order',
-
+    'title' => 'Pemesanan Mandiri (Self-Order)',
     'status' => [
-        'open' => 'Open · Self-order here',
+        'open' => 'Buka · Pesan mandiri di sini',
     ],
-
     'head' => [
-        'subtitle' => 'Self-order',
+        'subtitle' => 'Pemesanan Mandiri',
     ],
-
     'idle' => [
-        'welcome' => 'Order in a few taps',
-        'tagline' => 'Browse the aisles, build your bag, pay your way.',
-        'start' => 'Touch anywhere to start',
+        'welcome' => 'Pesan dalam Beberapa Sentuhan',
+        'tagline' => 'Jelajahi menu, pilih pesanan Anda, dan bayar dengan mudah.',
+        'start' => 'Sentuh di mana saja untuk memulai',
     ],
-
     'browse' => [
-        'search' => 'Search products, or scan a barcode',
-        'all' => 'All',
-        'add' => 'Add',
-        'from' => 'from',
-        'options' => ':count options',
-        'choose_option' => 'Choose an option',
-        'combo' => 'Combo',
-        'whats_included' => 'What’s included',
-        'add_combo' => 'Add combo',
-        'view_cart' => 'View cart',
-        'empty_search' => 'No products match your search.',
-        'loading' => 'Loading the menu…',
-        'offline' => 'The catalog isn’t available yet. Please ask a staff member.',
+        'search' => 'Cari produk atau scan barcode',
+        'all' => 'Semua',
+        'add' => 'Tambah',
+        'from' => 'mulai',
+        'options' => ':count opsi',
+        'choose_option' => 'Pilih opsi',
+        'combo' => 'Paket Hemat',
+        'whats_included' => 'Yang termasuk dalam paket',
+        'add_combo' => 'Tambah Paket',
+        'view_cart' => 'Lihat Keranjang',
+        'empty_search' => 'Tidak ada produk yang cocok dengan pencarian Anda.',
+        'loading' => 'Memuat daftar menu…',
+        'offline' => 'Katalog belum tersedia. Silakan hubungi staf kami.',
     ],
-
     'cart' => [
-        'keep_shopping' => 'Keep shopping',
-        'your_order' => 'Your order',
-        'each' => 'each',
-        'empty' => 'Your cart is empty',
-        'start_shopping' => 'Start shopping',
-        'note' => 'Add a note (optional)',
-        'note_hint' => 'e.g. no plastic bag',
+        'keep_shopping' => 'Lanjut Belanja',
+        'your_order' => 'Pesanan Anda',
+        'each' => 'per item',
+        'empty' => 'Keranjang Anda masih kosong',
+        'start_shopping' => 'Mulai Belanja',
+        'note' => 'Tambah catatan (opsional)',
+        'note_hint' => 'Contoh: Jangan pakai kantong plastik, tanpa sambal',
         'subtotal' => 'Subtotal',
-        'tax' => 'Tax',
-        'total' => 'Total',
-        'pay_now' => 'Pay now',
-        'pay_counter' => 'Order & pay at counter',
-        'pay_choice' => 'How would you like to pay?',
-        'coming_soon' => 'Checkout is coming soon.',
-        'placing' => 'Placing your order…',
+        'tax' => 'Pajak',
+        'total' => 'Total Pembayaran',
+        'pay_now' => 'Bayar Sekarang',
+        'pay_counter' => 'Pesan & Bayar di Kasir',
+        'pay_choice' => 'Bagaimana Anda ingin membayar?',
+        'coming_soon' => 'Metode pembayaran ini segera hadir.',
+        'placing' => 'Memproses pesanan Anda…',
     ],
-
     'pay' => [
-        'amount_due' => 'Amount due',
-        'scan_to_pay' => 'Scan to pay',
-        'scan_hint' => 'Scan this code with your phone to pay.',
-        'waiting' => 'Waiting for payment…',
-        'cancel' => 'Cancel',
-        'failed' => 'Payment didn’t go through. Please try again.',
-        'starting' => 'Starting payment…',
-        'help' => 'Payment received — please ask a staff member for your receipt.',
+        'amount_due' => 'Total Tagihan',
+        'scan_to_pay' => 'Scan untuk Membayar',
+        'scan_hint' => 'Scan kode ini menggunakan kamera ponsel atau aplikasi e-wallet Anda.',
+        'waiting' => 'Menunggu pembayaran…',
+        'cancel' => 'Batal',
+        'failed' => 'Pembayaran belum berhasil. Silakan coba lagi.',
+        'starting' => 'Menyiapkan pembayaran…',
+        'help' => 'Pembayaran diterima — silakan minta struk bukti pembayaran ke kasir.',
     ],
-
-    // Static UPI QR — the customer pays from their own app at the machine.
-    // There is no callback, so staff confirm the transfer at the counter.
-    // Deliberately never says "pay now" or "paid" — the transfer is unverified
-    // until a human confirms it, and the copy must not promise otherwise.
     'upi' => [
-        'pay_with' => 'Scan & pay with :method',
-        'scan' => 'Scan to pay',
-        'hint' => 'Open any UPI app, scan this code, and pay the amount shown. Then tap below — staff will confirm the transfer before handing over your order.',
-        'i_have_paid' => 'I’ve sent the payment',
-        'back' => 'Back',
+        'pay_with' => 'Scan & bayar dengan :method',
+        'scan' => 'Scan untuk membayar',
+        'hint' => 'Buka aplikasi e-wallet / QRIS, scan kode ini, lalu selesaikan pembayaran sesuai nominal. Setelah itu ketuk tombol di bawah — kasir akan mengonfirmasi sebelum menyerahkan pesanan.',
+        'i_have_paid' => 'Saya Sudah Membayar',
+        'back' => 'Kembali',
     ],
-
     'thankyou' => [
-        'title' => 'Thank you!',
-        'order_placed' => 'Order placed',
-        'pickup_label' => 'Your pickup number',
-        'sub' => 'Please pay at the counter to collect your order.',
-        'done' => 'Done',
-        'paid' => 'Payment received',
-        'collect' => 'Show this number at the counter to collect your order.',
-        'receipt_scan' => 'Scan for your receipt',
-        'receipt_hint' => 'Scan this code to view or save your receipt.',
-        'offline' => 'Order saved',
-        'offline_sub' => 'We’re offline right now — your order is saved and will reach the counter shortly. Please pay at the counter.',
-        'upi_claimed' => 'Order placed — payment to confirm',
-        'upi_claimed_sub' => 'Show this number at the counter. Staff will check your UPI transfer, then hand over your order.',
+        'title' => 'Terima Kasih!',
+        'order_placed' => 'Pesanan Berhasil Dibuat',
+        'pickup_label' => 'Nomor Antrean Anda',
+        'sub' => 'Silakan lakukan pembayaran di kasir untuk mengambil pesanan Anda.',
+        'done' => 'Selesai',
+        'paid' => 'Pembayaran Diterima',
+        'collect' => 'Tunjukkan nomor ini di kasir saat mengambil pesanan Anda.',
+        'receipt_scan' => 'Scan untuk Struk Digital',
+        'receipt_hint' => 'Scan kode ini untuk melihat atau menyimpan struk pesanan Anda.',
+        'offline' => 'Pesanan Disimpan',
+        'offline_sub' => 'Sistem sedang offline — pesanan Anda telah tersimpan dan akan diteruskan ke kasir. Silakan bayar di meja kasir.',
+        'upi_claimed' => 'Pesanan Dibuat — Menunggu Konfirmasi Pembayaran',
+        'upi_claimed_sub' => 'Tunjukkan nomor ini di kasir. Struk/bukti transfer Anda akan dicek oleh staf sebelum pesanan diserahkan.',
     ],
-
     'errors' => [
-        'not_configured' => 'This station isn’t set up as a kiosk. Bind it to a kiosk terminal first, or enable the kiosk in Settings → Hardware.',
-        'place_failed' => 'Sorry, we couldn’t place your order. Please ask a staff member.',
-        'stock_limit' => 'Sorry, only :count left in stock.',
-        'price_changed' => 'The price changed for the quantity selected. Please review the new total and tap again to confirm.',
-        'out_of_stock' => 'Sorry, :name just went out of stock.',
-        'checkout_unpaid' => 'This payment hasn’t completed yet.',
-        'checkout_expired' => 'This payment session has expired. Please try again.',
-        'checkout_recovery_required' => 'Payment was received, but the order needs staff recovery. The reserved stock and payment record have been retained.',
+        'not_configured' => 'Perangkat ini belum dikonfigurasi sebagai kiosk. Hubungkan ke terminal kiosk terlebih dahulu, atau aktifkan kiosk di Pengaturan → Perangkat Keras.',
+        'place_failed' => 'Maaf, pesanan Anda gagal diproses. Silakan hubungi staf kami.',
+        'stock_limit' => 'Maaf, sisa stok hanya :count item.',
+        'price_changed' => 'Harga telah diperbarui untuk kuantitas yang dipilih. Silakan periksa kembali total pembayaran dan ketuk konfirmasi.',
+        'out_of_stock' => 'Maaf, stok untuk :name baru saja habis.',
+        'checkout_unpaid' => 'Pembayaran ini belum diselesaikan.',
+        'checkout_expired' => 'Sesi pembayaran telah kedaluwarsa. Silakan ulangi pemesanan.',
+        'checkout_recovery_required' => 'Pembayaran telah diterima, namun pemrosesan pesanan membutuhkan bantuan staf. Stok dan data pembayaran telah diamankan.',
     ],
-
     'customer' => [
-        'title' => 'Your details',
-        'name' => 'Name',
-        'phone' => 'Phone (optional)',
-        'required' => 'Please add your name or phone to continue.',
+        'title' => 'Data Diri Anda',
+        'name' => 'Nama',
+        'phone' => 'No. Telepon / WhatsApp (opsional)',
+        'required' => 'Silakan masukkan nama atau no. telepon untuk melanjutkan.',
     ],
-
     'exit' => [
-        'title' => 'Exit kiosk mode?',
-        'body' => 'This returns to the staff cashier.',
-        'stay' => 'Stay',
-        'leave' => 'Exit',
-        'email' => 'Supervisor email',
-        'password' => 'Password',
-        'denied' => 'Those credentials can’t exit the kiosk.',
+        'title' => 'Keluar dari Mode Kiosk?',
+        'body' => 'Tindakan ini akan mengembalikan layar ke tampilan kasir staf.',
+        'stay' => 'Tetap di Kiosk',
+        'leave' => 'Keluar',
+        'email' => 'Email Supervisor',
+        'password' => 'Kata Sandi',
+        'denied' => 'Kredensial tersebut tidak memiliki izin untuk keluar dari mode kiosk.',
     ],
-
 ];

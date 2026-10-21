@@ -1,61 +1,61 @@
 <?php
 
 return [
-    'title' => 'Cash Mismatch Reasons',
-    'sub' => 'The picklist your cashiers choose from when closing a shift with cash variance. Closed shifts keep the reason label on their Z-reports.',
-    'new' => 'New reason',
+    'title' => 'Alasan Selisih Kas',
+    'sub' => 'Daftar pilihan alasan yang dipilih kasir saat menutup shift kasir dengan selisih uang tunai. Shift yang ditutup menyimpan alasan ini pada laporan Z.',
+    'new' => 'Alasan baru',
 
     'list' => [
-        'title' => 'Reasons',
-        'empty' => 'No cash mismatch reasons yet.',
+        'title' => 'Daftar Alasan',
+        'empty' => 'Belum ada alasan selisih kas.',
     ],
 
     'columns' => [
-        'code' => 'Code',
-        'name' => 'Name',
-        'sort_order' => 'Sort',
-        'actions' => 'Actions',
+        'code' => 'Kode',
+        'name' => 'Nama',
+        'sort_order' => 'Urutan',
+        'actions' => 'Aksi',
     ],
 
     'badges' => [
-        'active' => 'Active',
-        'inactive' => 'Inactive',
+        'active' => 'Aktif',
+        'inactive' => 'Nonaktif',
     ],
 
     'editor' => [
-        'empty_title' => 'Select a reason',
-        'empty_sub' => 'Pick a row to edit, or create a new one.',
-        'edit_title' => 'Edit reason',
+        'empty_title' => 'Pilih alasan',
+        'empty_sub' => 'Pilih baris untuk mengedit, atau buat alasan baru.',
+        'edit_title' => 'Edit alasan',
         'edit_id' => 'ID',
-        'edit_updated' => 'updated',
-        'new_title' => 'New reason',
-        'new_sub' => 'Add a new cash mismatch reason to the close-shift picklist.',
+        'edit_updated' => 'diperbarui',
+        'new_title' => 'Alasan baru',
+        'new_sub' => 'Tambahkan alasan selisih kas baru ke daftar tutup shift.',
     ],
 
     'fields' => [
-        'code' => 'Code',
-        'code_help' => 'Internal identifier — short, snake_case, used in reports. Stable once shipped.',
-        'name' => 'Display name',
-        'sort_order' => 'Sort order',
-        'is_active' => 'Active',
+        'code' => 'Kode',
+        'code_help' => 'Pengenal internal — singkat, huruf kecil dengan garis bawah, digunakan dalam laporan.',
+        'name' => 'Nama tampilan',
+        'sort_order' => 'Urutan tampilan',
+        'is_active' => 'Aktif',
     ],
 
     'actions' => [
-        'discard' => 'Discard',
-        'save' => 'Save',
-        'saving' => 'Saving…',
-        'create' => 'Create',
-        'creating' => 'Creating…',
-        'delete' => 'Delete',
+        'discard' => 'Batalkan',
+        'save' => 'Simpan',
+        'saving' => 'Menyimpan…',
+        'create' => 'Buat',
+        'creating' => 'Membuat…',
+        'delete' => 'Hapus',
     ],
 
     'flash' => [
-        'created' => ':name added.',
-        'updated' => ':name saved.',
-        'deleted' => ':name deleted.',
+        'created' => ':name berhasil ditambahkan.',
+        'updated' => ':name berhasil disimpan.',
+        'deleted' => ':name berhasil dihapus.',
     ],
 
     'errors' => [
-        'in_use' => ':name is used by :count shift(s). Deactivate it instead — past Z-reports keep the label.',
+        'in_use' => ':name digunakan oleh :count shift kasir. Nonaktifkan saja alih-alih menghapusnya agar laporan Z masa lalu tetap akurat.',
     ],
 ];

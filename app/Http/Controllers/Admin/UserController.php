@@ -265,7 +265,7 @@ class UserController extends Controller
     {
         $this->authorize('delete', $user);
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->demoBlocked($request, route('admin.users.index'));
         }
 

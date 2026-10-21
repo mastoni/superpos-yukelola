@@ -137,85 +137,11 @@ return [
     */
 
     'demo' => [
-
-        // Master switch. Set POS_DEMO_MODE=true in .env on the public demo
-        // install; leave it false (the default) on customer installs.
-        'enabled' => env('POS_DEMO_MODE', false),
-
-        // Where the "click here" link in the demo banner points. Defaults to
-        // the Infinitie product page; override for forks via .env.
-        'website_url' => env('POS_DEMO_WEBSITE_URL', 'https://infinitietech.com'),
-
-        // Google Analytics 4 Measurement ID (e.g. "G-XXXXXXXXXX") for the
-        // public demo. Left empty by default and ONLY ever loaded when demo
-        // mode is on — a real customer install never phones home to GA, which
-        // keeps the "self-hosted, no callbacks" promise intact. Set
-        // POS_DEMO_GA_ID in .env on the demo install to enable tracking.
-        'analytics_id' => env('POS_DEMO_GA_ID', ''),
-
-        // Where the landing page's "Get it on CodeCanyon" buy buttons point.
-        // This is the whole reason the demo exists — to convert a visitor
-        // into a purchase — so it's first-class config. Override for forks
-        // via .env.
-        'purchase_url' => env('POS_DEMO_PURCHASE_URL', 'https://1.envato.market/JkYbVR'),
-
-        // Regular-license cart for landing visits with ?market=infinitietech.
-        'infinitietech_purchase_url' => 'https://infinitietech.com/cart?product=hyper-pos-laravel-point-of-sale-inventory-erp-online-offline-pos-invoicing-accounting&license=regular',
-        'infinitietech_extended_url' => 'https://infinitietech.com/cart?product=hyper-pos-laravel-point-of-sale-inventory-erp-online-offline-pos-invoicing-accounting&license=extended',
-
-        // Specific "Extended License" buy link used by the pricing band.
-        // Falls back to purchase_url when left unset.
-        'extended_url' => env('POS_DEMO_EXTENDED_URL', 'https://codecanyon.net/cart/add_items?item_ids=64055507&license=extended'),
-
-        // "Talk to our expert" button on the landing page's customization
-        // band. A wa.me link opens WhatsApp; swap for any contact URL.
-        'support_whatsapp' => env('POS_DEMO_SUPPORT_WHATSAPP', 'https://wa.me/919328972168'),
-
-        // Private lead-gated ebook. Keep the PDF outside public/ so visitors
-        // cannot bypass the landing form by guessing a direct asset URL.
-        'ebook_pdf_path' => env(
-            'POS_DEMO_EBOOK_PDF_PATH',
-            storage_path('app/private/downloads/hyper-pos-ebook.pdf'),
-        ),
-        'ebook_download_name' => env('POS_DEMO_EBOOK_DOWNLOAD_NAME', 'Hyper-POS-eBook.pdf'),
-
-        // Leads are kept on this installation rather than sent to a third
-        // party. The CSV sits under storage/app/private by default.
-        'ebook_leads_path' => env(
-            'POS_DEMO_EBOOK_LEADS_PATH',
-            storage_path('app/private/marketing/ebook-leads.csv'),
-        ),
-        // Only the SHA-256 verifier ships in source. The share URL carries the
-        // secret token; override this hash in .env whenever the link is rotated.
-        'ebook_leads_download_token_hash' => env(
-            'POS_DEMO_EBOOK_LEADS_DOWNLOAD_TOKEN_HASH',
-            '64d005f09fa1bc871bbd028b82ed3e881b8264619a796822bce11a3fb2481dae',
-        ),
-
-        // Pre-fillable demo credentials shown on the login page when demo mode
-        // is enabled. Each entry renders as a card with a "Copy & Fill" button
-        // that pastes the email + password into the login form. Empty entries
-        // (no email OR no password) are skipped at render time, so the demo
-        // operator can light up just the roles they actually seeded by leaving
-        // the others blank in .env.
-        'credentials' => [
-            [
-                'role' => 'admin',
-                'email' => env('POS_DEMO_ADMIN_EMAIL', ''),
-                'password' => env('POS_DEMO_ADMIN_PASSWORD', ''),
-            ],
-            [
-                // The demo cashier is a fixed test account seeded by
-                // DemoCashierUserSeeder, so it ships with working defaults
-                // (shown on the login page whenever demo mode is on). The
-                // admin above stays env-only because it's the operator's own
-                // install admin. Override these via .env if you reseed.
-                'role' => 'cashier',
-                'email' => env('POS_DEMO_CASHIER_EMAIL', 'cashier@demo.test'),
-                'password' => env('POS_DEMO_CASHIER_PASSWORD', 'cashier1234'),
-            ],
-        ],
-
+        'enabled' => false,
+        'website_url' => '',
+        'analytics_id' => '',
+        'purchase_url' => '',
+        'credentials' => [],
     ],
 
     /*
@@ -392,6 +318,33 @@ return [
         // customer must retry once connectivity is restored.
         'timeout' => 15,
 
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Demo Mode & Promo Landing Configuration
+    |--------------------------------------------------------------------------
+    */
+    'demo' => [
+        'enabled' => (bool) env('POS_DEMO_MODE', true),
+        'website_url' => env('APP_URL', 'https://yukelola.id'),
+        'support_whatsapp' => env('POS_SUPPORT_WHATSAPP', 'https://wa.me/6281234567890?text=Halo%20Admin%20YUKelola,%20saya%20tertarik%20mencoba%20aplikasi%20YUKelola'),
+        'purchase_url' => env('POS_PURCHASE_URL', '#pricing'),
+        'extended_url' => env('POS_EXTENDED_URL', '#pricing'),
+        'credentials' => [
+            [
+                'role' => 'admin',
+                'name' => 'Demo Super Admin YUKelola',
+                'email' => 'admin@yukelola.id',
+                'password' => 'password',
+            ],
+            [
+                'role' => 'cashier',
+                'name' => 'Demo Kasir YUKelola',
+                'email' => 'kasir@yukelola.id',
+                'password' => 'password',
+            ],
+        ],
     ],
 
 ];

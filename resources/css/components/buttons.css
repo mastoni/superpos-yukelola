@@ -23,8 +23,12 @@
 }
 .pos-btn-primary {
   background: var(--accent); color: var(--accent-fg); border-color: transparent;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 2px 4px 0 rgba(5, 150, 105, 0.20);
 }
-.pos-btn-primary:hover { background: var(--accent-hover); }
+.pos-btn-primary:hover {
+  background: var(--accent-hover);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06), 0 4px 8px 0 rgba(5, 150, 105, 0.25);
+}
 .pos-btn-ghost {
   background: transparent; border-color: transparent; color: var(--text-secondary);
 }

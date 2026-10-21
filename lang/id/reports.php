@@ -2,795 +2,279 @@
 
 return [
     'nav' => [
-        'section' => 'Reports',
+        'title' => 'Laporan',
     ],
-
     'hub' => [
-        'title' => 'Reports',
-        'sub' => 'Analyse your sales, inventory, and financials.',
+        'title' => 'Pusat Laporan',
+        'subtitle' => 'Pilih salah satu laporan di bawah ini untuk melihat metrik dan mengekspor data.',
     ],
-
     'filter' => [
-        'from' => 'From',
-        'to' => 'To',
-        'store' => 'Store',
-        'store_all' => 'All stores',
+        'title' => 'Filter',
+        'start_date' => 'Tanggal Mulai',
+        'end_date' => 'Tanggal Akhir',
+        'apply' => 'Terapkan Filter',
     ],
-
     'actions' => [
-        'export' => 'Export',
-        'export_csv' => 'CSV',
-        'export_xlsx' => 'Excel (XLSX)',
-        'export_pdf' => 'PDF',
+        'export_csv' => 'Ekspor CSV',
+        'export_pdf' => 'Ekspor PDF',
+        'refresh' => 'Segarkan',
+        'back_to_hub' => 'Kembali ke Pusat Laporan',
     ],
-
     'pdf' => [
-        'generated_at' => 'Generated :time',
-        'no_rows' => 'No data for this period.',
+        'generated_on' => 'Dibuat pada',
+        'page' => 'Halaman :current dari :total',
     ],
-
     'saved' => [
-        'title' => 'Saved reports',
-        'sub' => 'Your saved report views — open one to jump straight back to that report with its filters applied.',
-        'list_title' => 'Saved views',
-        'nav' => 'Saved reports',
-
-        'save_button' => 'Save view',
-        'modal_title' => 'Save this view',
-        'name_label' => 'Name',
-        'name_placeholder' => 'e.g. This month — Main store',
-        'share_label' => 'Share with everyone in this store',
-        'cancel' => 'Cancel',
-        'save_confirm' => 'Save',
-        'saved_toast' => 'Report view saved.',
-        'open' => 'Open',
-
-        'scope_private' => 'Private',
-        'scope_shared' => 'Shared',
-
-        'columns' => [
-            'name' => 'Name',
-            'report' => 'Report',
-            'scope' => 'Scope',
-            'saved_by' => 'Saved by',
-        ],
-
-        'empty' => [
-            'title' => 'No saved reports yet',
-            'sub' => 'Open any report, set your filters, and use "Save view" to keep it here.',
-        ],
-
-        'delete' => [
-            'button' => 'Delete',
-            'title' => 'Delete saved report',
-            'message' => 'Delete the saved view ":name"? This cannot be undone.',
-            'confirm' => 'Delete',
-            'done' => 'Saved report deleted.',
-        ],
-
-        'errors' => [
-            'name_required' => 'Give this view a name first.',
-            'save_failed' => 'Could not save the report view. Please try again.',
-        ],
+        'title' => 'Tampilan Tersimpan',
+        'save_current' => 'Simpan Tampilan Saat Ini',
+        'manage' => 'Kelola Tampilan Tersimpan',
+        'name_placeholder' => 'Beri nama tampilan ini…',
+        'visibility_label' => 'Visibilitas',
+        'visibility_personal' => 'Hanya Saya (Pribadi)',
+        'visibility_global' => 'Semua Pengguna (Global)',
+        'make_default' => 'Jadikan sebagai tampilan default saya untuk laporan ini',
+        'save_btn' => 'Simpan Tampilan',
+        'saved_badge' => 'Tersimpan',
+        'delete_confirm' => 'Hapus tampilan tersimpan ini?',
+        'delete_btn' => 'Hapus',
+        'apply_btn' => 'Terapkan',
+        'saved_success' => 'Tampilan laporan berhasil disimpan.',
+        'deleted_success' => 'Tampilan tersimpan berhasil dihapus.',
+        'updated_success' => 'Tampilan tersimpan berhasil diperbarui.',
+        'empty' => 'Belum ada tampilan tersimpan.',
+        'load_view' => 'Muat Tampilan',
+        'save_as_new' => 'Simpan Sebagai Tampilan Baru',
+        'update_existing' => 'Perbarui Tampilan Saat Ini',
     ],
-
-    // ── Scheduled reports (Slice 5b) ───────────────────────────────────
     'schedule' => [
-        'title' => 'Scheduled reports',
-        'sub' => 'Have reports emailed to you (and your team) automatically on a daily, weekly, or monthly cadence.',
-        'list_title' => 'Schedules',
-        'nav' => 'Scheduled reports',
-
-        'schedule_button' => 'Schedule',
-        'modal_title' => 'Schedule this report',
-        'cancel' => 'Cancel',
-        'save_confirm' => 'Create schedule',
-        'saved_toast' => 'Report scheduled.',
-
-        'fields' => [
-            'name' => 'Name',
-            'name_placeholder' => 'e.g. Weekly sales — Monday morning',
-            'frequency' => 'Frequency',
-            'day_of_week' => 'Day of week',
-            'day_of_month' => 'Day of month',
-            'time' => 'Time',
-            'format' => 'Format',
-            'recipients' => 'Recipients',
-            'recipients_placeholder' => 'name@example.com, second@example.com',
-            'recipients_hint' => 'Separate multiple email addresses with commas.',
-            'subject' => 'Email subject (optional)',
-            'subject_placeholder' => 'Leave blank for the default subject',
-        ],
-
-        'frequencies' => [
-            'daily' => 'Daily',
-            'weekly' => 'Weekly',
-            'monthly' => 'Monthly',
-        ],
-
-        'formats' => [
-            'xlsx' => 'Excel (XLSX)',
-            'csv' => 'CSV',
-        ],
-
-        'days' => [
-            1 => 'Monday',
-            2 => 'Tuesday',
-            3 => 'Wednesday',
-            4 => 'Thursday',
-            5 => 'Friday',
-            6 => 'Saturday',
-            7 => 'Sunday',
-        ],
-
-        'cadence' => [
-            'daily' => 'Daily at :time',
-            'weekly' => 'Weekly on :day at :time',
-            'monthly' => 'Monthly on day :day at :time',
-        ],
-
-        'recipient_count' => '{0} No recipients|{1} :count recipient|[2,*] :count recipients',
-
-        'columns' => [
-            'name' => 'Name',
-            'report' => 'Report',
-            'cadence' => 'Cadence',
-            'recipients' => 'Recipients',
-            'next_run' => 'Next run',
-            'last_run' => 'Last run',
-        ],
-
-        'status_paused' => 'Paused',
-        'run_ok' => 'Delivered',
-        'run_failed' => 'Failed',
-        // Deliberately generic — the raw exception used to be shown here and
-        // leaked SQL fragments and server paths (SEC #60). Detail is in the log.
-        'run_failed_hint' => 'This run did not complete. Ask your administrator to check the application log.',
-        'never_run' => 'Not run yet',
-
-        'run_now' => 'Run now',
-        'pause' => 'Pause',
-        'resume' => 'Resume',
-        'run_now_ok' => 'Report generated and sent.',
-        'run_now_failed' => 'The report could not be delivered. Check the recipients and mail settings.',
-
-        'empty' => [
-            'title' => 'No scheduled reports yet',
-            'sub' => 'Open any report, set your filters, and use "Schedule" to have it emailed automatically.',
-        ],
-
-        'delete' => [
-            'button' => 'Delete',
-            'title' => 'Delete schedule',
-            'message' => 'Delete the schedule ":name"? It will stop sending immediately.',
-            'confirm' => 'Delete',
-            'done' => 'Schedule deleted.',
-        ],
-
-        'errors' => [
-            'name_required' => 'Give this schedule a name first.',
-            'recipients_required' => 'Add at least one recipient email address.',
-            'recipients_max' => 'A schedule can deliver to at most :max email addresses.',
-            'recipient_invalid' => 'One of the recipient addresses is not a valid email.',
-            'save_failed' => 'Could not create the schedule. Please try again.',
-            'action_failed' => 'That action could not be completed. Please try again.',
-        ],
-
-        'email' => [
-            'subject' => ':report — :app',
-            'heading' => 'Your scheduled report is ready',
-            'body' => 'Your scheduled report ":report" is attached.',
-            'report' => 'Report',
-            'file' => 'File',
-            'footer' => 'Sent by :app · schedule ":schedule". Manage or stop this in Reports → Scheduled reports.',
-        ],
+        'title' => 'Jadwalkan Laporan Ini',
+        'manage' => 'Jadwal Laporan',
+        'frequency_label' => 'Frekuensi',
+        'frequency_daily' => 'Harian (06:00)',
+        'frequency_weekly' => 'Mingguan (Senin 06:00)',
+        'frequency_monthly' => 'Bulanan (Tgl 1, 06:00)',
+        'recipients_label' => 'Penerima Email',
+        'recipients_placeholder' => 'email@contoh.com, bos@contoh.com',
+        'recipients_hint' => 'Pisahkan beberapa alamat email dengan koma.',
+        'save_schedule' => 'Simpan Jadwal',
+        'saved_success' => 'Jadwal laporan berhasil dibuat.',
+        'updated_success' => 'Jadwal berhasil diperbarui.',
+        'deleted_success' => 'Jadwal laporan berhasil dihapus.',
+        'subject' => 'Laporan Terjadwal: :name',
+        'intro' => 'Silakan temukan laporan terlampir untuk :name, yang dibuat secara otomatis sesuai jadwal Anda.',
+        'generated_at' => 'Laporan dibuat pada: :time',
+        'automated_notice' => 'Ini adalah email otomatis dari :app. Balasan ke alamat ini tidak dimonitor.',
+        'empty' => 'Belum ada laporan terjadwal.',
+        'format_label' => 'Format Lampiran',
+        'format_csv' => 'CSV',
+        'format_pdf' => 'PDF',
+        'format_both' => 'Keduanya (CSV + PDF)',
+        'active_toggle' => 'Aktif',
+        'last_sent_at' => 'Terakhir Dikirim',
+        'next_run_at' => 'Jadwal Berikutnya',
+        'never_sent' => 'Belum pernah',
+        'send_now' => 'Kirim Sekarang',
+        'send_now_confirm' => 'Kirim laporan ini ke penerima sekarang juga?',
+        'send_now_queued' => 'Laporan telah diantrekan untuk pengiriman segera.',
+        'action_create' => 'Buat Jadwal',
+        'action_edit' => 'Edit Jadwal',
+        'action_delete' => 'Hapus Jadwal',
     ],
-
-    'totals_row' => 'Totals',
-
+    'totals_row' => 'Total',
     'period' => [
-        'label' => 'Period',
-        'presets' => [
-            'today' => 'Today',
-            'yesterday' => 'Yesterday',
-            'this_week' => 'This week',
-            'last_week' => 'Last week',
-            'this_month' => 'This month',
-            'last_month' => 'Last month',
-            'last_7_days' => 'Last 7 days',
-            'last_30_days' => 'Last 30 days',
-            'last_90_days' => 'Last 90 days',
-            'this_year' => 'This year',
-            'last_year' => 'Last year',
-            'custom' => 'Custom range',
-        ],
+        'label' => 'Periode',
+        'range' => ':from sampai :to',
     ],
-
-    // ── Sales Summary ──────────────────────────────────────────────────
     'sales_summary' => [
-        'title' => 'Sales summary',
-        'sub' => 'Daily revenue, transaction counts, and payment method breakdown for any date range.',
-
-        'list_title' => 'Daily breakdown',
-        'payment_breakdown' => 'By payment method',
-        'payment_empty' => 'No payment data for this period.',
-        'sales_suffix' => 'sales',
-
-        'empty' => [
-            'title' => 'No sales in this period',
-            'sub' => 'Try adjusting the date range or store filter.',
-        ],
-
-        'kpis' => [
-            'revenue' => 'Revenue',
-            'transactions' => 'Transactions',
-            'avg_ticket' => 'Avg. ticket',
-            'discount' => 'Discounts',
-            'tax' => 'Tax collected',
-            'refunds' => 'Refunds',
-        ],
-
-        'columns' => [
-            'date' => 'Date',
-            'transactions' => 'Transactions',
-            'subtotal' => 'Subtotal',
-            'discount' => 'Discount',
-            'tax' => 'Tax',
-            'grand_total' => 'Grand total',
-        ],
-
-        'export' => [
-            'date' => 'Date',
-            'transactions' => 'Transactions',
-            'subtotal' => 'Subtotal',
-            'discount' => 'Discount',
-            'tax' => 'Tax',
-            'grand_total' => 'Grand Total',
-            'total' => 'TOTAL',
-        ],
+        'title' => 'Ringkasan Penjualan',
+        'description' => 'Metrik penjualan tingkat tinggi untuk rentang tanggal yang dipilih.',
+        'gross_sales' => 'Penjualan Kotor',
+        'net_sales' => 'Penjualan Bersih',
+        'discounts' => 'Total Diskon',
+        'tax' => 'Total Pajak',
+        'orders_count' => 'Jumlah Transaksi',
+        'avg_order_value' => 'Rata-rata Nilai Transaksi',
+        'returns_total' => 'Total Retur',
+        'cost_of_goods' => 'Harga Pokok Penjualan (HPP)',
     ],
-
-    // ── Sales by Product ───────────────────────────────────────────────
     'sales_by_product' => [
-        'title' => 'Sales by product',
-        'sub' => 'Quantity sold, revenue, cost, and margin per product for any date range.',
-
-        'list_title' => 'Products sold',
-
-        'empty' => [
-            'title' => 'No product sales in this period',
-            'sub' => 'Try adjusting the date range or store filter.',
-        ],
-
-        'filter' => [
-            'search' => 'Search product name or SKU…',
-        ],
-
-        'kpis' => [
-            'products' => 'Products sold',
-            'qty_sold' => 'Units sold',
-            'revenue' => 'Revenue',
-            'profit' => 'Gross profit',
-            'margin' => 'Avg. margin',
-        ],
-
-        'columns' => [
-            'product' => 'Product',
-            'sku' => 'SKU',
-            'qty_sold' => 'Qty sold',
-            'revenue' => 'Revenue',
-            'cost' => 'Cost',
-            'profit' => 'Gross profit',
-            'margin' => 'Margin',
-        ],
-
-        'export' => [
-            'product' => 'Product',
-            'sku' => 'SKU',
-            'qty_sold' => 'Qty Sold',
-            'revenue' => 'Revenue',
-            'cost' => 'Cost',
-            'profit' => 'Gross Profit',
-            'margin_pct' => 'Margin %',
-        ],
+        'title' => 'Penjualan per Produk',
+        'description' => 'Produk yang terjual dikelompokkan berdasarkan SKU, kuantitas, dan total pendapatan.',
+        'col_sku' => 'SKU',
+        'col_name' => 'Nama Produk',
+        'col_category' => 'Kategori',
+        'col_qty_sold' => 'Kuantitas Terjual',
+        'col_gross' => 'Pendapatan Kotor',
+        'col_net' => 'Pendapatan Bersih',
     ],
-
-    // ── Sales by Cashier ───────────────────────────────────────────────
     'sales_by_cashier' => [
-        'title' => 'Sales by cashier',
-        'sub' => 'Transactions, revenue, discounts given, and average basket per cashier.',
-
-        'list_title' => 'Cashiers',
-
-        'empty' => [
-            'title' => 'No sales in this period',
-            'sub' => 'Try adjusting the date range or store filter.',
-        ],
-
-        'filter' => [
-            'search' => 'Search cashier…',
-        ],
-
-        'kpis' => [
-            'cashiers' => 'Cashiers',
-            'sales' => 'Transactions',
-            'revenue' => 'Revenue',
-            'avg_basket' => 'Avg. basket',
-        ],
-
-        'columns' => [
-            'cashier' => 'Cashier',
-            'sales' => 'Sales',
-            'items' => 'Items sold',
-            'revenue' => 'Revenue',
-            'discounts' => 'Discounts',
-            'avg_basket' => 'Avg. basket',
-        ],
+        'title' => 'Penjualan per Kasir',
+        'description' => 'Volume transaksi dan pendapatan yang diproses oleh setiap kasir.',
+        'col_cashier' => 'Nama Kasir',
+        'col_orders' => 'Jumlah Transaksi',
+        'col_gross' => 'Penjualan Kotor',
+        'col_discounts' => 'Diskon Diberikan',
+        'col_net' => 'Penjualan Bersih',
     ],
-
-    // ── Sales by Payment Method ────────────────────────────────────────
     'sales_by_payment_method' => [
-        'title' => 'Sales by payment method',
-        'sub' => 'How much you took through each tender — the daily reconciliation view.',
-
-        'list_title' => 'Payment methods',
-
-        'empty' => [
-            'title' => 'No payments in this period',
-            'sub' => 'Try adjusting the date range or store filter.',
-        ],
-
-        'kpis' => [
-            'methods' => 'Methods used',
-            'total' => 'Total received',
-        ],
-
-        'columns' => [
-            'method' => 'Method',
-            'sales' => 'Sales',
-            'total' => 'Total received',
-            'share' => 'Share',
-        ],
+        'title' => 'Penjualan per Metode Pembayaran',
+        'description' => 'Rincian pembayaran yang diterima berdasarkan metode pembayaran.',
+        'col_method' => 'Metode Pembayaran',
+        'col_transactions' => 'Jumlah Transaksi',
+        'col_amount' => 'Total Diterima',
+        'col_percentage' => 'Persentase',
     ],
-
-    // ── Sales by Category ──────────────────────────────────────────────
     'sales_by_category' => [
-        'title' => 'Sales by category',
-        'sub' => 'Quantity sold, revenue, cost, and margin grouped by product category.',
-
-        'list_title' => 'Categories',
-        'uncategorised' => 'Uncategorised',
-
-        'empty' => [
-            'title' => 'No category sales in this period',
-            'sub' => 'Try adjusting the date range or store filter.',
-        ],
-
-        'filter' => [
-            'search' => 'Search category…',
-        ],
-
-        'kpis' => [
-            'categories' => 'Categories',
-            'revenue' => 'Revenue',
-            'profit' => 'Gross profit',
-            'margin' => 'Avg. margin',
-        ],
-
-        'columns' => [
-            'category' => 'Category',
-            'qty_sold' => 'Qty sold',
-            'revenue' => 'Revenue',
-            'cost' => 'Cost',
-            'profit' => 'Gross profit',
-            'margin' => 'Margin',
-        ],
-
-        'export' => [
-            'category' => 'Category',
-            'qty_sold' => 'Qty Sold',
-            'revenue' => 'Revenue',
-            'cost' => 'Cost',
-            'profit' => 'Gross Profit',
-            'margin_pct' => 'Margin %',
-        ],
+        'title' => 'Penjualan per Kategori',
+        'description' => 'Pendapatan dan kuantitas produk yang dikelompokkan berdasarkan kategori produk.',
+        'col_category' => 'Kategori',
+        'col_items_sold' => 'Jumlah Barang Terjual',
+        'col_gross' => 'Penjualan Kotor',
+        'col_discounts' => 'Diskon',
+        'col_tax' => 'Pajak',
+        'col_net' => 'Penjualan Bersih',
+        'col_share' => 'Pangsa Pasar (%)',
     ],
-
-    // ── Discounts ──────────────────────────────────────────────────────
     'discounts' => [
-        'title' => 'Discounts given',
-        'sub' => 'Every discount applied at checkout — who gave it, how much, and who approved it. Click a row to open the sale.',
-
-        'list_title' => 'Discount log',
-
-        'empty' => [
-            'title' => 'No discounts in this period',
-            'sub' => 'Try adjusting the date range or store filter.',
-        ],
-
-        'filter' => [
-            'search' => 'Search sale, cashier, or reason…',
-        ],
-
-        'kpis' => [
-            'count' => 'Discounts given',
-            'total' => 'Total discounted',
-            'avg' => 'Avg. discount',
-            'approved' => 'Manager-approved',
-        ],
-
-        'columns' => [
-            'sale' => 'Sale #',
-            'date' => 'Date',
-            'cashier' => 'Cashier',
-            'reason' => 'Reason',
-            'discount' => 'Discount',
-            'approved_by' => 'Approved by',
-        ],
-
-        'export' => [
-            'sale' => 'Sale #',
-            'date' => 'Date',
-            'cashier' => 'Cashier',
-            'type' => 'Type',
-            'value' => 'Value',
-            'amount' => 'Amount',
-            'category' => 'Category',
-            'reason' => 'Reason',
-            'approved_by' => 'Approved By',
-        ],
+        'title' => 'Laporan Diskon & Promosi',
+        'description' => 'Rincian diskon baris produk, kupon, dan penyesuaian pesanan.',
+        'col_type' => 'Jenis Diskon',
+        'col_applied_count' => 'Frekuensi Penggunaan',
+        'col_total_discount' => 'Total Nilai Diskon',
+        'col_sales_with_discount' => 'Penjualan yang Terkena Diskon',
+        'col_avg_discount' => 'Rata-rata Diskon',
+        'type_item' => 'Diskon Produk',
+        'type_order' => 'Diskon Transaksi',
     ],
-
-    // ── Top Customers ──────────────────────────────────────────────────
     'loyalty_points' => [
-        'title' => 'Loyalty points',
-        'sub' => 'Points earned, redeemed and expired in the period, plus what every unspent point would cost you if it were redeemed tomorrow.',
-
-        'list_title' => 'Customers',
-
-        'empty' => [
-            'title' => 'No points activity in this period',
-            'sub' => 'Points are only earned on sales with a customer attached. Try a wider date range, or check Settings → Loyalty.',
-        ],
-
-        'filter' => [
-            'search' => 'Search customer name or code…',
-        ],
-
-        'kpis' => [
-            'earned' => 'Points earned',
-            'redeemed' => 'Points redeemed',
-            'expired' => 'Points expired',
-            'liability' => 'Outstanding liability',
-        ],
-
-        'columns' => [
-            'customer' => 'Customer',
-            'earned' => 'Earned',
-            'redeemed' => 'Redeemed',
-            'expired' => 'Expired',
-            'net' => 'Net',
-            'balance' => 'Balance',
-            'balance_value' => 'Balance value',
-        ],
+        'title' => 'Aktivitas Poin Loyalitas',
+        'description' => 'Pelacakan poin loyalitas yang diperoleh, ditukarkan, dan saldo tersisa.',
+        'col_customer' => 'Pelanggan',
+        'col_earned' => 'Poin Diperoleh',
+        'col_redeemed' => 'Poin Ditukarkan',
+        'col_balance' => 'Saldo Poin',
+        'total_earned' => 'Total Poin Diberikan',
+        'total_redeemed' => 'Total Poin Ditukarkan',
     ],
-
     'top_customers' => [
-        'title' => 'Top customers',
-        'sub' => 'Your best customers by spend — visits, average basket, and last visit. Click a customer to open their profile.',
-
-        'list_title' => 'Customers',
-
-        'empty' => [
-            'title' => 'No customer sales in this period',
-            'sub' => 'Walk-in sales aren\'t counted here. Try adjusting the date range or store filter.',
-        ],
-
-        'filter' => [
-            'search' => 'Search customer name or code…',
-        ],
-
-        'kpis' => [
-            'customers' => 'Customers',
-            'revenue' => 'Revenue',
-            'avg_basket' => 'Avg. basket',
-            'outstanding' => 'Outstanding',
-        ],
-
-        'columns' => [
-            'customer' => 'Customer',
-            'visits' => 'Visits',
-            'total_spent' => 'Total spent',
-            'avg_basket' => 'Avg. basket',
-            'last_visit' => 'Last visit',
-            'outstanding' => 'Outstanding',
-        ],
+        'title' => 'Pelanggan Teratas',
+        'description' => 'Pelanggan dengan kontribusi transaksi dan pendapatan tertinggi.',
+        'col_customer' => 'Pelanggan',
+        'col_orders' => 'Jumlah Pembelian',
+        'col_total_spent' => 'Total Belanja',
+        'col_avg_order' => 'Rata-rata Pembelian',
+        'col_last_order' => 'Kunjungan Terakhir',
     ],
-
-    // ── Top Suppliers ──────────────────────────────────────────────────
     'top_suppliers' => [
-        'title' => 'Top suppliers',
-        'sub' => 'Who you buy from most — purchased, paid, and balance owed. Click a supplier to open their profile.',
-
-        'list_title' => 'Suppliers',
-
-        'empty' => [
-            'title' => 'No purchases in this period',
-            'sub' => 'Draft and cancelled purchases aren\'t counted. Try adjusting the date range or store filter.',
-        ],
-
-        'filter' => [
-            'search' => 'Search supplier name or code…',
-        ],
-
-        'kpis' => [
-            'suppliers' => 'Suppliers',
-            'purchased' => 'Total purchased',
-            'paid' => 'Total paid',
-            'balance' => 'Balance owed',
-        ],
-
-        'columns' => [
-            'supplier' => 'Supplier',
-            'purchases' => 'Purchases',
-            'purchased' => 'Total purchased',
-            'paid' => 'Paid',
-            'balance' => 'Balance',
-            'last_purchase' => 'Last purchase',
-        ],
+        'title' => 'Pemasok Teratas',
+        'description' => 'Pemasok dengan nilai pembelian pesanan (PO) tertinggi.',
+        'col_supplier' => 'Pemasok',
+        'col_purchases' => 'Jumlah Pesanan',
+        'col_total_spend' => 'Total Nilai Pembelian',
+        'col_outstanding' => 'Hutang Belum Lunas',
+        'col_last_purchase' => 'Pembelian Terakhir',
     ],
-
-    // ── Shifts by Cashier ──────────────────────────────────────────────
     'shifts_by_cashier' => [
-        'title' => 'Shifts by cashier',
-        'sub' => 'Register sessions per cashier — hours worked, sales rung up, and cumulative cash variance. Only closed shifts count.',
-
-        'list_title' => 'Cashiers',
-
-        'empty' => [
-            'title' => 'No closed shifts in this period',
-            'sub' => 'Only closed shifts appear here. Try adjusting the date range or store filter.',
-        ],
-
-        'filter' => [
-            'search' => 'Search cashier…',
-        ],
-
-        'kpis' => [
-            'cashiers' => 'Cashiers',
-            'shifts' => 'Shifts',
-            'hours' => 'Total hours',
-            'variance' => 'Total variance',
-        ],
-
-        'columns' => [
-            'cashier' => 'Cashier',
-            'terminal' => 'Terminal',
-            'shifts' => 'Shifts',
-            'hours' => 'Hours',
-            'avg_duration' => 'Avg. duration (h)',
-            'sales' => 'Sales',
-            'variance' => 'Cash variance',
-        ],
+        'title' => 'Shift per Kasir',
+        'description' => 'Riwayat shift kasir termasuk kas awal, penjualan tunai, dan selisih kas.',
+        'col_cashier' => 'Kasir',
+        'col_store' => 'Toko / Cabang',
+        'col_opened' => 'Waktu Buka',
+        'col_closed' => 'Waktu Tutup',
+        'col_expected_cash' => 'Kas yang Diharapkan',
+        'col_actual_cash' => 'Kas Fisik Aktual',
+        'col_variance' => 'Selisih Kas',
     ],
-
-    // ── Low Stock (hub cross-link to the Inventory report) ─────────────
     'low_stock' => [
-        'title' => 'Low stock',
-        'sub' => 'Products at or below their reorder level — reorder before you run out.',
+        'title' => 'Laporan Stok Menipis',
+        'description' => 'Produk dengan sisa stok di bawah batas kuantitas minimum peringatan.',
     ],
-
     'oversold' => [
-        'title' => 'Oversold items',
-        'sub' => 'Products sold below available stock (on-hand negative) — restock to clear the backorder.',
+        'title' => 'Laporan Stok Negatif / Terjual Melebihi Stok',
+        'description' => 'Produk dengan kuantitas stok negatif yang membutuhkan penyesuaian segera.',
     ],
-
-    // ── Aged Receivables ───────────────────────────────────────────────
     'aged_receivables' => [
-        'title' => 'Aged receivables',
-        'sub' => 'Who owes you what, broken down by how overdue it is. Click any customer to see their open sales.',
-
-        'list_title' => 'Customers with open balance',
-
-        'empty' => [
-            'title' => 'No outstanding balances',
-            'sub' => 'Every credit sale is fully paid. Treat yourself to a coffee.',
-        ],
-
-        'filter' => [
-            'as_of' => 'As of',
-            'store' => 'Store',
-            'store_all' => 'All stores',
-            'search' => 'Search customer name or code…',
-        ],
-
-        'kpis' => [
-            'total' => 'Total outstanding',
-            'b0_30' => '0-30 days',
-            'b31_60' => '31-60 days',
-            'b61_90' => '61-90 days',
-            'b90_plus' => '90+ days',
-        ],
-
-        'columns' => [
-            'customer' => 'Customer',
-            'b0_30' => '0-30 days',
-            'b31_60' => '31-60 days',
-            'b61_90' => '61-90 days',
-            'b90_plus' => '90+ days',
-            'total' => 'Total',
-            'oldest' => 'Oldest (days)',
-            'sales_count' => 'Open sales',
-        ],
-
-        'actions' => [
-            'export' => 'Export',
-            'export_csv' => 'CSV',
-            'export_xlsx' => 'Excel (XLSX)',
-        ],
+        'title' => 'Umur Piutang Usaha',
+        'description' => 'Faktur pelanggan yang belum lunas dikelompokkan berdasarkan rentang umur keterlambatan.',
+        'col_customer' => 'Pelanggan',
+        'col_current' => 'Lancar (0-30 Hari)',
+        'col_31_60' => '31–60 Hari',
+        'col_61_90' => '61–90 Hari',
+        'col_90_plus' => 'Lebih dari 90 Hari',
+        'col_total_due' => 'Total Piutang',
     ],
-
-    // ── Trial Balance (Accounting Slice 3) ─────────────────────────────
     'trial_balance' => [
-        'title' => 'Trial balance',
-        'sub' => 'Every account\'s balance as of a date. Total debits must equal total credits — click a row to open its ledger.',
-
-        'list_title' => 'Accounts',
-        'balanced' => 'Balanced',
-        'unbalanced' => 'Out of balance',
-
-        'kpis' => [
-            'total_debit' => 'Total debit',
-            'total_credit' => 'Total credit',
-            'status' => 'Status',
-        ],
-
-        'filter' => [
-            'as_of' => 'As of',
-            'search' => 'Search code or account…',
-        ],
-
-        'columns' => [
-            'code' => 'Code',
-            'account' => 'Account',
-            'debit' => 'Debit',
-            'credit' => 'Credit',
-        ],
-
-        'empty' => [
-            'title' => 'Nothing posted yet',
-            'sub' => 'Once sales, purchases, and other operations post to the ledger, their balances appear here.',
-        ],
+        'title' => 'Neraca Saldo',
+        'description' => 'Daftar semua saldo akun buku besar pada tanggal tertentu.',
+        'as_of' => 'Per Tanggal',
+        'col_code' => 'Kode Akun',
+        'col_account' => 'Nama Akun',
+        'col_debit' => 'Debit',
+        'col_credit' => 'Kredit',
+        'balanced' => 'Seimbang (Balance)',
+        'unbalanced' => 'Tidak Seimbang (Selisih :amount)',
     ],
-
-    // ── General Ledger (Accounting Slice 3) ────────────────────────────
     'general_ledger' => [
-        'title' => 'General ledger',
-        'sub' => 'Every posted line for one account over a date range, with a running balance.',
-
-        'list_title' => 'Ledger',
-        'opening_balance' => 'Opening balance',
-        'closing_balance' => 'Closing balance',
-        'total_debits' => 'Total debits',
-        'total_credits' => 'Total credits',
-
-        'filter' => [
-            'account' => 'Account',
-            'account_placeholder' => 'Select an account…',
-        ],
-
-        'pick' => [
-            'title' => 'Pick an account',
-            'sub' => 'Choose an account above to see its ledger and running balance.',
-        ],
-
-        'columns' => [
-            'date' => 'Date',
-            'entry' => 'Entry',
-            'source' => 'Source',
-            'description' => 'Description',
-            'debit' => 'Debit',
-            'credit' => 'Credit',
-            'balance' => 'Balance',
-        ],
-
-        'sources' => [
-            'sale' => 'Sale',
-            'sale_return' => 'Return',
-            'sale_void' => 'Void',
-            'purchase' => 'Purchase',
-            'purchase_return' => 'Purchase return',
-            'customer_payment' => 'Customer payment',
-            'supplier_payment' => 'Supplier payment',
-            'expense' => 'Expense',
-            'stock_adjustment' => 'Adjustment',
-            'shift_variance' => 'Shift variance',
-            'cash_drawer' => 'Cash drawer',
-            'ar_reconciliation' => 'A/R reconciliation',
-            'customer_credit_conversion' => 'Customer credit conversion',
-            'store_credit_reconciliation' => 'Store credit reconciliation',
-            'opening_balance' => 'Opening balance',
-            'manual' => 'Manual',
-            'closing_entry' => 'Year-end close',
-        ],
+        'title' => 'Buku Besar Umum',
+        'description' => 'Mutasi transaksi terperinci untuk akun tertentu selama periode yang dipilih.',
+        'account_label' => 'Pilih Akun',
+        'opening_balance' => 'Saldo Awal',
+        'closing_balance' => 'Saldo Akhir',
+        'col_date' => 'Tanggal',
+        'col_reference' => 'Referensi',
+        'col_description' => 'Keterangan',
+        'col_debit' => 'Debit',
+        'col_credit' => 'Kredit',
+        'col_balance' => 'Saldo Berjalan',
     ],
-
-    // ── Profit & Loss (Accounting Slice 4) ─────────────────────────────
     'pnl' => [
-        'title' => 'Profit & loss',
-        'sub' => 'Income, cost of goods sold, and expenses for a period — your bottom line.',
-
-        'income' => 'Income',
-        'total_income' => 'Total income',
-        'cogs' => 'Cost of goods sold',
-        'total_cogs' => 'Total cost of goods sold',
-        'gross_profit' => 'Gross profit',
-        'operating' => 'Operating expenses',
-        'total_operating' => 'Total operating expenses',
-        'other' => 'Other expenses',
-        'total_other' => 'Total other expenses',
-        'total_expenses' => 'Total expenses',
-        'net_profit' => 'Net profit',
-        'margin' => ':pct% margin',
-
-        'columns' => [
-            'account' => 'Account',
-            'amount' => 'Amount',
-        ],
+        'title' => 'Laporan Laba Rugi',
+        'description' => 'Ringkasan pendapatan, HPP, beban operasional, dan laba bersih selama periode ini.',
+        'section_revenue' => 'Pendapatan',
+        'section_cogs' => 'Harga Pokok Penjualan (HPP)',
+        'section_gross_profit' => 'Laba Kotor',
+        'section_expenses' => 'Beban Operasional',
+        'section_net_profit' => 'Laba Bersih',
+        'operating_income' => 'Pendapatan Operasional',
+        'tax_expense' => 'Beban Pajak',
+        'col_account' => 'Akun',
+        'col_amount' => 'Jumlah',
+        'total_revenue' => 'Total Pendapatan',
+        'total_cogs' => 'Total HPP',
+        'total_expenses' => 'Total Beban Operasional',
     ],
-
-    // ── Balance Sheet (Accounting Slice 4) ─────────────────────────────
     'balance_sheet' => [
-        'title' => 'Balance sheet',
-        'sub' => 'What you own and what you owe as of a date. Assets must equal liabilities plus equity.',
-
-        'as_of' => 'As of',
-        'out_of_balance' => 'This balance sheet does not balance — assets don\'t equal liabilities plus equity. This signals a data-integrity issue.',
-
-        'assets' => 'Assets',
-        'total_assets' => 'Total assets',
-        'liabilities' => 'Liabilities',
-        'total_liabilities' => 'Total liabilities',
-        'equity' => 'Equity',
-        'current_earnings' => 'Current earnings',
-        'total_equity' => 'Total equity',
-        'total_liabilities_equity' => 'Total liabilities + equity',
-
-        'columns' => [
-            'account' => 'Account',
-            'amount' => 'Amount',
-        ],
+        'title' => 'Neraca Keuangan',
+        'description' => 'Posisi keuangan (Aset, Kewajiban, dan Ekuitas) pada tanggal tertentu.',
+        'as_of' => 'Per Tanggal',
+        'section_assets' => 'Aset (Aktiva)',
+        'section_liabilities' => 'Kewajiban (Hutang)',
+        'section_equity' => 'Ekuitas (Modal)',
+        'total_assets' => 'Total Aset',
+        'total_liabilities' => 'Total Kewajiban',
+        'total_equity' => 'Total Ekuitas',
+        'total_liab_equity' => 'Total Kewajiban & Ekuitas',
+        'balanced' => 'Neraca Seimbang',
+        'col_account' => 'Akun',
+        'col_amount' => 'Jumlah',
     ],
-
-    // ── Cash Flow (Accounting Slice 7) ─────────────────────────────────
     'cash_flow' => [
-        'title' => 'Cash flow',
-        'sub' => 'Where cash came from and went over a period — operating, investing, and financing.',
-
-        'operating' => 'Operating activities',
-        'investing' => 'Investing activities',
-        'financing' => 'Financing activities',
-
-        'net_operating' => 'Net cash from operations',
-        'net_investing' => 'Net cash from investing',
-        'net_financing' => 'Net cash from financing',
-
-        'net_change' => 'Net change in cash',
-        'opening' => 'Opening cash balance',
-        'closing' => 'Closing cash balance',
-
-        'from_sales' => 'Cash from sales',
-        'from_customers' => 'Cash from customer payments',
-        'refunds' => 'Cash refunds',
-        'to_suppliers' => 'Cash to suppliers',
-        'expenses_paid' => 'Operating expenses paid',
-        'cash_variance' => 'Cash over / short',
-        'other' => 'Other',
-        'none' => 'No activity',
-
-        'columns' => [
-            'item' => 'Item',
-            'amount' => 'Amount',
-        ],
+        'title' => 'Laporan Arus Kas',
+        'description' => 'Arus kas masuk dan keluar dari aktivitas operasi, investasi, dan pendanaan.',
+        'section_operating' => 'Aktivitas Operasi',
+        'section_investing' => 'Aktivitas Investasi',
+        'section_financing' => 'Aktivitas Pendanaan',
+        'net_operating' => 'Arus Kas Bersih dari Aktivitas Operasi',
+        'net_investing' => 'Arus Kas Bersih dari Aktivitas Investasi',
+        'net_financing' => 'Arus Kas Bersih dari Aktivitas Pendanaan',
+        'net_change' => 'Kenaikan (Penurunan) Kas Bersih',
+        'opening_cash' => 'Kas dan Setara Kas Awal Periode',
+        'closing_cash' => 'Kas dan Setara Kas Akhir Periode',
+        'receipts_from_customers' => 'Penerimaan Kas dari Pelanggan',
+        'payments_to_suppliers' => 'Pembayaran Kas ke Pemasok',
+        'operating_expenses_paid' => 'Pembayaran Beban Operasional',
+        'taxes_paid' => 'Pembayaran Pajak',
+        'col_activity' => 'Aktivitas / Akun',
+        'col_amount' => 'Jumlah',
     ],
 ];

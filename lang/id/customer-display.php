@@ -1,69 +1,52 @@
 <?php
 
-/**
- * Customer-Facing Display (CFD) — Slice 1 strings.
- *
- * These are rendered on the shopper-facing second screen. They're passed
- * to the display's JS as pre-translated labels (the CFD makes no __() calls
- * of its own) so it keeps full locale + RTL parity.
- * See docs/features/customer-display.md.
- */
-
 return [
-
-    'title' => 'Customer display',
-    'toggle_theme' => 'Switch light / dark',
-
+    'title' => 'Layar Pelanggan (Customer Display)',
+    'toggle_theme' => 'Ganti Mode Terang / Gelap',
     'status' => [
-        'open' => 'Open now',
+        'open' => 'Buka Sekarang',
     ],
-
     'idle' => [
-        'welcome' => 'Welcome to :store',
-        'tagline' => 'Thanks for stopping by — we\'ll be right with you.',
-        'offers' => "Today's offers",
-        // Value-strip chips (edit freely to match your store).
-        'h1_title' => 'Fast checkout',
-        'h1_sub' => 'Quick, friendly service',
-        'h2_title' => 'Digital receipts',
-        'h2_sub' => 'On paper or your phone',
-        'h3_title' => 'Here to help',
-        'h3_sub' => 'Just ask our team',
+        'welcome' => 'Selamat Datang di :store',
+        'tagline' => 'Terima kasih telah berkunjung — kami siap melayani Anda.',
+        'offers' => 'Penawaran Spesial Hari Ini',
+        'h1_title' => 'Transaksi Cepat & Mudah',
+        'h1_sub' => 'Pelayanan ramah dan efisien untuk Anda',
+        'h2_title' => 'Struk Digital',
+        'h2_sub' => 'Tersedia struk cetak maupun digital di ponsel Anda',
+        'h3_title' => 'Siap Membantu',
+        'h3_sub' => 'Silakan tanyakan apa pun kepada tim kami',
     ],
-
     'sale' => [
-        'your_order' => 'Your order',
-        'item' => 'item',
-        'items' => 'items',
-        'col_item' => 'Item',
-        'col_qty' => 'Qty',
-        'col_amount' => 'Amount',
+        'your_order' => 'Pesanan Anda',
+        'item' => 'barang',
+        'items' => 'barang',
+        'col_item' => 'Barang',
+        'col_qty' => 'Jml',
+        'col_amount' => 'Subtotal',
         'subtotal' => 'Subtotal',
-        'discount' => 'Discount',
-        'tax' => 'Tax',
+        'discount' => 'Diskon',
+        'tax' => 'Pajak',
         'total' => 'Total',
-        'added' => 'Added to order',
-        'scanning' => 'Please continue — the cashier is scanning your items',
-        'loyalty' => 'Loyalty member',
-        'points' => 'points',
-        'each' => 'each',
+        'added' => 'Ditambahkan ke pesanan',
+        'scanning' => 'Kasir sedang memindai barang belanjaan Anda…',
+        'loyalty' => 'Anggota Loyalitas',
+        'points' => 'poin',
+        'each' => 'per item',
     ],
-
     'payment' => [
-        'amount_due' => 'Amount due',
-        'tendered' => 'Tendered',
-        'change_due' => 'Change due',
-        'scan_to_pay' => 'Scan to pay',
-        'scan_hint' => 'Point your camera at the code, then choose your payment app',
-        'scan_upi' => 'Scan to pay with UPI',
-        'scan_upi_hint' => 'Open any UPI app and scan to pay',
+        'amount_due' => 'Total Tagihan',
+        'tendered' => 'Uang Diterima',
+        'change_due' => 'Kembalian',
+        'scan_to_pay' => 'Scan untuk Membayar',
+        'scan_hint' => 'Arahkan kamera ke kode QR, lalu selesaikan pembayaran di aplikasi Anda',
+        'scan_upi' => 'Scan QRIS untuk Pembayaran',
+        'scan_upi_hint' => 'Buka aplikasi e-wallet / mobile banking dan scan untuk membayar',
     ],
-
     'thankyou' => [
-        'title' => 'Thank you!',
-        'change' => 'Change',
-        'receipt_scan' => 'Scan for your receipt',
-        'receipt_hint' => 'A digital copy, no paper needed',
+        'title' => 'Terima Kasih!',
+        'change' => 'Kembalian Anda',
+        'receipt_scan' => 'Scan Struk Digital',
+        'receipt_hint' => 'Simpan salinan struk digital langsung ke ponsel Anda',
     ],
-
 ];

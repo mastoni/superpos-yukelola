@@ -3,13 +3,11 @@
 namespace App\Providers;
 
 use App\Actions\Commerce\ScheduleImmediateCommerceProcessing;
-use App\Plugins\PluginLoader;
 use App\Services\Commerce\CommerceProviderRegistry;
 use App\Services\Commerce\Providers\ShopifyProvider;
 use App\Services\Commerce\Providers\WooCommerceProvider;
 use App\Services\WhatsApp\Providers\MetaCloudApiProvider;
 use App\Services\WhatsApp\WhatsAppProviderRegistry;
-use App\Support\Translation\DatabaseMergeLoader;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -37,15 +35,6 @@ class AppServiceProvider extends ServiceProvider
             // provider and register another WhatsAppProvider implementation.
             return $registry;
         });
-
-        // Layer per-locale DB translation overrides over the lang/*.php
-        // defaults (docs/features/multi-language.md §3). Extends the
-        // deferred `translation.loader` binding — the extender is queued
-        // and applied when the translator first resolves it.
-        $this->app->extend('translation.loader', fn ($loader) => new DatabaseMergeLoader(
-            $loader,
-            $this->app->bound(PluginLoader::class) ? $this->app->make(PluginLoader::class) : null,
-        ));
     }
 
     /**

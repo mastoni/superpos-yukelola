@@ -188,11 +188,16 @@ class Terminal extends Model
      * PLACES the order with a claim for staff to verify — it never completes
      * a sale. See docs/features/kiosk-self-ordering.md §5.
      */
-    public function kioskUpiMethodId(): ?int
+    public function kioskDigiflashMethodId(): ?int
     {
-        $id = (int) ($this->kiosk_config['upi_method_id'] ?? 0);
+        $id = (int) ($this->kiosk_config['digiflash_method_id'] ?? $this->kiosk_config['upi_method_id'] ?? 0);
 
         return $id > 0 ? $id : null;
+    }
+
+    public function kioskUpiMethodId(): ?int
+    {
+        return $this->kioskDigiflashMethodId();
     }
 
     /**

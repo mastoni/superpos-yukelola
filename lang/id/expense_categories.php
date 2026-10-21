@@ -1,49 +1,49 @@
 <?php
 
 return [
-    'title' => 'Expense categories',
-    'sub' => 'Buckets your expenses are filed under. Add, rename, or retire them anytime.',
-    'new' => 'New category',
+    'title' => 'Kategori Biaya Pengeluaran',
+    'sub' => 'Pengelompokan jenis pengeluaran operasional usaha Anda. Tambah, ubah nama, atau nonaktifkan kapan saja.',
+    'new' => 'Kategori baru',
 
     'list' => [
-        'title' => 'Categories',
-        'empty' => 'No categories yet',
+        'title' => 'Daftar Kategori',
+        'empty' => 'Belum ada kategori pengeluaran',
     ],
 
     'columns' => [
-        'name' => 'Name',
-        'actions' => 'Actions',
+        'name' => 'Nama Kategori',
+        'actions' => 'Aksi',
     ],
 
     'editor' => [
-        'empty_title' => 'Select a category',
-        'empty_sub' => 'Pick one to edit, or add a new category.',
-        'new_title' => 'New category',
-        'edit_title' => 'Edit category',
+        'empty_title' => 'Pilih kategori',
+        'empty_sub' => 'Pilih satu untuk diedit, atau tambahkan kategori pengeluaran baru.',
+        'new_title' => 'Kategori baru',
+        'edit_title' => 'Edit kategori',
     ],
 
     'fields' => [
-        'name' => 'Name',
-        'is_active' => 'Active',
+        'name' => 'Nama Kategori',
+        'is_active' => 'Aktif',
     ],
 
     'actions' => [
-        'toggle_active' => 'Toggle active',
-        'delete' => 'Delete',
-        'discard' => 'Discard',
-        'save' => 'Save changes',
-        'saving' => 'Saving…',
-        'create' => 'Add category',
-        'creating' => 'Adding…',
+        'toggle_active' => 'Ubah status aktif',
+        'delete' => 'Hapus',
+        'discard' => 'Batalkan',
+        'save' => 'Simpan perubahan',
+        'saving' => 'Menyimpan…',
+        'create' => 'Tambah kategori',
+        'creating' => 'Menambahkan…',
     ],
 
     'flash' => [
-        'created' => 'Category “:name” added.',
-        'updated' => 'Category “:name” updated.',
-        'deleted' => 'Category “:name” deleted.',
+        'created' => 'Kategori “:name” berhasil ditambahkan.',
+        'updated' => 'Kategori “:name” berhasil diperbarui.',
+        'deleted' => 'Kategori “:name” berhasil dihapus.',
     ],
 
     'errors' => [
-        'in_use' => '“:name” is used by :count expense(s). Deactivate it instead of deleting.',
+        'in_use' => '“:name” digunakan oleh :count transaksi pengeluaran. Nonaktifkan saja alih-alih menghapusnya.',
     ],
 ];

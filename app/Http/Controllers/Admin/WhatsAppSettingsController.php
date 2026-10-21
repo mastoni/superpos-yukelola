@@ -236,7 +236,7 @@ class WhatsAppSettingsController extends Controller
 
     private function guardDemo(Request $request): void
     {
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             throw ValidationException::withMessages(['_action' => __('settings.demo.locked')]);
         }
     }

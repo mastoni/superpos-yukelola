@@ -89,7 +89,7 @@ return [
         'discount' => 'Beri Diskon',
         'hold' => 'Tahan Pesanan',
         'scan' => 'Fokus Input Barcode',
-        'checkout' => 'Bayar / Checkout',
+        'checkout' => 'Bayar',
     ],
 
     'hold' => [
@@ -114,7 +114,7 @@ return [
     ],
 
     'checkout' => [
-        'label' => 'Bayar (Checkout)',
+        'label' => 'Bayar',
     ],
 
     'layout' => [
@@ -237,12 +237,138 @@ return [
 
     'discount' => [
         'title' => 'Diskon Pesanan',
-        'percent' => 'Persen (%)',
-        'fixed' => 'Nominal Tetap (Rp)',
-        'reason' => 'Alasan Diskon',
-        'reason_placeholder' => 'Pilih alasan diskon…',
-        'apply' => 'Terapkan Diskon',
-        'remove' => 'Hapus Diskon',
+        'percent' => 'Persen',
+        'amount' => 'Nominal',
+        'percent_off' => 'Diskon persen',
+        'amount_off' => 'Potongan harga',
+        'new_total' => 'Total baru',
+        'remove' => 'Hapus diskon',
+        'apply' => 'Terapkan',
+        'reason_category' => 'Alasan',
+        'reason_none' => '— Tanpa alasan —',
+        'reason' => 'Catatan (opsional)',
+        'reason_ph' => 'cth. penyesuaian harga kompetitor',
+        'reason_categories' => [
+            'loyalty' => 'Loyalitas / pelanggan setia',
+            'price_match' => 'Penyesuaian harga',
+            'damaged' => 'Barang rusak / cuci gudang',
+            'staff' => 'Pembelian staf',
+            'manager_comp' => 'Kebijakan manajer',
+            'promo' => 'Promosi',
+            'other' => 'Lainnya',
+        ],
+    ],
+
+    'line_discount' => [
+        'title' => 'Diskon per Item',
+    ],
+
+    'discount_approval' => [
+        'title' => 'Persetujuan Manajer Diperlukan',
+        'sub' => 'Diskon __PCT__% ini di atas batas toko. Manajer harus menyetujuinya.',
+        'manager' => 'Email manajer',
+        'manager_ph' => 'manager@store.com',
+        'password' => 'Kata sandi manajer',
+        'approve' => 'Setujui diskon',
+        'approving' => 'Menyetujui…',
+    ],
+
+    'variant' => [
+        'pick_sub' => 'Pilih varian untuk dimasukkan ke keranjang.',
+        'in_stock' => 'tersedia',
+    ],
+
+    'batch' => [
+        'pick_sub' => 'Pilih batch — kedaluwarsa terdekat lebih dulu.',
+        'batch_prefix' => 'Batch',
+        'exp_prefix' => 'Kedaluwarsa',
+        'mrp_prefix' => 'HET',
+        'days_left' => 'kedaluwarsa dalam :n hari',
+        'expires_today' => 'kedaluwarsa hari ini',
+        'expired' => 'kedaluwarsa',
+        'empty_title' => 'Tidak ada batch aktif',
+        'empty_sub' => 'Terima stok dengan nomor batch terlebih dahulu.',
+        'blocked_tooltip' => 'Kedaluwarsa — tidak dapat dijual (memerlukan izin admin).',
+        'change' => 'Ganti batch',
+        'change_hint' => 'Jual batch lain dari item ini',
+    ],
+
+    'weight' => [
+        'sub' => 'Masukkan berat timbangan.',
+        'label' => 'Berat',
+        'line_total' => 'Total baris',
+        'add' => 'Tambah ke keranjang',
+    ],
+
+    'actions' => [
+        'clear' => 'Bersihkan',
+        'pay' => 'Bayar',
+    ],
+
+    'pay' => [
+        'title' => 'Terima Pembayaran',
+        'method_label' => 'Metode pembayaran',
+        'method_sub' => [
+            'cash' => 'Dengan kembalian',
+            'ref' => 'Dengan referensi',
+            'terminal' => 'Chip · Tanpa Kontak',
+        ],
+        'cash_given' => 'Uang diterima',
+        'tendered' => 'Jumlah diterima',
+        'reference' => 'Referensi',
+        'reference_placeholder' => '4 digit kartu / ID transaksi / no. cek…',
+        'ref_hint' => 'Masukkan nomor referensi transaksi agar tercetak di struk.',
+        'reference_required' => 'Masukkan nomor referensi untuk pembayaran :method.',
+        'upi_scan_title' => 'Pindai QR untuk Pembayaran',
+        'upi_scan_hint' => 'Pelanggan memindai QR ini dengan aplikasi pembayaran. Setelah berhasil bayar, masukkan nomor referensi/transaksi di bawah.',
+        'change_due' => 'Kembalian',
+        'credit_balance' => 'Masuk saldo akun',
+        'put_on_account' => 'Catat ke akun',
+        'cancel' => 'Batal',
+        'complete' => 'Selesaikan transaksi',
+        'completing' => 'Menyelesaikan…',
+        'accept_cash' => 'Terima tunai',
+        'take_payment' => 'Terima pembayaran',
+        'send_terminal' => 'Kirim ke terminal',
+        'terminal_title' => 'Masukkan kartu, tempel, atau gesek',
+        'terminal_sub' => 'Menunggu respon terminal · Jumlah terkirim',
+
+        // Split tender
+        'split_so_far' => 'Sudah dibayar',
+        'add_payment' => 'Tambah pembayaran',
+        'remove_payment_aria' => 'Hapus pembayaran ini',
+        'amount_charged' => 'Jumlah pada metode ini',
+
+        // Stripe gateway
+        'stripe_title' => 'Stripe — pindai untuk bayar',
+        'stripe_starting' => 'Membuat sesi…',
+        'stripe_pending' => 'Menunggu pembayaran pelanggan',
+        'stripe_paid' => 'Lunas — menyelesaikan penjualan',
+        'stripe_failed' => 'Pembayaran gagal atau dibatalkan',
+        'stripe_idle' => 'Siap',
+        'stripe_open_link' => 'Buka tautan pembayaran',
+        'stripe_cancel' => 'Batalkan sesi',
+
+        // QR-chooser flow
+        'qr_tile_title' => 'Bayar via QR',
+        'qr_tile_sub' => 'Pelanggan memilih gateway',
+        'qr_tile_offline' => 'Memerlukan internet — tidak tersedia saat offline',
+        'qr_idle' => 'Siap',
+        'qr_starting' => 'Membuat sesi…',
+        'qr_waiting' => 'Menunggu pelanggan memindai…',
+        'qr_selected' => 'Pelanggan memilih metode — menunggu pembayaran',
+        'qr_paid' => 'Lunas — menyelesaikan penjualan',
+        'qr_failed' => 'Pembayaran gagal',
+        'qr_expired' => 'Sesi kedaluwarsa',
+        'qr_cancelled' => 'Sesi dibatalkan',
+        'qr_instructions' => 'Minta pelanggan memindai dengan ponsel mereka. Pelanggan dapat memilih metode pembayaran seperti QRIS, kartu, e-wallet, dsb.',
+        'qr_share_link' => 'Atau bagikan tautan ini',
+        'qr_copy' => 'Salin tautan',
+        'qr_open' => 'Buka tautan',
+        'qr_cancel' => 'Batalkan pembayaran',
+        'qr_expires_in' => 'Kedaluwarsa dalam',
+        'qr_dead_hint' => 'Tautan QR ini sudah tidak aktif. Buat QR baru untuk menerima pembayaran.',
+        'qr_regenerate' => 'Buat QR Baru',
     ],
 
     'payment' => [

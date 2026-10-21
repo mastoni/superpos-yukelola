@@ -281,17 +281,52 @@ if (! function_exists('paginate_per_page')) {
 
 if (! function_exists('pos_is_demo')) {
     /**
-     * Whether this install is running as the public demo. Environment-driven
-     * (POS_DEMO_MODE → config('pos.demo.enabled')) so the same code runs as
-     * either the live demo or a real customer install.
-     *
-     * Demo installs are read-only for sensitive config (payment gateway keys,
-     * SMTP credentials, license re-checks) and their data is wiped back to a
-     * clean baseline nightly — see App\Actions\Demo\ResetDemoData.
+     * Check if application is running in demo mode.
      */
     function pos_is_demo(): bool
     {
         return (bool) config('pos.demo.enabled', false);
+    }
+}
+
+if (! function_exists('pos_is_demo_session')) {
+    /**
+     * Check if current session is an ephemeral demo user session.
+     */
+    function pos_is_demo_session(): bool
+    {
+        if (session('is_demo_session')) {
+            return true;
+        }
+
+        // Non-superadmins in demo mode are considered demo sessions
+        if (pos_is_demo() && ! auth()->user()?->is_super_admin) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+if (! function_exists('pos_demo_locked')) {
+    /**
+     * Check if settings / configuration modifications are locked.
+     * True superadmin (is_super_admin === true and not in a guest demo session) is NEVER locked.
+     */
+    function pos_demo_locked(?User $user = null): bool
+    {
+        if (! pos_is_demo()) {
+            return false;
+        }
+
+        $user ??= auth()->user();
+
+        // If logged in as superadmin without the explicit guest demo session flag, allow full modification
+        if ($user && $user->is_super_admin && ! session('is_demo_session')) {
+            return false;
+        }
+
+        return true;
     }
 }
 
@@ -319,61 +354,21 @@ if (! function_exists('mask_secret')) {
 
 if (! function_exists('demo_mask_phone')) {
     /**
-     * Mask a phone number for display on the public demo so visitors can't
-     * harvest real-looking contact data from the seeded records. Keeps a
-     * leading "+" and the last two digits, bullets the rest. Returns the
-     * number unchanged on real installs (pos_is_demo() === false).
+     * Returns the phone number as-is without demo masking.
      */
     function demo_mask_phone(?string $phone): string
     {
-        $phone = (string) $phone;
-        if (! pos_is_demo() || $phone === '') {
-            return $phone;
-        }
-
-        $plus = str_starts_with(trim($phone), '+') ? '+' : '';
-        $digits = preg_replace('/\D/', '', $phone) ?? '';
-        if ($digits === '') {
-            return $phone;
-        }
-        if (strlen($digits) <= 3) {
-            return $plus.str_repeat('•', strlen($digits));
-        }
-
-        return $plus.str_repeat('•', max(4, strlen($digits) - 2)).substr($digits, -2);
+        return (string) $phone;
     }
 }
 
 if (! function_exists('demo_mask_email')) {
     /**
-     * Mask an email address for display on the public demo so visitors can't
-     * harvest real-looking contact data from the seeded records. Keeps the
-     * first character of the local part and the whole domain (so the address
-     * still reads as an email and stays useful as demo data), bullets the
-     * rest. Returns the address unchanged on real installs.
-     *
-     * Display only — never mask on a write path. Uniqueness validation, mail
-     * recipients and login lookups must always see the real value, which is
-     * why this is a separate `display_email` accessor and not an override of
-     * the `email` attribute itself.
+     * Returns the email address as-is without demo masking.
      */
     function demo_mask_email(?string $email): string
     {
-        $email = (string) $email;
-        if (! pos_is_demo() || $email === '') {
-            return $email;
-        }
-
-        $at = strrpos($email, '@');
-        if ($at === false || $at === 0) {
-            // Not an address shape — bullet it wholesale rather than leak it.
-            return str_repeat('•', max(4, mb_strlen($email)));
-        }
-
-        $local = mb_substr($email, 0, $at);
-        $domain = mb_substr($email, $at); // includes the "@"
-
-        return mb_substr($local, 0, 1).str_repeat('•', max(4, mb_strlen($local) - 1)).$domain;
+        return (string) $email;
     }
 }
 

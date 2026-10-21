@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Middleware\ApplyCompanySettings;
-use App\Http\Middleware\BlockDemoImportExport;
 use App\Http\Middleware\EnsureAppKey;
 use App\Http\Middleware\EnsureInstalled;
 use App\Http\Middleware\EnsureInstallerStep;
@@ -10,6 +9,7 @@ use App\Http\Middleware\EnsureStandardInstaller;
 use App\Http\Middleware\EnsureStoreSelected;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\InstallerErrorHandler;
+use App\Http\Middleware\PreventDemoDataDeletion;
 use App\Http\Middleware\PreventResponseCache;
 use App\Http\Middleware\RestrictDevRoutes;
 use App\Http\Middleware\RestrictDuringInstall;
@@ -69,18 +69,18 @@ return Application::configure(basePath: dirname(__DIR__))
         // Prepended to the GLOBAL stack so it executes ahead of the web group's
         // EncryptCookies. No-op (one filled() check) once a key is set.
         $middleware->prepend(EnsureAppKey::class);
-        // Apply company-configured settings (name → config('app.name'), …)
+        // Apply company-configured settings and Indonesian locale
         // to every web request so views, mailers, and exceptions see them.
-        $middleware->web(prepend: [ApplyCompanySettings::class]);
+        $middleware->web(prepend: [
+            ApplyCompanySettings::class,
+            SetLocale::class,
+        ]);
 
         // Deactivating a user must take effect immediately, not whenever their
         // session happens to expire (SEC #6). No-op for guests.
         $middleware->web(append: [EnsureUserIsActive::class]);
         $middleware->web(append: [EnsureLicenseActive::class]);
-
-        // Demo installs: block bulk import/export on any *.export / *.import*
-        // route (no-op on real installs). Appended so it runs after auth.
-        $middleware->web(append: [BlockDemoImportExport::class]);
+        $middleware->web(append: [PreventDemoDataDeletion::class]);
 
         // Payment gateway webhook routes — Stripe (and future providers)
         // sign the payload at their own signing-secret HMAC, so they

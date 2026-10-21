@@ -45,7 +45,7 @@ class SecuritySettingsController extends Controller
     {
         $this->authorize('settings.update');
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->demoBlocked($request, route('admin.settings.security.edit'));
         }
 

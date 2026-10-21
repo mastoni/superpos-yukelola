@@ -144,7 +144,6 @@
     <x-admin.command-palette />
     <x-admin.toasts />
     <x-admin.confirm />
-    <x-admin.demo-buy-now />
     {!! hook_slot('admin.body.end') !!}
     @include('partials.custom-scripts', ['position' => 'footer', 'surface' => 'authenticated'])
 </body>

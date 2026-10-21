@@ -14,7 +14,7 @@ class WelcomeController extends Controller
         return view('installer.welcome', [
             'currentStep' => 1,
             'languages' => $this->supportedLanguages(),
-            'selectedLanguage' => InstallState::get('language', 'en'),
+            'selectedLanguage' => InstallState::get('language', 'id'),
         ]);
     }
 
@@ -44,6 +44,7 @@ class WelcomeController extends Controller
     private function supportedLanguages(): array
     {
         return [
+            'id' => 'Bahasa Indonesia',
             'en' => 'English',
             'ar' => 'العربية',
             'hi' => 'हिन्दी',

@@ -135,7 +135,7 @@ class PaymentGatewaysSettingsController extends Controller
         // Read-only on the public demo: visitors must never be able to read,
         // overwrite or wipe the real gateway keys (the form is also locked +
         // masked in the view).
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('settings.demo.locked'),
@@ -372,7 +372,7 @@ class PaymentGatewaysSettingsController extends Controller
 
         // The demo additionally masks the non-secret fields (publishable keys,
         // merchant ids) so nothing real is on show at all.
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             foreach ($creds as $key => $value) {
                 if ($key !== 'mode') {
                     $creds[$key] = mask_secret((string) $value);

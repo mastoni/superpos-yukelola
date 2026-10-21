@@ -158,7 +158,7 @@ class StoreController extends Controller
     {
         $this->authorize('delete', $store);
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->demoBlocked($request, route('admin.stores.index'));
         }
 

@@ -17,7 +17,7 @@
     // action should take them into the app — pointing at /login would just
     // bounce off its `guest` middleware back to this page. Guests go to login.
     $isAuthed = auth()->check();
-    $appUrl   = $isAuthed ? route('admin.dashboard') : route('login');
+    $appUrl   = $isAuthed ? route('admin.dashboard') : (pos_is_demo() ? route('demo.login', ['role' => 'cashier']) : route('login'));
 
     // Decorative host shown in the faux browser address bar of the
     // screenshot frames (e.g. "hyper-pos-dev.infinitietech.in").
@@ -93,6 +93,7 @@
                 <a href="#integrations" class="landing-nav-link">{{ __('landing.nav.integrations') }}</a>
                 <a href="#industries" class="landing-nav-link">{{ __('landing.nav.businesses') }}</a>
                 <a href="#pricing" class="landing-nav-link">{{ __('landing.nav.pricing') }}</a>
+                <a href="{{ route('download.apk') }}" class="landing-nav-link">Download APK</a>
                 <a href="{{ $appUrl }}" class="landing-nav-link" target="_blank" rel="noopener">{{ __('landing.nav.demo') }}</a>
             </div>
 
@@ -123,6 +124,7 @@
             <a href="#integrations">{{ __('landing.nav.integrations') }}</a>
             <a href="#industries">{{ __('landing.nav.businesses') }}</a>
             <a href="#pricing">{{ __('landing.nav.pricing') }}</a>
+            <a href="{{ route('download.apk') }}">Download APK (26 MB)</a>
             <a href="{{ $appUrl }}" target="_blank" rel="noopener">{{ __('landing.nav.demo') }}</a>
         </div>
     </header>
@@ -901,6 +903,7 @@
                         {{ __('landing.footer.product') }}
                     </a>
                 @endif
+                <a href="{{ route('download.apk') }}" class="landing-footer-link">Download APK Android</a>
                 @if ($company && trim((string) $company->privacy_policy) !== '')
                     <a href="{{ route('legal.privacy') }}" target="_blank" rel="noopener" class="landing-footer-link">{{ __('landing.footer.privacy') }}</a>
                 @endif
@@ -916,7 +919,7 @@
                 {{-- Escaped before our own markup is spliced in (SEC #19). --}}
                 {!! trans_with_html('landing.footer.made_by', [
                     'heart'   => '<span class="landing-footer-heart">&hearts;</span>',
-                    'company' => '<a href="https://infinitietech.com/" target="_blank" rel="noopener" class="landing-footer-link">Infinitie Technologies</a>',
+                    'company' => '<a href="https://yukelola.id" target="_blank" rel="noopener" class="landing-footer-link">YUKelola</a>',
                 ]) !!}
             </p>
         </div>

@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
             PermissionsSeeder::class,
             RolesSeeder::class,
             CurrenciesSeeder::class,
-            LanguagesSeeder::class,
             UnitsSeeder::class,
             PaymentMethodsSeeder::class,
             ReturnReasonsSeeder::class,

@@ -1,7 +1,6 @@
 <?php
 
 use App\Actions\Commerce\DrainCommerceWork;
-use App\Actions\Demo\ResetDemoData;
 use App\Actions\Inventory\CheckLowStock;
 use App\Actions\Licensing\RecheckLicense;
 use App\Actions\Sales\RetryFailedGatewayReversals;
@@ -146,31 +145,6 @@ $dailyCommand('whatsapp-log-retention', '02:15', 'pos:whatsapp-prune');
 if (config('pos.license.recheck')) {
     $daily('license-recheck', '04:00', fn () => app(RecheckLicense::class)());
 }
-
-/* ───────────────────────── Demo reset ──────────────────────
- * Public-demo housekeeping ONLY (gated by POS_DEMO_MODE). Wipes
- * whatever visitors did and restores the captured baseline so the
- * demo stays presentable — visitors stay free to add data, the junk
- * just doesn't outlive the window. No-ops if no baseline has been
- * captured (`pos:demo-snapshot`).
- *
- * Six times a day (`0 * / 4 * * *` — 00:00, 04:00, 08:00, 12:00,
- * 16:00, 20:00 in config('app.timezone')). This is a full RunRestore,
- * not a selective cleanup: it drops every table, so each pass takes
- * the app into maintenance mode and signs out anyone mid-session
- * (`sessions` is not one of RunRestore's preserved tables).
- *
- * `withoutOverlapping()` matters more here than on the old daily
- * cadence — without it a restore running longer than its slot would
- * have a second destructive restore start on top of it. `name()` MUST
- * stay above it: CallbackEvent derives the mutex key from the event
- * description and throws when it's missing.
- */
-Schedule::call(fn () => app(ResetDemoData::class)())
-    ->everyFourHours()
-    ->when(fn () => pos_is_demo())
-    ->name('pos:demo-reset')
-    ->withoutOverlapping();
 
 /* ──────────────────── Gateway refund retries ───────────────
  * Re-attempts card/Stripe/Razorpay reversals that failed at

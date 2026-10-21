@@ -1,79 +1,79 @@
 <?php
 
 return [
-    'title' => 'Statement — :name',
-    'heading' => 'Account statement',
-    'sub' => 'Dated event log + running balance for :from → :to. Print or email a copy from the toolbar.',
-    'crumb' => 'Statement',
+    'title' => 'Rekening Koran — :name',
+    'heading' => 'Rekening koran pelanggan',
+    'sub' => 'Log riwayat transaksi berdasarkan tanggal + saldo berjalan untuk :from → :to. Cetak atau kirim via email dari bilah alat.',
+    'crumb' => 'Rekening Koran',
 
-    'list_title' => 'Events',
+    'list_title' => 'Riwayat Transaksi',
 
     'filter' => [
-        'from' => 'From',
-        'to' => 'To',
+        'from' => 'Dari',
+        'to' => 'Sampai',
     ],
 
     'kpis' => [
-        'opening' => 'Opening balance',
-        'debits' => 'Debits (sales)',
-        'credits' => 'Credits (payments + refunds)',
-        'closing' => 'Closing balance',
+        'opening' => 'Saldo awal',
+        'debits' => 'Debit (penjualan)',
+        'credits' => 'Kredit (pembayaran + pengembalian)',
+        'closing' => 'Saldo akhir',
     ],
 
     'columns' => [
-        'date' => 'Date',
-        'type' => 'Type',
-        'reference' => 'Reference',
+        'date' => 'Tanggal',
+        'type' => 'Tipe',
+        'reference' => 'Referensi',
         'debit' => 'Debit',
-        'credit' => 'Credit',
-        'running' => 'Balance',
+        'credit' => 'Kredit',
+        'running' => 'Saldo',
     ],
 
     'types' => [
-        'opening' => 'Opening',
-        'sale' => 'Sale',
-        'payment' => 'Payment',
-        'credit_transfer' => 'Credit transfer',
-        'refund' => 'Refund',
-        'void' => 'Void',
+        'opening' => 'Saldo Awal',
+        'sale' => 'Penjualan',
+        'payment' => 'Pembayaran',
+        'credit_transfer' => 'Transfer kredit',
+        'refund' => 'Pengembalian Dana',
+        'void' => 'Dibatalkan (Void)',
     ],
 
     'empty' => [
-        'title' => 'No activity in this period',
-        'sub' => 'Try widening the date range, or this customer has had no transactions yet.',
+        'title' => 'Tidak ada aktivitas pada periode ini',
+        'sub' => 'Coba perluas rentang tanggal, atau pelanggan ini belum memiliki transaksi apa pun.',
     ],
 
     'actions' => [
-        'print' => 'Print',
-        'email' => 'Email statement',
-        'cancel' => 'Cancel',
-        'close' => 'Close',
+        'print' => 'Cetak',
+        'email' => 'Kirim rekening koran via email',
+        'cancel' => 'Batal',
+        'close' => 'Tutup',
     ],
 
     'confirm_email' => [
-        'title' => 'Email statement to :name?',
-        'message' => 'A copy will be sent to :email. The customer sees exactly what you see in print preview.',
+        'title' => 'Kirim rekening koran ke :name?',
+        'message' => 'Salinan akan dikirimkan ke :email. Pelanggan akan melihat tampilan yang persis dengan pratinjau cetak.',
     ],
 
     'errors' => [
-        'no_email' => 'This customer has no email on file. Add one to their profile first.',
-        'send_failed' => 'Email failed: :error',
+        'no_email' => 'Pelanggan ini tidak memiliki alamat email. Tambahkan email ke profil pelanggan terlebih dahulu.',
+        'send_failed' => 'Gagal mengirim email: :error',
     ],
 
     'flash' => [
-        'sent' => 'Statement emailed to :email.',
+        'sent' => 'Rekening koran berhasil dikirim ke :email.',
     ],
 
     'email' => [
-        'subject' => 'Account statement: :from → :to',
+        'subject' => 'Rekening koran: :from → :to',
     ],
 
     'print' => [
-        'billed_to' => 'Billed to',
-        'issued' => 'Issued',
-        'period' => 'Period',
-        'closing_label' => 'Closing balance',
-        'please_pay' => 'Amount due: :amount. Please remit at your earliest convenience.',
-        'footer_note' => 'For any questions about this statement, please contact us.',
+        'billed_to' => 'Ditagihkan Kepada',
+        'issued' => 'Diterbitkan',
+        'period' => 'Periode',
+        'closing_label' => 'Saldo Akhir',
+        'please_pay' => 'Jumlah jatuh tempo: :amount. Harap segera melakukan pembayaran.',
+        'footer_note' => 'Jika ada pertanyaan terkait rekening koran ini, silakan hubungi kami.',
     ],
 ];

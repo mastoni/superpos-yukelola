@@ -60,7 +60,7 @@ class PaymentMethodsSettingsController extends Controller
     {
         $this->authorize('settings.update');
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('settings.demo.locked'),
@@ -104,7 +104,7 @@ class PaymentMethodsSettingsController extends Controller
     {
         $this->authorize('settings.update');
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('settings.demo.locked'),
@@ -148,7 +148,7 @@ class PaymentMethodsSettingsController extends Controller
     {
         $this->authorize('settings.update');
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('settings.demo.locked'),

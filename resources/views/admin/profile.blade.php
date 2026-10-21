@@ -81,16 +81,6 @@
                     </div></div>
                     <div class="card-body">
                         <div class="form-stack">
-                            <label class="field">
-                                <span class="field-label">{{ __('account.fields.language') }}</span>
-                                <select name="locale" class="pos-input" x-data="enhancedSelect()">
-                                    <option value="">{{ __('account.fields.language_system') }}</option>
-                                    @foreach ($languages as $lang)
-                                        <option value="{{ $lang->code }}" @selected(old('locale', $user->locale) === $lang->code)>{{ $lang->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('locale')<p class="field-error">{{ $message }}</p>@enderror
-                            </label>
 
                             <label class="field">
                                 <span class="field-label">{{ __('account.fields.default_store') }}</span>

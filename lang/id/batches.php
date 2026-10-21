@@ -1,81 +1,81 @@
 <?php
 
 return [
-    'title' => 'Batches & expiry',
-    'sub' => 'Every batch the inventory module knows about. Filter by store, product, or expiry status.',
-    'crumb_parent' => 'Inventory',
-    'list_title' => 'Batches',
+    'title' => 'Batch & Kedaluwarsa',
+    'sub' => 'Semua batch produk yang tercatat dalam inventaris. Filter berdasarkan toko, produk, atau status masa kedaluwarsa.',
+    'crumb_parent' => 'Inventaris',
+    'list_title' => 'Daftar Batch',
 
     'summary' => [
-        'total' => 'Total batches',
-        'expiring_soon' => 'Expiring soon',
-        'expired' => 'Expired',
+        'total' => 'Total batch',
+        'expiring_soon' => 'Segera kedaluwarsa',
+        'expired' => 'Kedaluwarsa',
     ],
 
     'tabs' => [
-        'all' => 'All',
-        'live' => 'Live',
-        'expiring_soon' => 'Expiring soon',
-        'expired' => 'Expired',
-        'archived' => 'Archived',
+        'all' => 'Semua',
+        'live' => 'Aktif',
+        'expiring_soon' => 'Segera kedaluwarsa',
+        'expired' => 'Kedaluwarsa',
+        'archived' => 'Diarsipkan',
     ],
 
     'columns' => [
-        'product' => 'Product',
-        'store' => 'Store',
-        'location' => 'Location',
-        'batch' => 'Batch number',
-        'mfg' => 'Manufactured',
-        'expiry' => 'Expiry',
-        'on_hand' => 'On hand',
-        'cost_price' => 'Purchase price',
-        'selling_price' => 'Selling price',
-        'mrp' => 'MRP',
+        'product' => 'Produk',
+        'store' => 'Toko',
+        'location' => 'Lokasi',
+        'batch' => 'Nomor batch',
+        'mfg' => 'Tanggal Produksi',
+        'expiry' => 'Kedaluwarsa',
+        'on_hand' => 'Stok Tersedia',
+        'cost_price' => 'Harga modal',
+        'selling_price' => 'Harga jual',
+        'mrp' => 'HET',
         'status' => 'Status',
-        'actions' => 'Actions',
+        'actions' => 'Aksi',
     ],
 
     'filter' => [
-        'store_all' => 'All stores',
-        'window' => 'Window',
-        'days' => 'Within :n days',
-        'search' => 'Search batch number, product name, or SKU…',
+        'store_all' => 'Semua toko',
+        'window' => 'Jangka Waktu',
+        'days' => 'Dalam :n hari',
+        'search' => 'Cari no. batch, nama produk, atau SKU…',
     ],
 
     'status' => [
-        'live' => 'Live',
-        'expiring_soon' => 'Expiring soon',
-        'expired' => 'Expired',
-        'archived' => 'Archived',
+        'live' => 'Aktif',
+        'expiring_soon' => 'Segera kedaluwarsa',
+        'expired' => 'Kedaluwarsa',
+        'archived' => 'Diarsipkan',
     ],
 
     'expiry' => [
-        'today' => '(today)',
-        'in_n_days' => '(in :n days)',
-        'expired_n_days' => '(:n days ago)',
+        'today' => '(hari ini)',
+        'in_n_days' => '(dalam :n hari)',
+        'expired_n_days' => '(:n hari yang lalu)',
     ],
 
     'empty' => [
-        'title' => 'No batches match',
-        'sub' => 'Receive a purchase line with a batch number to populate this list.',
+        'title' => 'Tidak ada batch yang cocok',
+        'sub' => 'Terima barang pembelian dengan nomor batch untuk mengisi daftar ini.',
     ],
 
     'actions' => [
-        'export' => 'Export',
+        'export' => 'Ekspor',
         'export_csv' => 'CSV (.csv)',
         'export_xlsx' => 'Excel (.xlsx)',
-        'archive' => 'Archive',
-        'restore' => 'Restore',
+        'archive' => 'Arsipkan',
+        'restore' => 'Pulihkan',
     ],
 
     'confirm_archive' => [
-        'title' => 'Archive batch :batch?',
-        'message' => 'It will be hidden from this list and from the batch pickers. Its history stays intact on every sale, purchase and ledger entry that used it, and receiving this batch number again will bring it back.',
+        'title' => 'Arsipkan batch :batch?',
+        'message' => 'Batch akan disembunyikan dari daftar ini dan pemilih batch di kasir. Riwayat transaksi masa lalu tetap tersimpan utuh, dan penerimaan stok dengan nomor batch ini nantinya akan mengaktifkannya kembali.',
     ],
 
     'flash' => [
-        'archived' => 'Batch :batch archived. Find it again under the Archived tab.',
-        'restored' => 'Batch :batch restored.',
-        'not_empty' => 'Batch :batch still holds stock, so it can’t be archived. Adjust the stock out first.',
+        'archived' => 'Batch :batch berhasil diarsipkan. Temukan kembali di tab Diarsipkan.',
+        'restored' => 'Batch :batch berhasil dipulihkan.',
+        'not_empty' => 'Batch :batch masih memiliki sisa stok fisik, sehingga tidak dapat diarsipkan. Sesuaikan stok barang menjadi nol terlebih dahulu.',
     ],
 ];

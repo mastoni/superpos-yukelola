@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Admin;
 
-use App\Models\Language;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -43,11 +42,6 @@ class UpdateProfileRequest extends FormRequest
             $storeId = $this->input('default_store_id');
             if ($storeId && ! $this->user()->canAccessStore((int) $storeId)) {
                 $validator->errors()->add('default_store_id', __('account.errors.store_not_accessible'));
-            }
-
-            $locale = $this->input('locale');
-            if ($locale && ! Language::query()->active()->where('code', $locale)->exists()) {
-                $validator->errors()->add('locale', __('account.errors.locale_invalid'));
             }
         });
     }

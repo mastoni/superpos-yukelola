@@ -5,33 +5,33 @@ return [
     // inverted: a purchase CREDITS the supplier (we owe more), a payment
     // or return DEBITS them (we owe less).
     'kpis' => [
-        'opening' => 'Opening balance',
-        'credits' => 'Credits (purchases)',
-        'debits' => 'Debits (payments + returns)',
-        'closing' => 'Closing balance',
+        'opening' => 'Saldo awal',
+        'credits' => 'Kredit (pembelian)',
+        'debits' => 'Debit (pembayaran + retur)',
+        'closing' => 'Saldo akhir',
     ],
 
     'columns' => [
-        'date' => 'Date',
-        'type' => 'Type',
-        'reference' => 'Reference',
+        'date' => 'Tanggal',
+        'type' => 'Tipe',
+        'reference' => 'Referensi',
         'debit' => 'Debit',
-        'credit' => 'Credit',
-        'running' => 'Balance',
+        'credit' => 'Kredit',
+        'running' => 'Saldo',
     ],
 
     'types' => [
-        'opening' => 'Opening',
-        'purchase' => 'Purchase',
-        'payment' => 'Payment',
-        'return' => 'Return',
+        'opening' => 'Saldo Awal',
+        'purchase' => 'Pembelian',
+        'payment' => 'Pembayaran',
+        'return' => 'Retur',
         // One payment allocated across several POs collapses to one line.
-        'split' => 'Across :count purchases',
-        'unallocated' => 'On account',
+        'split' => 'Untuk :count pembelian',
+        'unallocated' => 'Deposit / Akun',
     ],
 
     'empty' => [
-        'title' => 'No activity in this period',
-        'sub' => 'Try widening the date range, or this supplier has had no transactions yet.',
+        'title' => 'Tidak ada aktivitas pada periode ini',
+        'sub' => 'Coba perluas rentang tanggal, atau pemasok ini belum memiliki transaksi apa pun.',
     ],
 ];

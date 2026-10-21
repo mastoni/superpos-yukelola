@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\Demo\ResetDemoData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Company;
@@ -126,10 +127,20 @@ class LoginController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
+        $wasDemo = session('is_demo_session') || (pos_is_demo() && ! auth()->user()?->is_super_admin);
+
         app(TerminalReservation::class)->release($request);
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        if ($wasDemo && pos_is_demo()) {
+            try {
+                app(ResetDemoData::class)();
+            } catch (\Throwable) {
+                // Ignore if reset fails
+            }
+        }
 
         return redirect('/login');
     }

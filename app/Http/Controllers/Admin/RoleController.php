@@ -148,7 +148,7 @@ class RoleController extends Controller
     {
         $this->authorize('roles.manage');
 
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->demoBlocked($request, route('admin.roles.index'));
         }
 

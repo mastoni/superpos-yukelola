@@ -8,7 +8,7 @@
     ]">
 
     @php
-        $color = old('brand_color', $company->brand_color ?: '#F97316');
+        $color = old('brand_color', $company->brand_color ?: '#059669');
         $text  = old('brand_text_color', $company->brand_text_color ?: '#FFFFFF');
         $theme = old('theme_default', $company->theme_default ?: 'light');
     @endphp
@@ -206,7 +206,7 @@
                                     <div class="brand-color-field">
                                         <input type="color" name="brand_color" x-model="accent" class="brand-color-swatch" aria-label="{{ __('settings.branding.fields.brand_color') }}">
                                         <span class="brand-color-hex mono" x-text="accent.toUpperCase()"></span>
-                                        <button type="button" class="pos-btn pos-btn-xs pos-btn-ghost" @click="setAccent('#F97316')">
+                                        <button type="button" class="pos-btn pos-btn-xs pos-btn-ghost" @click="setAccent('#059669')">
                                             {{ __('settings.branding.fields.reset_color') }}
                                         </button>
                                     </div>

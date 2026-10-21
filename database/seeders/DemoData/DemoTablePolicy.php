@@ -14,7 +14,7 @@ final class DemoTablePolicy
         'whatsapp_connections', 'whatsapp_message_templates', 'plugins', 'plugin_options',
         'backup_destination_configs', 'backup_schedules', 'backup_logs', 'restore_logs', 'update_logs',
         'install_state', 'migrations', 'personal_access_tokens', 'password_reset_tokens', 'sessions',
-        'currencies', 'exchange_rates', 'languages', 'translations', 'receipt_templates', 'terminals',
+        'currencies', 'exchange_rates', 'receipt_templates', 'terminals',
         'accounts', 'account_groups', 'account_mappings', 'units', 'unit_categories', 'tax_classifications',
         'tax_components', 'tax_groups', 'tax_group_components', 'tax_exemptions', 'drug_schedules',
         'return_reasons', 'stock_adjustment_reasons', 'shift_variance_reasons', 'customer_groups',

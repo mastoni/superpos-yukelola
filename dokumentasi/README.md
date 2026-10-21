@@ -20,3 +20,9 @@ Proyek ini merupakan sistem Point of Sale (POS), Manajemen Inventaris, ERP, dan 
 4. [04. Lokalisasi Bahasa Indonesia](file:///e:/superpos-yukelola/dokumentasi/04-lokalisasi-bahasa-indonesia.md)
    - Struktur kamus bahasa di `lang/id/`.
    - Pengaturan default locale (`APP_LOCALE=id`) dan mata uang default Rupiah (IDR / Rp).
+5. [05. Panduan Installer Desktop Windows](file:///e:/superpos-yukelola/dokumentasi/05-panduan-installer-windows.md)
+   - Arsitektur desktop Windows (Edge WebView2 App Mode + SQLite).
+   - Panduan build Inno Setup `.exe` dan paket portable.
+6. [Laporan Progress & Rencana Tindak Lanjut Senior Developer](file:///e:/superpos-yukelola/LAPORAN_PROGRESS_DEVELOPMENT.md)
+   - Ringkasan komprehensif alur kerja, pekerjaan selesai, gap fungsional, dan roadmap aksi.
+

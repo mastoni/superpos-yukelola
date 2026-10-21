@@ -34,15 +34,16 @@ class PaymentMethodsSeeder extends Seeder
     private function methods(): array
     {
         return [
-            ['code' => 'cash',          'name' => 'Cash',           'type' => 'cash',    'opens_cash_drawer' => true,  'icon' => 'wallet',         'color' => 'emerald', 'sort_order' => 1],
-            ['code' => 'card',          'name' => 'Card',           'type' => 'card',    'requires_reference' => true, 'icon' => 'credit-card',    'color' => 'blue',    'sort_order' => 2],
-            ['code' => 'upi',           'name' => 'UPI',            'type' => 'digital', 'requires_reference' => true, 'icon' => 'smartphone',     'color' => 'violet',  'sort_order' => 3],
-            ['code' => 'bank_transfer', 'name' => 'Bank Transfer',  'type' => 'digital', 'requires_reference' => true, 'icon' => 'banknote',       'color' => 'slate',   'sort_order' => 4],
-            ['code' => 'cheque',        'name' => 'Cheque',         'type' => 'other',   'requires_reference' => true, 'icon' => 'scroll',         'color' => 'amber',   'sort_order' => 5],
+            ['code' => 'cash',          'name' => 'Tunai',          'type' => 'cash',    'opens_cash_drawer' => true,  'icon' => 'wallet',         'color' => 'emerald', 'sort_order' => 1],
+            ['code' => 'qris',          'name' => 'QRIS',           'type' => 'digital', 'requires_reference' => true, 'icon' => 'smartphone',     'color' => 'violet',  'sort_order' => 2, 'provider_credentials' => ['qris_payload' => '00020101021126580016ID.CO.QRIS.WWW01189360099800000000010208123456785204581253033605802ID5917SuperPOS Yukelola6007Jakarta61051011062070703A016304', 'vpa' => 'qris@superpos', 'payee_name' => 'SuperPOS Yukelola']],
+            ['code' => 'card',          'name' => 'Kartu Debit/Kredit', 'type' => 'card', 'requires_reference' => true, 'icon' => 'credit-card',    'color' => 'blue',    'sort_order' => 3],
+            ['code' => 'bank_transfer', 'name' => 'Transfer Bank',  'type' => 'digital', 'requires_reference' => true, 'icon' => 'banknote',       'color' => 'slate',   'sort_order' => 4],
+            ['code' => 'cheque',        'name' => 'Cek/Giro',       'type' => 'other',   'requires_reference' => true, 'icon' => 'scroll',         'color' => 'amber',   'sort_order' => 5],
             // Gateway-backed methods; disabled by default until the customer configures the gateway in Settings.
             ['code' => 'razorpay',      'name' => 'Razorpay',       'type' => 'digital', 'provider' => 'razorpay', 'requires_reference' => true, 'icon' => 'zap',  'color' => 'indigo', 'sort_order' => 10, 'is_active' => false],
             ['code' => 'phonepe',       'name' => 'PhonePe',        'type' => 'digital', 'provider' => 'phonepe',  'requires_reference' => true, 'icon' => 'zap',  'color' => 'purple', 'sort_order' => 11, 'is_active' => false],
             ['code' => 'stripe',        'name' => 'Stripe',         'type' => 'card',    'provider' => 'stripe',   'requires_reference' => true, 'icon' => 'zap',  'color' => 'sky',   'sort_order' => 12, 'is_active' => false],
+            ['code' => 'upi',           'name' => 'UPI',            'type' => 'digital', 'requires_reference' => true, 'icon' => 'smartphone',     'color' => 'violet',  'sort_order' => 20, 'is_active' => false],
         ];
     }
 }

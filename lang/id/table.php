@@ -1,59 +1,58 @@
 <?php
 
 /**
- * Strings shared by every list/table screen in the admin (search box,
- * pager, empty states). Per-screen titles still live in their own
- * lang/<feature>.php file — only the generic data-table chrome is here.
+ * Teks umum yang digunakan oleh setiap tabel/daftar di panel admin
+ * (kolom pencarian, paginasi, aksi baris, dan status kosong).
  */
 return [
-    'search_label' => 'Search',
-    'search_placeholder' => 'Search…',
-    'search_clear' => 'Clear search',
-    'showing' => 'Showing',
-    'to' => 'to',
-    'range_sep' => '–',     // between start and end of the visible row range
-    'range_of' => 'of',    // joins "1–25" with "120"
-    'per_page' => 'Rows per page',
-    'per_page_suffix' => '/ page',
-    'prev' => 'Previous',
-    'next' => 'Next',
-    'pagination' => 'Pagination',
-    'showing_one' => 'Showing 1 item',
+    'search_label' => 'Cari',
+    'search_placeholder' => 'Cari…',
+    'search_clear' => 'Bersihkan pencarian',
+    'showing' => 'Menampilkan',
+    'to' => 'sampai',
+    'range_sep' => '–',
+    'range_of' => 'dari',
+    'per_page' => 'Baris per halaman',
+    'per_page_suffix' => '/ halaman',
+    'prev' => 'Sebelumnya',
+    'next' => 'Berikutnya',
+    'pagination' => 'Paginasi',
+    'showing_one' => 'Menampilkan 1 item',
 
-    'refresh' => 'Refresh',
+    'refresh' => 'Segarkan',
 
-    // Inline cell popover that reveals a row's detail (see <x-admin.cell-peek>).
-    'peek_label' => 'Show details',
+    // Popover baris detail (lihat <x-admin.cell-peek>).
+    'peek_label' => 'Lihat detail',
 
-    // Per-row "⋮" action menu (see <x-admin.row-actions>).
-    'actions' => 'Actions',
-    'actions_open' => 'Open actions menu',
+    // Menu aksi per baris "⋮" (lihat <x-admin.row-actions>).
+    'actions' => 'Aksi',
+    'actions_open' => 'Buka menu aksi',
     'action' => [
-        'view' => 'View',
-        'edit' => 'Edit',
-        'delete' => 'Delete',
+        'view' => 'Lihat',
+        'edit' => 'Ubah',
+        'delete' => 'Hapus',
     ],
 
     'status' => 'Status',
-    'active' => 'Active',
-    'inactive' => 'Inactive',
+    'active' => 'Aktif',
+    'inactive' => 'Tidak Aktif',
 
     'sort' => [
-        'label' => 'Sort',
-        'default' => 'Default order',
-        'name_az' => 'Name A → Z',
-        'name_za' => 'Name Z → A',
-        'id_asc' => 'ID (lowest first)',
-        'id_desc' => 'ID (highest first)',
+        'label' => 'Urutkan',
+        'default' => 'Urutan Default',
+        'name_az' => 'Nama A → Z',
+        'name_za' => 'Nama Z → A',
+        'id_asc' => 'ID (Terendah dahulu)',
+        'id_desc' => 'ID (Tertinggi dahulu)',
     ],
 
-    'filter_date_from_placeholder' => 'From date',
-    'filter_date_to_placeholder' => 'To date',
-    'filter_reset' => 'Reset filters',
+    'filter_date_from_placeholder' => 'Dari tanggal',
+    'filter_date_to_placeholder' => 'Sampai tanggal',
+    'filter_reset' => 'Reset filter',
 
     'empty' => [
-        'no_results_title' => 'No matches',
-        'no_results_sub' => 'Try a different search term.',
-        'no_results' => 'No results.',
+        'no_results_title' => 'Tidak ada hasil yang cocok',
+        'no_results_sub' => 'Coba gunakan kata kunci pencarian yang lain.',
+        'no_results' => 'Tidak ada hasil.',
     ],
 ];

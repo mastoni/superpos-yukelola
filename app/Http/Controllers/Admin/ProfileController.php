@@ -7,7 +7,6 @@ use App\Http\Controllers\Concerns\RespondsJsonOrRedirect;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdatePasswordRequest;
 use App\Http\Requests\Admin\UpdateProfileRequest;
-use App\Models\Language;
 use App\Models\User;
 use App\Services\Auth\SessionRegistry;
 use Illuminate\Http\JsonResponse;
@@ -32,7 +31,6 @@ class ProfileController extends Controller
 
         return view('admin.profile', [
             'user' => $user,
-            'languages' => Language::query()->active()->ordered()->get(),
             'stores' => $user->accessibleStores(),
             // Active-devices list (SEC #40). Empty + `sessionsSupported=false`
             // on an install running the `file` session driver, which records
@@ -84,7 +82,7 @@ class ProfileController extends Controller
         //
         // Guarded BEFORE the avatar block on purpose: a blocked request must
         // not leave an orphaned upload behind in storage.
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('account.demo.locked'),
@@ -201,7 +199,7 @@ class ProfileController extends Controller
         // one visitor changing the password locks out every other visitor —
         // and the sign-in page keeps advertising a password that no longer
         // works — until the 02:00 reset restores the baseline `users` row.
-        if (pos_is_demo()) {
+        if (pos_demo_locked()) {
             return $this->jsonOrError(
                 $request,
                 __('account.demo.password_locked'),

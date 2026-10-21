@@ -12,8 +12,8 @@ class BrandingSettingsRequest extends FormRequest
 {
     /** Suggested accent colors offered as one-click swatches. */
     public const ACCENT_CHOICES = [
-        '#F97316', '#E11D48', '#B70137', '#7C3AED',
-        '#2563EB', '#0891B2', '#059669', '#CA8A04', '#0F172A',
+        '#059669', '#10B981', '#047857', '#0891B2',
+        '#2563EB', '#7C3AED', '#F97316', '#E11D48', '#0F172A',
     ];
 
     /** Suggested on-accent text colors (the color sitting on filled buttons). */

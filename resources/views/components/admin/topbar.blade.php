@@ -38,8 +38,6 @@
     <div class="topbar-right">
         <x-admin.store-switcher />
 
-        <span class="tb-secondary"><x-admin.language-switcher /></span>
-
         <x-admin.print-queue />
 
         @if (auth()->user()?->hasPermission('reports.view_financial'))

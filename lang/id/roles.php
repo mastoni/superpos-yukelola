@@ -1,74 +1,74 @@
 <?php
 
 return [
-    'title' => 'Roles',
-    'sub' => 'Define what each role can do. Assign roles to users per store.',
-    'crumb_parent' => 'Configure',
+    'title' => 'Peran Pengguna (Role)',
+    'sub' => 'Tentukan apa saja yang dapat dilakukan oleh setiap peran. Berikan peran kepada pengguna per cabang toko.',
+    'crumb_parent' => 'Konfigurasi',
 
     'actions' => [
-        'new' => 'New role',
+        'new' => 'Peran baru',
         'edit' => 'Edit',
-        'save' => 'Save changes',
-        'create' => 'Create role',
-        'delete' => 'Delete',
-        'cancel' => 'Cancel',
-        'export' => 'Export',
+        'save' => 'Simpan perubahan',
+        'create' => 'Buat peran',
+        'delete' => 'Hapus',
+        'cancel' => 'Batal',
+        'export' => 'Ekspor',
         'export_csv' => 'CSV',
         'export_xlsx' => 'Excel (XLSX)',
     ],
 
-    'create' => ['title' => 'New role', 'sub' => 'Pick the permissions this role grants.'],
-    'edit' => ['title' => 'Edit role', 'sub' => 'Adjust this role’s permissions.'],
+    'create' => ['title' => 'Peran baru', 'sub' => 'Pilih hak akses izin yang diberikan untuk peran ini.'],
+    'edit' => ['title' => 'Edit peran', 'sub' => 'Sesuaikan hak akses izin untuk peran ini.'],
 
     'fields' => [
-        'name' => 'Role name',
-        'name_ph' => 'e.g. Floor Supervisor',
-        'description' => 'Description',
-        'description_ph' => 'What is this role for?',
+        'name' => 'Nama peran',
+        'name_ph' => 'misal: Supervisor Kasir, Kasir Toko, Pengelola Stok',
+        'description' => 'Deskripsi',
+        'description_ph' => 'Apa tanggung jawab utama peran ini?',
     ],
 
     'list' => [
-        'title' => 'All roles (:count)',
-        'search_ph' => 'Search roles…',
-        'empty_title' => 'No roles yet',
-        'empty_sub' => 'Create a role to start assigning permissions.',
+        'title' => 'Semua peran (:count)',
+        'search_ph' => 'Cari peran…',
+        'empty_title' => 'Belum ada peran pengguna',
+        'empty_sub' => 'Buat peran baru untuk mulai mengatur hak akses staf Anda.',
     ],
 
     'columns' => [
-        'role' => 'Role',
-        'permissions' => 'Permissions',
-        'users' => 'Users',
-        'actions' => 'Actions',
+        'role' => 'Peran',
+        'permissions' => 'Hak Akses (Izin)',
+        'users' => 'Pengguna',
+        'actions' => 'Aksi',
     ],
 
     'badges' => [
-        'system' => 'System',
+        'system' => 'Sistem',
     ],
 
     'matrix' => [
-        'select_all' => 'Select all',
-        'selected_count' => ':count selected',
-        'dangerous' => 'Dangerous',
-        'dangerous_hint' => 'These permissions can affect billing, security, or data integrity. Grant with care.',
+        'select_all' => 'Pilih semua',
+        'selected_count' => ':count dipilih',
+        'dangerous' => 'Tindakan Sensitif',
+        'dangerous_hint' => 'Izin-izin ini dapat memengaruhi penagihan, keamanan, atau integritas data sistem. Berikan dengan hati-hati.',
         'group_count' => ':selected / :total',
     ],
 
     'delete' => [
-        'title' => 'Delete “:name”?',
-        'message' => 'The role is removed permanently. This can’t be undone.',
+        'title' => 'Hapus “:name”?',
+        'message' => 'Peran akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.',
     ],
 
     'flash' => [
-        'created' => 'Role “:name” created.',
-        'updated' => 'Role “:name” updated.',
-        'deleted' => 'Role “:name” deleted.',
+        'created' => 'Peran “:name” berhasil dibuat.',
+        'updated' => 'Peran “:name” berhasil diperbarui.',
+        'deleted' => 'Peran “:name” berhasil dihapus.',
     ],
 
     'errors' => [
-        'assigned' => 'Can’t delete “:name” — :count user(s) are assigned to this role. Reassign them to another role first.',
+        'assigned' => 'Tidak dapat menghapus “:name” — masih ada :count pengguna yang memiliki peran ini. Pindahkan mereka ke peran lain terlebih dahulu.',
     ],
 
     'validation' => [
-        'beyond_own_privileges' => 'You can only grant permissions you hold yourself. Remove: :permissions',
+        'beyond_own_privileges' => 'Anda hanya dapat memberikan hak akses yang Anda miliki sendiri. Hapus: :permissions',
     ],
 ];

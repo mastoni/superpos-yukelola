@@ -44,9 +44,8 @@ return [
     ],
 
     'demo' => [
-        'notice' => 'Akun demo tersedia untuk uji coba.',
+        'notice' => 'Jika Anda tidak dapat masuk ke demo, silakan :link untuk mengunjungi situs web kami.',
         'link_text' => 'klik di sini',
-
         'credentials_title' => 'Kredensial Demo',
         'mode_badge' => 'Mode Demo',
         'copy_and_fill' => 'Salin & Isi',
