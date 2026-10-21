@@ -89,6 +89,12 @@ class DemoSandboxManager
             ]);
 
             $this->seedBaselineDemoAccounts('demo_baseline_init');
+
+            Artisan::call('db:seed', [
+                '--database' => 'demo_baseline_init',
+                '--class' => 'Database\Seeders\IndonesianRetailDemoSeeder',
+                '--force' => true,
+            ]);
         } catch (\Throwable $e) {
             @unlink($baselinePath);
             Log::error('Failed to initialize demo baseline template: '.$e->getMessage());

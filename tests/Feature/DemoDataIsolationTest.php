@@ -313,4 +313,107 @@ class DemoDataIsolationTest extends TestCase
             return response('OK');
         });
     }
+
+    public function test_baseline_contains_realistic_indonesian_retail_dataset(): void
+    {
+        $sandboxId = 'indo_retail_test_'.uniqid();
+        $this->sandboxManager->connectSandbox($sandboxId);
+
+        // Verify Categories
+        $this->assertTrue(DB::table('categories')->where('slug', 'kebutuhan-pokok')->exists());
+        $this->assertTrue(DB::table('categories')->where('slug', 'makanan-minuman')->exists());
+
+        // Verify Key Products
+        $beras = DB::table('products')->where('sku', 'BRS-RMS-5KG')->first();
+        $this->assertNotNull($beras);
+        $this->assertSame('Beras Ramos Premium 5kg', $beras->name);
+        $this->assertEquals(75000, $beras->selling_price);
+        $this->assertGreaterThan($beras->cost_price, $beras->selling_price);
+
+        $indomie = DB::table('products')->where('sku', 'MIE-IDM-GRG')->first();
+        $this->assertNotNull($indomie);
+        $this->assertSame('8991001000046', $indomie->barcode);
+
+        // Verify Stock levels exist
+        $stock = DB::table('product_stock_levels')->where('product_id', $beras->id)->value('quantity');
+        $this->assertGreaterThan(0, $stock);
+
+        // Verify Suppliers and Customers exist
+        $this->assertTrue(DB::table('suppliers')->where('code', 'SUP-001')->exists());
+        $this->assertTrue(DB::table('customers')->where('code', 'CUST-001')->exists());
+
+        // Verify Historical Sales exist
+        $salesCount = DB::table('sales')->where('status', 'completed')->count();
+        $this->assertGreaterThan(10, $salesCount);
+
+        // Verify Sales have SaleItems and SalePayments
+        $firstSale = DB::table('sales')->where('status', 'completed')->first();
+        $this->assertTrue(DB::table('sale_items')->where('sale_id', $firstSale->id)->exists());
+        $this->assertTrue(DB::table('sale_payments')->where('sale_id', $firstSale->id)->exists());
+
+        $this->sandboxManager->disconnect();
+    }
+
+    public function test_demo_sale_transaction_decrements_inventory_in_sandbox(): void
+    {
+        $sandboxId = 'sale_inv_test_'.uniqid();
+        $this->sandboxManager->connectSandbox($sandboxId);
+
+        $storeId = DB::table('stores')->value('id');
+        $product = DB::table('products')->where('sku', 'MYK-SNA-2L')->first();
+        $initialStock = DB::table('product_stock_levels')
+            ->where('store_id', $storeId)
+            ->where('product_id', $product->id)
+            ->value('quantity');
+
+        $this->assertGreaterThan(5, $initialStock);
+
+        // Perform sale of 2 units
+        $saleQty = 2;
+        $cashierId = DB::table('users')->where('email', 'kasir@yukelola.id')->value('id') ?? 1;
+
+        $saleId = DB::table('sales')->insertGetId([
+            'store_id' => $storeId,
+            'cashier_id' => $cashierId,
+            'number' => 'POS-TEST-0099',
+            'sale_date' => now()->toDateString(),
+            'sale_datetime' => now()->toDateTimeString(),
+            'status' => 'completed',
+            'currency_code' => 'IDR',
+            'exchange_rate_to_base' => 1.0,
+            'subtotal' => $product->selling_price * $saleQty,
+            'grand_total' => $product->selling_price * $saleQty,
+            'paid_total' => $product->selling_price * $saleQty,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('sale_items')->insert([
+            'sale_id' => $saleId,
+            'product_id' => $product->id,
+            'product_name_snapshot' => $product->name,
+            'sku_snapshot' => $product->sku,
+            'quantity' => $saleQty,
+            'unit' => 'pcs',
+            'unit_price' => $product->selling_price,
+            'unit_cost_snapshot' => $product->cost_price,
+            'line_subtotal' => $product->selling_price * $saleQty,
+            'line_total' => $product->selling_price * $saleQty,
+            'sort_order' => 1,
+        ]);
+
+        DB::table('product_stock_levels')
+            ->where('store_id', $storeId)
+            ->where('product_id', $product->id)
+            ->decrement('quantity', $saleQty);
+
+        $updatedStock = DB::table('product_stock_levels')
+            ->where('store_id', $storeId)
+            ->where('product_id', $product->id)
+            ->value('quantity');
+
+        $this->assertEquals($initialStock - $saleQty, $updatedStock);
+
+        $this->sandboxManager->disconnect();
+    }
 }
