@@ -24,6 +24,10 @@ class AutoInstallIfEligible
     /** @return bool whether an auto-install was performed */
     public function __invoke(): bool
     {
+        if (! config('pos.updater.enabled', false)) {
+            return false;
+        }
+
         $company = Company::current();
         if (! $company || ! $company->update_auto_install) {
             return false;

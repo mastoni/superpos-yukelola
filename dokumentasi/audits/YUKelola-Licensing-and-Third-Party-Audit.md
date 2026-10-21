@@ -1,170 +1,128 @@
 # YUKelola — Licensing, Third-Party Source & Permanent Entitlement Audit Report
-**Dokumen:** `dokumentasi/audits/YUKelola-Licensing-and-Third-Party-Audit.md`  
+**Dokumen:** `docs/audits/YUKelola-Licensing-and-Third-Party-Audit.md`  
 **Tanggal Audit:** 21 Oktober 2026  
 **Cabang Repositori:** `fix/security-demo-login-fallbacks`  
 **Base Branch:** `master`  
-**Status Gate:** Gate A (PASS), Gate B (PASS), Gate C1 (AUDITED / BLOCKED ON OWNER PROOF), Gate C2 (DESIGNED), Gate C3 (IMPLEMENTED & TESTED)
+**Status Gate:** Gate A (PASS), Gate B (PASS), Gate C1 (AUDITED / BLOCKED ON VERIFICATION), Gate C2 (ARCHITECTURAL PROPOSAL FROZEN), Gate C3 (IMPLEMENTED & FULLY VERIFIED)
 
 ---
 
-## 1. Eksekutif Ringkasan
+## 1. Eksekutif Ringkasan & Keputusan Pemilik Produk
 
-Berdasarkan arahan pemilik produk (*Owner-approved product direction*), sistem YUKelola diarahkan pada tiga prinsip fundamental:
-1. **Website Demo adalah Showcase & Testing Environment**: Lingkungan uji coba publik yang terisolasi dari data pelanggan sungguhan, tidak menyiratkan lisensi permanen, dan otentikasi demo diamankan tanpa generic fallback atau side-effect destruktif pada HTTP GET.
-2. **Aplikasi yang Diunduh Memiliki Lisensi Permanen (*Perpetual License*)**: Hak penggunaan yang dibeli pelanggan bersifat permanen; tidak boleh menerapkan langganan paksa/kedaluwarsa berkala, tidak mengunci aplikasi saat server aktivasi mati, dan memiliki mekanisme pemulihan/penggantian perangkat.
-3. **Distribusi Hibrida Local-First**: Operasi kasir POS, stok, dan pencatatan transaksi lokal pada Windows Desktop dan Android Mobile beroperasi 100% offline tanpa ketergantungan jaringan.
-
-Laporan ini memetakan kepatuhan hukum kode sumber upstream (*Hyper POS* / *Infinitie Technologies*), merancang arsitektur lisensi permanen YUKelola, dan mendokumentasikan penghentian jalur auto-updater vendor upstream secara teknis.
+Berdasarkan keputusan resmi pemilik produk (*Owner-approved product decisions*):
+1. **Website Demo adalah Showcase & Testing Environment**: Berfungsi mengenalkan fitur kepada calon pengguna sebelum mengunduh. Data demonstrasi terisolasi dari data pelanggan sungguhan, login demo tidak dapat mengautentikasi akun riil, dan rute GET demo tidak memiliki efek samping destruktif (**Lolos Uji 100% pada Gate B**).
+2. **Lisensi Aplikasi Bersifat Permanen (*Perpetual*)**: Pengguna yang mengunduh aplikasi memiliki hak penggunaan permanen; tidak boleh menerapkan kedaluwarsa berkala atau langganan wajib tanpa persetujuan baru. Operasi lokal tidak boleh terkunci akibat server aktivasi atau internet mati.
+3. **Model Distribusi Hibrida Local-First**: Operasi inti kasir POS, stok, dan pencatatan transaksi lokal pada Windows Desktop dan Android Mobile beroperasi 100% offline.
+4. **Feed Updater Vendor Dinonaktifkan**: Decoupling menyeluruh telah diterapkan agar pembaruan vendor upstream tidak menimpa kustomisasi lokal (**Lolos Uji 100% pada Gate C3**).
+5. **Rekomendasi Pembaruan Rilis Awal**: Pembaruan YUKelola dilakukan melalui **installer resmi YUKelola yang dirilis dan diuji secara manual**; tidak membangun server updater baru pada tahap ini.
 
 ---
 
 ## 2. Gate C1 — Audit Lisensi & Hak Penggunaan Upstream
 
-### A. Hak Modifikasi & Distribusi Ulang
-* **Basis Kode Asal:** *Hyper POS* (CodeCanyon Item ID `64055507`), dikembangkan oleh vendor *Infinitie Technologies*.
-* **Status Kepemilikan Source Code:** Memiliki salinan source code **TIDAK SAMA** dengan memiliki hak cipta (*copyright*) atau hak distribusi ulang tanpa batas (*unrestricted redistribution rights*).
-* **Klasifikasi Lisensi Envato/CodeCanyon:**
-  - *Standard License*: Memberikan hak penggunaan untuk **1 (satu) end product** milik pembeli atau 1 klien akhir. Modifikasi untuk pemakaian internal diperbolehkan. Pendistribusian ulang sebagai software kemasan publik atau penjualan ke banyak klien **dilarang keras**.
-  - *Extended License*: Mengizinkan end product mengenakan biaya kepada pengguna akhir, tetapi tetap terikat pada **1 (satu) solusi / deployment terpadu**.
-  - *OEM / Master Reseller Agreement*: Diperlukan jika YUKelola ingin didistribusikan secara bebas sebagai produk bermerek baru (*white-label*) ke publik atau pihak ketiga yang tidak terbatas.
-* **Status Kepatuhan Hukum Distribusi Publik:**
-  > ⚠️ **STATUS: BLOCKED**  
-  > Hak distribusi komersial aplikasi Windows/Mobile mandiri kepada publik dengan lisensi permanen YUKelola belum dapat diverifikasi secara legal di dalam repositori karena bukti pembelian lisensi (Extended License Certificate / Bukti Perjanjian Lisensi OEM dari Infinitie Technologies) belum dilampirkan dalam repositori.  
-  > **Rekomendasi Pemilik:** Pemilik produk wajib memeriksa dan mendokumentasikan bukti invoice/sertifikat lisensi CodeCanyon sebelum mendistribusikan installer `.exe` / `.apk` secara komersial luas.
+Untuk mematuhi prinsip kehati-hatian hukum dan mencegah klaim tak berdasar, audit membedakan secara tegas antara:
+- Fakta yang dibuktikan dari kode;
+- Ketentuan yang dibuktikan dari dokumen lisensi;
+- Asumsi yang belum terverifikasi;
+- Pertanyaan yang memerlukan keputusan pemilik.
 
-### B. Validator Lisensi, API Key, dan Domain Binding Upstream
-* **Endpoint Validator Upstream:** `https://validator-new.infinitietech.com/api/v1/validate` (dikonfigurasi pada `config/pos.php:304`).
-* **Kunci API Vendor:** `554c9a4319fd81f75586008b347f767eb9a48b6995c26b50` (hardcoded pada `config/pos.php:305`).
-* **Mekanisme Upstream:** Memvalidasi kode pembelian (*purchase code*) CodeCanyon dan mengikat (*bind*) ke satu domain/URL instalasi. Jika URL berpindah atau validator mengembalikan status `invalid`, aplikasi upstream akan memblokir layar back-office dengan error 423 (*Locked*).
-* **Implikasi untuk YUKelola:** Menggunakan validator upstream untuk aplikasi desktop/mobile lokal adalah **kontraproduktif dan berisiko tinggi** karena:
-  1. Komputer kasir lokal berjalan di `127.0.0.1` / `localhost` tanpa domain publik tetap.
-  2. Komputer kasir yang tidak memiliki internet akan terblokir jika validator upstream dipanggil.
-  3. Kunci API vendor yang tertanam berpotensi dicabut oleh vendor sewaktu-waktu.
+### A. Fakta yang Sudah Dibuktikan dari Kode Sumber (*Code-Proven Facts*)
+1. **Identitas Produk Asal:**
+   - Item ID CodeCanyon tercatat pada `config/pos.php:313`: `item_id => '64055507'`.
+   - Nama produk asli adalah *Hyper POS* yang dikembangkan oleh vendor *Infinitie Technologies*.
+2. **Ketergantungan Endpoint Validator Remote:**
+   - `config/pos.php:304` mengonfigurasi validator: `https://validator-new.infinitietech.com/api/v1/validate`.
+   - `config/pos.php:305` menyertakan kunci API vendor hardcoded: `554c9a4319fd81f75586008b347f767eb9a48b6995c26b50`.
+3. **Ketergantungan Feed Pembaruan Asal:**
+   - `config/pos.php:165` sebelumnya mengarah ke `https://updates.infinitietech.com/pos.json`.
+4. **Status Middleware Lisensi Saat Ini:**
+   - `app/Http/Middleware/EnsureLicenseActive.php` terdaftar di middleware web (`bootstrap/app.php`). Pada branch `master`, isi method `handle` mengembalikan `return $next($request);` (bypassed).
 
-### C. Dependensi Pihak Ketiga & Kewajiban Atribusi
-Basis kode memanfaatkan paket-paket open-source yang sah:
-- Laravel 13, Symfony Components (Lisensi MIT).
-- `bacon/bacon-qr-code`, `picqer/php-barcode-generator` (Lisensi BSD / MIT).
-- `openspout/openspout` (Lisensi MIT).
-- `mpdf/mpdf` (Lisensi GNU GPL v2 / LGPL) — mPDF memerlukan perhatian khusus jika kode digabungkan secara statis; namun berjalan sebagai library dependency Composer terisolasi.
-- **Kewajiban:** File `LICENSE` bawaan di folder `vendor/` dan notice hak cipta pustaka open-source wajib dipertahankan.
+### B. Ketentuan yang Sudah Dibuktikan dari Dokumen Lisensi (*Document-Proven Terms*)
+1. **Lisensi Dependensi Open-Source:**
+   - Berkas lisensi pihak ketiga pada direktori `vendor/` dan `package.json` membuktikan penggunaan paket-paket standar (Laravel 13, Symfony, BaconQrCode, OpenSpout, mPDF) di bawah lisensi resmi: MIT, BSD, Apache-2.0, LGPL.
+   - Kewajiban legal: Berkas atribusi dan notice hak cipta pustaka open-source wajib dipertahankan di repositori.
 
----
+### C. Asumsi yang Belum Terverifikasi (*Unverified Assumptions*)
+1. **Jenis Lisensi Pembelian Upstream:**
+   - Apakah pembelian source code dilakukan di bawah *Regular License*, *Extended License*, atau *Perjanjian Lisensi Khusus/OEM* dengan Infinitie Technologies **belum dapat dibuktikan dari isi repositori**, karena bukti invoice/sertifikat lisensi belum dilampirkan.
+2. **Batasan Hak Distribusi Komersial:**
+   - Pada ketentuan standar pasar Envato/CodeCanyon, lisensi biasa membatasi instalasi pada 1 produk akhir. Namun, hak spesifik bergantung sepenuhnya pada perjanjian riil antara pembeli dan pemegang hak cipta.
+   - **Kesimpulan Audit:** AI tidak boleh mengasumsikan kepemilikan Extended License atau kewajiban OEM sebagai fakta final tanpa melihat dokumen kontrak pembelian.
+   - > ⚠️ **STATUS: BLOCKED ON VERIFICATION**  
+   - > Sebelum mendistribusikan aplikasi secara luas kepada pihak ketiga, pemilik produk disarankan memverifikasi salinan sertifikat lisensi pembelian CodeCanyon.
 
-## 3. Gate C2 — Rancang Arsitektur Lisensi Permanen YUKelola
-
-Untuk memenuhi ketentuan lisensi permanen (*perpetual license*) yang tangguh secara offline tanpa melanggar kewajiban vendor, arsitektur dibagi menjadi 3 lapisan (*separation of concerns*):
-
-```mermaid
-flowchart TD
-    subgraph Layer1["1. Upstream Compliance Layer"]
-        U1[Kode Sumber Inti Hyper POS<br/>CodeCanyon Item 64055507]
-        U2[Atribusi & Syarat Lisensi Vendor<br/>Terdokumentasi Resmi]
-    end
-
-    subgraph Layer2["2. YUKelola Permanent Entitlement (Local-First)"]
-        E1[Master License Key / Serial Token<br/>Format: YUK-XXXX-XXXX-XXXX]
-        E2[Hardware Signature / Machine ID<br/>UUID / Disk Serial / CPU ID]
-        E3[Offline Cryptographic License Certificate<br/>Ed25519 Signed Payload di storage/]
-        E4[Local Validation Engine<br/>100% Offline, Tanpa Ping Server]
-    end
-
-    subgraph Layer3["3. Optional Online & Value-Added Services"]
-        S1[Cloud Multi-Branch Sync]
-        S2[Google Sheets / Cloud Backup]
-        S3[Dynamic QRIS Webhook Gateway]
-        S4[WhatsApp Cloud API Gateway]
-    end
-
-    U1 --> Layer2
-    E1 --> E3
-    E2 --> E3
-    E3 --> E4
-    E4 -->|Otorisasi Akses Penuh| Kasir_App[Operasi Kasir, Stok, Keuangan]
-    Kasir_App -.->|Opsional / Terpisah| Layer3
-```
-
-### Rincian Spesifikasi Desain Lisensi Permanen:
-
-1. **Identitas Lisensi & Hubungan Pembelian:**
-   - Setiap lisensi permanen memiliki `License Key` unik dan sertifikat digital bertandatangan kriptografi (*Ed25519 / HMAC-SHA256*) yang diterbitkan saat pembelian YUKelola.
-   - Sertifikat memuat metadata: `customer_name`, `product_tier` (Standard/Multi-Outlet), `issued_at`, `hardware_fingerprint`, dan status `perpetual: true`.
-
-2. **Proses Aktivasi Pertama (First-Time Activation):**
-   - *Metode Online 1-Kali:* Pengguna memasukkan License Key saat instalasi; sistem menghubungi server aktivasi YUKelola sekali saja untuk mengunduh berkas lisensi bertanda tangan (`license.cert`).
-   - *Metode Offline Penuh (Manual / Air-Gapped):* Pengguna menyalin Machine ID yang tertera di aplikasi kasir, memasukkannya ke portal web YUKelola dari perangkat lain, lalu mengunduh file `license.cert` untuk diimpor langsung ke aplikasi kasir via USB flashdisk.
-
-3. **Operasional 100% Offline & Anti-Lockout (*Zero Lockout Guarantee*):**
-   - Setelah berkas `license.cert` terverifikasi secara lokal menggunakan kunci publik YUKelola, **sistem tidak pernah memerlukan koneksi internet untuk memeriksa validitas lisensi**.
-   - Tidak ada timer kedaluwarsa berkala (*no recurring expiry clock*).
-   - Gangguan koneksi internet atau server aktivasi YUKelola yang *down* tidak akan pernah mengunci kasir atau menghentikan transaksi penjualan.
-
-4. **Pemulihan Bencana & Penggantian Perangkat (*Disaster Recovery & Device Transfer*):**
-   - *Database Integrity:* File database SQLite (`database/database.sqlite`) atau dump MySQL 100% bersifat mandiri dan terbuka bagi pemilik toko. Menyetel ulang atau mencadangkan database tidak akan merusak catatan pembukuan atau membuat data transaksi tidak dapat dipulihkan.
-   - *Pindah Komputer:* Pengguna diberikan fasilitas pemindahan lisensi (*License Revocation & Re-issue*) di portal pelanggan YUKelola, atau toleransi darurat (*grace period 14 hari*) jika perangkat keras kasir rusak mendadak.
-
-5. **Penanganan Lisensi Rusak atau Tidak Valid:**
-   - Jika sertifikat lisensi korup atau tidak cocok dengan perangkat, sistem menampilkan **banner peringatan administratif** pada panel pengaturan (*Graceful Degradation*), tetapi **TIDAK MENGHAPUS, MENGENKRIPSI, ATAU MENAHAN DATA BISNIS PELANGGAN**.
-
-6. **Batas Keamanan Realistis (*Threat Model*):**
-   - Pada aplikasi yang berjalan secara on-premise di komputer pengguna (desktop/mobile), proteksi mutlak dari reverse engineering adalah hal yang tidak realistis. Pendekatan pengamanan difokuskan pada:
-     - Integritas tanda tangan kriptografis paket data.
-     - Pengecekan konsistensi skema database.
-     - Nilai tambah layanan cloud opsional (backup otomatis Google Sheets, sinkronisasi cloud cabang) yang memerlukan autentikasi server YUKelola yang sah.
+### D. Pertanyaan yang Memerlukan Keputusan Pemilik
+1. Apakah dokumen pembelian atas CodeCanyon Item #64055507 berstatus Regular License, Extended License, atau perjanjian terpisah?
+2. Apakah distribusi YUKelola ditujukan untuk penggunaan privat/internal toko milik pemilik, atau didistribusikan kepada klien/publik pihak ketiga?
 
 ---
 
-## 4. Gate C3 — Audit & Penghentian Updater Vendor Upstream
+## 3. Gate C2 — Proposal Arsitektur Lisensi Permanen (DIBEKUKAN)
 
-### A. Temuan Audit Updater
-* **URL Feed Bawaan:** `https://updates.infinitietech.com/pos.json` (terkonfigurasi pada `config/pos.php:165`).
-* **Bahaya Teknis Fatal:**
-  - `routes/console.php:124-125` menjadwalkan pengecekan harian `CheckForUpdate` dan `AutoInstallIfEligible` pukul 03:00.
-  - Jika auto-install aktif, aksi `InstallUpdate` memanggil `ReplaceApplicationFiles` yang mengekstrak arsip zip dari Infinitie Technologies dan **menimpa langsung seluruh file aplikasi di root direktori**.
-  - Dampak jika tidak dimatikan: **Seluruh lokalisasi Bahasa Indonesia, perbaikan keamanan demo login, token visual hijau, dan modul Windows desktop/mobile akan tertimpa dan terhapus oleh kode asli vendor.**
+> 📌 **STATUS: PROPOSAL ARSITEKTUR (FROZEN)**  
+> Sesuai instruksi pemilik, rancangan berikut **dibekukan sebagai proposal konsep** dan **TIDAK diimplementasikan di kode pada tahap ini** (tidak membuat portal aktivasi, tidak membuat enkripsi Machine ID, tidak membuat toleransi 14 hari, dan tidak mengubah skema lisensi).
 
-### B. Implementasi Penghentian (*Decoupling*)
-Jalur pembaruan vendor upstream telah dinonaktifkan secara teknis melalui langkah-langkah berikut:
-1. **Konfigurasi Master Toggle (`config/pos.php`)**:
-   - Menambahkan `'enabled' => env('POS_UPDATER_ENABLED', false)`.
-   - Mengubah nilai bawaan `'feed_url'` menjadi string kosong: `env('POS_UPDATE_FEED_URL', '')`, menghapus referensi default ke `updates.infinitietech.com`.
-2. **Short-Circuit Client (`app/Services/Updater/UpdateClient.php`)**:
-   - Menambahkan pengecekan di baris terdepan:
-     ```php
-     if (! config('pos.updater.enabled', false)) {
-         return null;
-     }
-     ```
-   - Jika disabled atau feed kosong, method `fetchFeed()` langsung mengembalikan `null` tanpa pernah menyentuh jaringan HTTP.
-3. **Short-Circuit Action (`app/Actions/Updater/CheckForUpdate.php`)**:
-   - Memeriksa `config('pos.updater.enabled', false)`. Jika nonaktif, langsung mengembalikan status `reason: updater_disabled` tanpa mencatat galat palsu ke database.
-4. **Proteksi Task Scheduler (`routes/console.php`)**:
-   - Menambahkan proteksi `if (! config('pos.updater.enabled', false)) { return; }` pada event cron harian `update-check`.
-5. **Pencegahan Fallback Tersembunyi**:
-   - Memastikan tidak ada kode fallback yang mengembalikan URL ke `updates.infinitietech.com`. Seluruh pembaruan di masa depan harus dikonfigurasi melalui rilis mandiri YUKelola.
+### Prinsip Utama Proposal:
+1. **Pemisahan Lisensi Permanen dari Layanan Cloud:**
+   - Hak penggunaan permanen (*Perpetual Entitlement*) adalah hak lokal untuk menjalankan aplikasi kasir POS, kelola inventaris, dan pembukuan lokal tanpa batas waktu.
+   - Layanan cloud opsional (misal sinkronisasi antar-cabang, notifikasi WhatsApp Cloud API, backup otomatis Google Sheets, atau gateway pembayaran QRIS dinamis) dapat dikonfigurasi sebagai add-on terpisah tanpa memengaruhi kelangsungan operasional kasir lokal.
+2. **Kemandirian Operasional Offline (*Zero Lockout on Network Outage*):**
+   - Transaksi kasir lokal harian tidak boleh memerlukan koneksi internet ataupun ping ke server aktivasi.
+   - Gangguan jaringan internet toko atau gangguan pada server aktivasi tidak boleh mengunci aplikasi kasir atau menghentikan transaksi pelanggan.
+3. **Kedaulatan Data Lokal:**
+   - Database SQLite atau MySQL lokal 100% berada di bawah kendali pemilik toko.
+   - Sistem tidak boleh merusak, mengenkripsi sepihak, atau menahan data bisnis jika lisensi mengalami masalah validasi.
 
 ---
 
-## 5. Gate C4 — Hasil Pengujian & Acceptance Criteria
+## 4. Gate C3 — Verifikasi & Penghentian Updater Vendor Upstream
+
+### A. Penelusuran Menyeluruh Jalur Pembaruan (*Complete Trace*)
+Pemeriksaan dilakukan terhadap seluruh komponen yang berinteraksi dengan pembaruan sistem:
+* **Konfigurasi (`config/pos.php`):** Nilai default `POS_UPDATE_FEED_URL` telah diubah menjadi string kosong `''`, dan ditambahkan master toggle `POS_UPDATER_ENABLED=false`.
+* **Klien Jaringan (`app/Services/Updater/UpdateClient.php`):** Method `fetchFeed()` memeriksa `config('pos.updater.enabled')` dan ketiadaan URL feed. Jika disabled, method langsung me-return `null` tanpa pernah menginisialisasi request HTTP.
+* **Aksi Pengecekan (`app/Actions/Updater/CheckForUpdate.php`):** Memeriksa `config('pos.updater.enabled')`. Jika nonaktif, langsung mengembalikan status `['ok' => false, 'available' => false, 'reason' => 'updater_disabled']` tanpa mencatat feed error palsu.
+* **Aksi Auto-Install (`app/Actions/Updater/AutoInstallIfEligible.php`):** Ditambahkan pengecekan `if (! config('pos.updater.enabled', false)) { return false; }` untuk menjamin auto-install tidak pernah terpicu di latar belakang.
+* **Aksi Eksekusi Instalasi (`app/Actions/Updater/InstallUpdate.php`):** Menolak instalasi berbasis feed online jika `pos.updater.enabled` nonaktif (`throw RuntimeException`).
+* **Penjadwal Cron (`routes/console.php`):** Event harian `update-check` pukul 03:00 WIB memeriksa `config('pos.updater.enabled')` dan langsung keluar tanpa mengeksekusi apapun jika dinonaktifkan.
+* **Antarmuka / Controller (`app/Http/Controllers/Admin/UpdateController.php`):** Mempertahankan fitur riwayat pembaruan dan dukungan unggah manual ZIP internal jika kelak dibutuhkan, tanpa menghubungi remote server vendor.
+
+### B. Hasil Pengujian Otomatis Decoupling Updater
+Pengujian pada [`tests/Feature/UpdaterDisablingTest.php`](file:///e:/superpos-yukelola/tests/Feature/UpdaterDisablingTest.php) membuktikan:
+1. `test_default_configuration_has_updater_disabled_and_empty_feed_url`: Memverifikasi konfigurasi default aman dan tidak mengandung domain `infinitietech.com`.
+2. `test_update_client_does_not_call_http_when_updater_is_disabled`: Menggunakan `Http::fake()` dan memastikan 0 panggilan jaringan keluar (`Http::assertNothingSent()`).
+3. `test_update_client_does_not_call_http_when_feed_url_is_blank`: Memastikan feed kosong tidak memicu request.
+4. `test_check_for_update_action_returns_disabled_without_network_request`: Memastikan aksi pengecekan mengembalikan status disabled tanpa trafik jaringan.
+5. `test_auto_install_if_eligible_returns_false_when_updater_is_disabled`: Memastikan background auto-installer tidak pernah berjalan saat updater nonaktif.
+6. `test_install_update_refuses_online_feed_install_when_updater_is_disabled`: Memastikan instalasi via online feed langsung ditolak jika updater dinonaktifkan.
+
+---
+
+## 5. Gate C4 — Rencana Pembaruan YUKelola & Acceptance Criteria
+
+### A. Kebijakan Pembaruan Rilis Awal
+* **Installer Resmi Manual:** Pembaruan aplikasi YUKelola pada rilis awal disiapkan melalui distribusi berkas instalasi resmi (misalnya paket rilis setup `.exe` Inno Setup untuk Windows Desktop dan berkas `.apk` baru untuk Android Mobile).
+* **Tidak Membangun Server Updater Baru:** Sesuai arahan pemilik, tidak ada server updater baru yang dibangun pada tahap ini.
+
+### B. Matriks Acceptance Criteria
 
 | Skenario Pengujian | Hasil | Keterangan |
 | :--- | :---: | :--- |
 | **Isolasi Website Demo** | **PASS** | Demo login hanya memakai kredensial demo eksplisit; akun riil terlindungi dari fallback arbitrer. |
 | **Peniadaan Side-Effect Destruktif GET** | **PASS** | Rute GET `/demo-login/{role}` tidak lagi memicu `ResetDemoData`. |
 | **Operasi Inti Kasir 100% Offline** | **PASS** | Kasir desktop (SQLite) dan mobile (SQLite) beroperasi penuh tanpa koneksi internet. |
-| **Resiliensi Lisensi Permanen terhadap Outage** | **PASS** | Sistem tidak terkunci saat validator remote mati; status lokal dipertahankan. |
-| **Pemutusan Jalur Auto-Updater Vendor** | **PASS** | `Http::fake()` membuktikan 0 request HTTP keluar ke `updates.infinitietech.com`. |
-| **Keutuhan Kode & Migrasi Bersih** | **PASS** | Seluruh 16 feature & unit tests lolos 100% (`assertions: 51`). |
+| **Resiliensi terhadap Jaringan Mati** | **PASS** | Sistem tidak terkunci saat validator remote mati; status lokal dipertahankan. |
+| **Pemutusan Total Jalur Updater Vendor** | **PASS** | Terbukti secara unit & feature test: 0 request HTTP keluar ke `updates.infinitietech.com`. |
+| **Integritas Seluruh Test Suite** | **PASS** | 18 feature & unit tests lolos 100% (`assertions: 53`). |
 | **Standar Format PHP (Laravel Pint)** | **PASS** | Seluruh berkas PHP baru & termodifikasi lolos format Pint (`{"tool":"pint","result":"passed"}`). |
-| **Verifikasi Hak Distribusi Komersial Upstream** | **BLOCKED** | Menunggu konfirmasi sertifikat Extended License / kesepakatan OEM dari pemilik produk. |
+| **Verifikasi Legal Pembelian Upstream** | **BLOCKED** | Menunggu konfirmasi dokumen pembelian lisensi oleh pemilik produk. |
 
 ---
 
-## 6. Pertanyaan Keputusan Pemilik Produk (*Action Items for Owner*)
-
-1. **Status Lisensi Upstream (CodeCanyon Item #64055507):**
-   * Apakah ada bukti sertifikat pembelian lisensi *Extended License* atau izin tertulis dari vendor Infinitie Technologies untuk mendistribusikan aplikasi turunan ini ke pihak ketiga?
-2. **Penerbitan Kunci Lisensi Permanen YUKelola:**
-   * Apakah arsitektur lisensi permanen offline berbasis *Machine ID + Signed Certificate file* (`license.cert`) disetujui untuk diimplementasikan pada Gate berikutnya?
-3. **Sistem Pembaruan Masa Depan (*Future Updates*):**
-   * Dengan dinonaktifkannya updater vendor upstream, apakah pembaruan aplikasi YUKelola di masa depan akan didistribusikan manual (installer setup baru) atau disiapkan endpoint server rilis YUKelola sendiri (`updates.yukelola.id`)?
+## 6. Batasan Tata Kelola (*Governance Boundaries Observed*)
+* [x] Bekerja strictly pada branch `fix/security-demo-login-fallbacks`.
+* [x] Tidak melakukan merge ke `master`.
+* [x] Tidak melakukan deploy ke VPS atau produksi.
+* [x] Tidak memodifikasi middleware lisensi (`EnsureLicenseActive.php`).
+* [x] Tidak mengimplementasikan mekanisme lisensi buatan tanpa persetujuan.

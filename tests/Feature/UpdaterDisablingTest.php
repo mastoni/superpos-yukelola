@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Actions\Updater\AutoInstallIfEligible;
 use App\Actions\Updater\CheckForUpdate;
+use App\Actions\Updater\InstallUpdate;
 use App\Services\Updater\UpdateClient;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
@@ -65,5 +67,23 @@ class UpdaterDisablingTest extends TestCase
         $this->assertNull($result['version']);
         $this->assertSame('updater_disabled', $result['reason']);
         Http::assertNothingSent();
+    }
+
+    public function test_auto_install_if_eligible_returns_false_when_updater_is_disabled(): void
+    {
+        config(['pos.updater.enabled' => false]);
+
+        $action = app(AutoInstallIfEligible::class);
+        $this->assertFalse($action());
+    }
+
+    public function test_install_update_refuses_online_feed_install_when_updater_is_disabled(): void
+    {
+        config(['pos.updater.enabled' => false]);
+
+        $installer = app(InstallUpdate::class);
+
+        $this->expectException(\RuntimeException::class);
+        $installer(['version' => '2.0.0'], null, null, null);
     }
 }

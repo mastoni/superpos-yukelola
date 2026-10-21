@@ -45,6 +45,10 @@ class InstallUpdate
      */
     public function __invoke(array $release, ?int $userId = null, ?string $targetRoot = null, ?string $localZipPath = null): UpdateLog
     {
+        if ($localZipPath === null && ! config('pos.updater.enabled', false)) {
+            throw new RuntimeException(__('updates.errors.feed_unreachable'));
+        }
+
         $from = (string) config('pos.version', '1.0.0');
         $to = (string) ($release['version'] ?? '');
         $company = Company::current();
