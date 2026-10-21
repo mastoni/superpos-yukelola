@@ -440,4 +440,58 @@ class DemoDataIsolationTest extends TestCase
         $this->assertFileExists($activePath, 'Active sandbox must NOT be pruned.');
         $this->assertFileDoesNotExist($expiredPath, 'Expired sandbox must be pruned.');
     }
+
+    public function test_transaction_failure_causes_consistent_rollback_in_sandbox(): void
+    {
+        $sandboxId = 'rollback_test_'.uniqid();
+        $this->sandboxManager->connectSandbox($sandboxId);
+
+        $unitId = DB::table('units')->value('id') ?? 1;
+
+        try {
+            DB::transaction(function () use ($unitId) {
+                DB::table('products')->insert([
+                    'sku' => 'SKU-ROLLBACK-TEST',
+                    'name' => 'Barang Rollback',
+                    'unit_id' => $unitId,
+                    'cost_price' => 1000,
+                    'selling_price' => 2000,
+                    'is_active' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                throw new \RuntimeException('Simulated failure during checkout/transaction');
+            });
+        } catch (\RuntimeException $e) {
+            $this->assertSame('Simulated failure during checkout/transaction', $e->getMessage());
+        }
+
+        $this->assertFalse(
+            DB::table('products')->where('sku', 'SKU-ROLLBACK-TEST')->exists(),
+            'Transaction failure must roll back all changes in the sandbox.'
+        );
+
+        $this->sandboxManager->disconnect();
+    }
+
+    public function test_connect_sandbox_touches_file_mtime_to_track_activity(): void
+    {
+        $sandboxId = 'touch_test_'.uniqid();
+        $path = $this->sandboxManager->createSandbox($sandboxId);
+
+        // Artificially backdate the file modification time to 60 minutes ago
+        $backdate = time() - (60 * 60);
+        touch($path, $backdate);
+        clearstatcache(true, $path);
+        $this->assertEquals($backdate, filemtime($path));
+
+        // Reconnect should touch the file and refresh its mtime
+        $this->sandboxManager->connectSandbox($sandboxId);
+        clearstatcache(true, $path);
+
+        $this->assertGreaterThanOrEqual(time() - 5, filemtime($path), 'Active connection must refresh file mtime.');
+
+        $this->sandboxManager->disconnect();
+    }
 }

@@ -137,6 +137,10 @@ class DemoSandboxManager
             throw new RuntimeException("Sandbox file [{$sandboxPath}] does not exist.");
         }
 
+        // Touch the file on connection so active sessions (including read-only requests)
+        // refresh their activity timestamp and avoid premature pruning.
+        @touch($sandboxPath);
+
         if ($this->previousDefaultConnection === null) {
             $this->previousDefaultConnection = Config::get('database.default');
         }
