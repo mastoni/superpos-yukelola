@@ -416,4 +416,28 @@ class DemoDataIsolationTest extends TestCase
 
         $this->sandboxManager->disconnect();
     }
+
+    public function test_prune_expired_cleans_old_sandboxes_without_touching_baseline_or_active_sessions(): void
+    {
+        $baselinePath = $this->sandboxManager->ensureBaseline();
+        $this->assertFileExists($baselinePath);
+
+        $activePath = $this->sandboxManager->createSandbox('active_sess_'.uniqid());
+        $expiredPath = $this->sandboxManager->createSandbox('expired_sess_'.uniqid());
+
+        // Set expired file's modification time to 3 hours ago
+        touch($expiredPath, time() - (180 * 60));
+
+        $this->assertFileExists($activePath);
+        $this->assertFileExists($expiredPath);
+
+        // Run artisan prune
+        $this->artisan('pos:demo-prune', ['--lifetime' => 120])
+            ->expectsOutputToContain('Pruned 1 expired demo sandbox file(s).')
+            ->assertSuccessful();
+
+        $this->assertFileExists($baselinePath, 'Golden baseline must NEVER be pruned.');
+        $this->assertFileExists($activePath, 'Active sandbox must NOT be pruned.');
+        $this->assertFileDoesNotExist($expiredPath, 'Expired sandbox must be pruned.');
+    }
 }

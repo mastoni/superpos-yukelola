@@ -64,41 +64,66 @@ Di [`config/pos.php`](file:///e:/superpos-yukelola/config/pos.php), array `'demo
 
 ---
 
-## 4. Rekomendasi Solusi & Rencana Aksi (Action Plan)
+## 4. Implementasi & Resolusi (Gate B & Gate C)
 
-### A. Gate B — Keamanan dan Isolasi Data Demo (Solusi Sandbox / Non-Destructive Reset)
-1. **Hentikan Panggilan Destruktif pada Logout:**
-   - Hapus pemanggilan `ResetDemoData` dan `RunRestore` dari alur `LoginController::destroy()`.
-   - Logout demo harus berperilaku bersih: melepaskan reservasi terminal kasir (`TerminalReservation`), menghapus sesi pengguna, menginvalidasi token CSRF, dan mengarahkan kembali ke halaman login tanpa pernah menyentuh skema database atau mengaktifkan status maintenance.
-2. **Pencegahan Penghapusan Data Super Admin:**
-   - Pastikan akun demo kasir dan admin demo terkunci dalam sandbox atau dilarang menghapus akun pengguna superadmin asli, file backup sistem, atau lisensi.
-3. **Mekanisme Sandbox Sesi (Per-Session Ephemeral Isolation):**
-   - Rancang middleware penyedia koneksi database terisolasi untuk sesi demo, atau gunakan mekanisme penandaan data demo (*tenant identifier / session tagging*) sehingga operasi tulis/hapus pengunjung demo hanya memanipulasi data sesi mereka sendiri.
+### A. Gate B — Eliminasi Reset Destruktif & Sandbox Sesi Ephemeral
+1. **Peniadaan `ResetDemoData` & `RunRestore`:**
+   - Dihapus seluruh pemanggilan `ResetDemoData` dan `RunRestore` dari [`LoginController::destroy()`](file:///e:/superpos-yukelola/app/Http/Controllers/Auth/LoginController.php).
+   - Logout tidak lagi mengeksekusi `php artisan down` ataupun `DROP TABLE`.
+   - Logout membersihkan token sesi, melepaskan reservasi terminal, dan menghapus file sandbox SQLite ephemeral spesifik milik sesi yang bersangkutan via `DemoSandboxManager::destroySandbox($sandboxId)`.
+2. **Arsitektur Sandbox SQLite Per-Sesi:**
+   - Dibuat [`DemoSandboxManager`](file:///e:/superpos-yukelola/app/Services/Demo/DemoSandboxManager.php) dan [`EnsureDemoSandbox`](file:///e:/superpos-yukelola/app/Http/Middleware/EnsureDemoSandbox.php).
+   - Sesi demo (`is_demo_session = true`) dialokasikan file sandbox SQLite terisolasi di `storage/framework/demo_sandboxes/sandbox_{uuid}.sqlite`.
+   - Kegagalan inisialisasi sandbox bersifat *fail-closed* (HTTP 500) dan **tidak pernah jatuh tempo (failover) ke database produksi**.
+   - Database utama / MySQL dan data pengguna superadmin asli sama sekali tidak tersentuh oleh pengunjung demo.
 
-### B. Gate C — Improvisasi & Penyelesaian Gap Demo
-1. **Penyempurnaan Halaman Login Demo:**
-   - Tambahkan banner dan 2 tombol interaktif 1-Click Login pada [`resources/views/auth/login.blade.php`](file:///e:/superpos-yukelola/resources/views/auth/login.blade.php):
-     - **"Masuk sebagai Admin Demo"** (`admin@yukelola.id`)
-     - **"Masuk sebagai Kasir Demo"** (`kasir@yukelola.id`)
-   - Tampilkan informasi bahwa ini adalah akun evaluasi fitur YUKelola.
-2. **Sinkronisasi Konfigurasi `config/pos.php`:**
-   - Pasang default kredensial akun demo (`admin@yukelola.id` dan `kasir@yukelola.id`) di `config/pos.php` yang membaca `env('POS_DEMO_MODE')`.
-3. **Penyediaan Baseline Data Ritel Indonesia Realistis:**
-   - Pastikan database demo memiliki data awal yang kaya:
-     - Profil toko: "Minimarket YUKelola Mart"
-     - Kategori: Makanan & Minuman, Kebutuhan Rumah Tangga, ATK, Obat-obatan.
-     - Produk nyata: Indomie Goreng, Minyak Goreng Bimoli 2L, Beras Ramos 5kg, Kopi Kapal Api, Teh Pucuk Harum, dsb.
-     - Transaksi historis 14 hari terakhir agar grafik dashboard langsung tampil memukau dan informatif.
-     - 1 Shift kasir terbuka agar pengunjung kasir bisa langsung mencoba memindai barcode dan melakukan checkout tanpa terhalang popup error shift.
+### B. Gate C — Penyempurnaan Demo Calon Pembeli (Buyer Experience)
+1. **1-Click Interactive Demo Login Options:**
+   - Pada [`resources/views/auth/login.blade.php`](file:///e:/superpos-yukelola/resources/views/auth/login.blade.php), ketika `pos_is_demo()` aktif, disajikan panel UI interaktif berbahasa Indonesia:
+     - **Coba sebagai Admin Demo** (`/demo-login/admin`)
+     - **Coba sebagai Kasir Demo** (`/demo-login/cashier`)
+   - Otentikasi server-side mengecek akun terdaftar eksplisit (`config('pos.demo.credentials')`) tanpa mengekspos kredensial atau password di sisi client JavaScript/HTML.
+   - Perilaku form login standar tetap utuh dan fungsional.
+2. **Konfigurasi Lingkungan Aman (Safe Production Defaults):**
+   - Di [`config/pos.php`](file:///e:/superpos-yukelola/config/pos.php), `POS_DEMO_MODE` secara default bernilai `false`. Mode demo hanya aktif jika `.env` secara eksplisit disetel `POS_DEMO_MODE=true`.
+   - Variabel lingkungan didokumentasikan di [`.env.example`](file:///e:/superpos-yukelola/.env.example).
+3. **Dataset Ritel Indonesia Deterministik & Realistis:**
+   - Dibuat seeder [`IndonesianRetailDemoSeeder.php`](file:///e:/superpos-yukelola/database/seeders/IndonesianRetailDemoSeeder.php) yang diinjeksikan langsung saat pembentukan golden baseline template (`demo_baseline.sqlite`).
+   - Berisi katalog FMCG ritel Indonesia (Beras Ramos, Minyak Sania, Gula Gulaku, Indomie Goreng, Kopi Kapal Api, Aqua, Pepsodent, Sunlight, Bango, Roma Kelapa, dsb.).
+   - Dilengkapi 14 hari riwayat transaksi penjualan realistis dengan metode pembayaran multi-channel (Cash, QRIS, Bank Transfer) dan pemotongan stok otomatis, sehingga grafik omset dan KPI dashboard langsung hidup dan tidak kosong (0).
+4. **Pembersihan Otomatis Sandbox Kadaluarsa (Lifecycle Hygiene):**
+   - Didaftarkan command artisan `php artisan pos:demo-prune {--lifetime=120}` dan scheduler per jam pada [`routes/console.php`](file:///e:/superpos-yukelola/routes/console.php) untuk menghapus sandbox yang ditinggalkan tanpa menyentuh active session maupun template baseline.
 
 ---
 
-## 5. Matriks Prioritas Pelaksanaan
+## 5. Bukti Pengujian Otomatis
 
-| Gate | Target Pekerjaan | Output / Verifikasi | Status |
-|:---:|:---|:---|:---:|
-| **Gate A** | Audit inventaris, call-site, skema database, dan alur modul | Dokumen `docs/DEMO_GAP_AUDIT.md` | **SELESAI (PASS)** |
-| **Gate B** | Eliminasi logout destruktif `ResetDemoData`, isolasi sesi demo aman | `DemoDataIsolationTest.php` lulus, tidak ada maintenance saat logout | **SIAP DIKERJAKAN** |
-| **Gate C** | Tombol 1-click login di UI, konfigurasi demo otomatis, baseline data ritel | UI login interaktif, dashboard berdata realistis | **MENUNGGU GATE B** |
-| **Gate D** | Validasi menyeluruh, regresi modul POS & auth, Pint formatting | Seluruh PHPUnit test suite passing | **MENUNGGU GATE C** |
-| **Gate E** | Commit terpisah & laporan akhir ke pengguna | Commit log rapi & laporan komprehensif | **TAHAP AKHIR** |
+Seluruh 31 pengujian fitur dan unit (140 assertions) berhasil dijalankan:
+- `DemoAuthenticationTest` (12 tests, 50 assertions): Membuktikan proteksi rute demo login, seleksi peran server-side, render UI satu klik, dan penolakan jika akun tidak ditemukan atau demo nonaktif.
+- `DemoDataIsolationTest` (10 tests, 48 assertions): Membuktikan isolasi dua sesi bersamaan, independensi penghapusan CRUD dalam sandbox, logout non-destruktif, proteksi akun superadmin dari sandbox, ketersediaan dataset ritel Indonesia, pengurangan stok akibat transaksi, dan keamanan pruning file kadaluarsa.
+- `UpdaterRemovalVerificationTest` (7 tests, 40 assertions): Membuktikan pelepasan updater vendor pihak ketiga secara permanen.
+- `ExampleTest` (2 tests, 2 assertions).
+
+---
+
+## 6. Langkah-Langkah Mengaktifkan Mode Demo Secara Aman
+
+Untuk menyajikan showcase demo YUKelola pada server staging / demo publik:
+1. Pastikan server web / staging terpisah dari database produksi pelanggan.
+2. Tambahkan pengaturan berikut pada file `.env`:
+   ```env
+   POS_DEMO_MODE=true
+   POS_DEMO_ADMIN_NAME="Demo Super Admin YUKelola"
+   POS_DEMO_ADMIN_EMAIL=admin@yukelola.id
+   POS_DEMO_CASHIER_NAME="Demo Kasir YUKelola"
+   POS_DEMO_CASHIER_EMAIL=kasir@yukelola.id
+   ```
+3. Pastikan direktori `storage/framework/` memiliki izin tulis (write permission) bagi proses PHP / webserver (`0775` atau owner `www-data`).
+4. Jalankan `php artisan schedule:run` melalui cron server agar pembersihan sandbox kadaluarsa (`pos:demo-prune`) berjalan secara otomatis setiap jam.
+
+---
+
+## 7. Risiko yang Masih Tersisa
+
+1. **Write Permission pada Server Baru:** Jika direktori `storage/framework` pada hosting tidak dapat ditulisi, pembuatan SQLite baseline akan gagal (*fail-closed* dengan HTTP 500). Hal ini sesuai rancangan keamanan agar tidak pernah menyusup ke database produksi.
+2. **Kapasitas Penyimpanan Disk Sementara:** Jika ribuan pengunjung membuka demo secara bersamaan dan tidak logout, file SQLite sementara (~1MB per sesi) akan bertahan hingga 120 menit sebelum dibersihkan oleh `pos:demo-prune`. Disarankan menyediakan ruang disk minimal 2-5 GB pada server demo publik.

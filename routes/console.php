@@ -8,6 +8,7 @@ use App\Actions\Settings\RunScheduledBackup;
 use App\Actions\System\RecordSchedulerHeartbeat;
 use App\Actions\System\RunDailyTask;
 use App\Models\ScheduledTaskRun;
+use App\Services\Demo\DemoSandboxManager;
 use App\Support\DailyWindow;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -170,6 +171,22 @@ Schedule::command('pos:run-scheduled-reports')
     ->everyMinute()
     ->name('pos:scheduled-reports')
     ->withoutOverlapping();
+
+/* ──────────────────── Demo Sandbox Cleanup ──────────────────
+ * Periodically prunes abandoned SQLite sandbox files older than
+ * 120 minutes. The golden baseline template and active sessions
+ * are strictly preserved. Only active when demo mode is enabled.
+ */
+Artisan::command('pos:demo-prune {--lifetime=120 : Maximum age in minutes before a sandbox is pruned}', function () {
+    $lifetime = (int) $this->option('lifetime');
+    $count = app(DemoSandboxManager::class)->pruneExpired($lifetime);
+    $this->info("Pruned {$count} expired demo sandbox file(s).");
+})->purpose('Prune expired demo session SQLite sandbox files');
+
+Schedule::command('pos:demo-prune')
+    ->hourly()
+    ->name('pos:demo-prune')
+    ->when(fn () => pos_is_demo());
 
 // Optional add-ons may register shared-hosting-safe scheduled work here.
 do_action('scheduler.register', Schedule::getFacadeRoot());
