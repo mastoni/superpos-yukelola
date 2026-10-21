@@ -21,6 +21,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
@@ -83,6 +84,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [EnsureLicenseActive::class]);
         $middleware->web(append: [EnsureDemoSandbox::class]);
         $middleware->web(append: [PreventDemoDataDeletion::class]);
+
+        $middleware->prependToPriorityList(
+            before: SubstituteBindings::class,
+            prepend: EnsureDemoSandbox::class,
+        );
 
         // Payment gateway webhook routes — Stripe (and future providers)
         // sign the payload at their own signing-secret HMAC, so they

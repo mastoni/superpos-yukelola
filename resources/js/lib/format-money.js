@@ -60,13 +60,28 @@ function getFormat(code) {
 function format(amount, fmt) {
     const n = Number(amount);
     const value = Number.isFinite(n) ? n : 0;
-    const fixed = value.toFixed(fmt.decimals);
+    const isNegative = value < 0;
+    const absValue = Math.abs(value);
+    const fixed = absValue.toFixed(fmt.decimals);
     const [intPart, fracPart] = fixed.split('.');
     // Simple 3-digit grouping. Indian lakh/crore grouping isn't modelled
     // yet — see roadmap-deferred memory.
     const grouped = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, fmt.thousands_separator);
     const num     = fmt.decimals > 0 ? grouped + fmt.decimal_separator + fracPart : grouped;
-    return fmt.symbol_first ? fmt.symbol + num : num + ' ' + fmt.symbol;
+
+    const symbol = String(fmt.symbol ?? '').trim();
+    const isRupiah = fmt.code === 'IDR' || symbol === 'Rp';
+
+    let formatted;
+    if (isRupiah) {
+        formatted = `${symbol} ${num}`;
+    } else if (fmt.symbol_first) {
+        formatted = `${symbol}${num}`;
+    } else {
+        formatted = `${num} ${symbol}`;
+    }
+
+    return isNegative ? `-${formatted}` : formatted;
 }
 
 /**

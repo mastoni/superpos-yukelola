@@ -1003,14 +1003,27 @@ if (! function_exists('format_money')) {
     {
         $c = $currencyCode ? currency_meta($currencyCode) : app_currency();
         $dec = $decimals ?? $c['decimals'];
+        $val = (float) ($amount ?? 0);
+        $isNegative = $val < 0;
         $n = number_format(
-            (float) ($amount ?? 0),
+            abs($val),
             $dec,
             $c['decimal_separator'] ?: '.',
             $c['thousands_separator'],
         );
 
-        return $c['symbol_first'] ? $c['symbol'].$n : $n.' '.$c['symbol'];
+        $symbol = trim((string) ($c['symbol'] ?? ''));
+        $isRupiah = ($c['code'] ?? '') === 'IDR' || $symbol === 'Rp';
+
+        if ($isRupiah) {
+            $formatted = $symbol.' '.$n;
+        } elseif ($c['symbol_first']) {
+            $formatted = $symbol.$n;
+        } else {
+            $formatted = $n.' '.$symbol;
+        }
+
+        return $isNegative ? '-'.$formatted : $formatted;
     }
 }
 

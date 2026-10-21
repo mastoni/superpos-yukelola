@@ -771,7 +771,7 @@
                                          currency at render time); the numeric `profit` is
                                          reactive — Alpine updates only the number span. --}}
                                     <div class="prod-kpi-value">
-                                        <span>{{ currency_symbol() }}</span><span x-text="profit"></span>
+                                        <span>{{ currency_symbol() }} </span><span x-text="profit"></span>
                                     </div>
                                 </div>
                             </div>
@@ -1079,7 +1079,7 @@
                                             <span class="prod-variant-head-sub">
                                                 <span class="mono" x-text="v.sku || @js(__('products.variants.fields.sku_placeholder'))"></span>
                                                 <template x-if="v.selling_price">
-                                                    <span>· {{ currency_symbol() }}<span x-text="v.selling_price"></span></span>
+                                                    <span>· {{ currency_symbol() }} <span x-text="v.selling_price"></span></span>
                                                 </template>
                                             </span>
                                         </div>
