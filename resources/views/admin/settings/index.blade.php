@@ -128,9 +128,9 @@
                 'route' => 'admin.settings.scheduler.index',
             ],
             [
-                'label' => __('settings.groups.updates.title'),
-                'desc'  => __('settings.groups.updates.desc'),
-                'icon'  => 'refresh',
+                'label' => __('updates.title'),
+                'desc'  => __('updates.sub'),
+                'icon'  => 'info',
                 'route' => 'admin.settings.updates.index',
             ],
             [

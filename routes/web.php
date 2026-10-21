@@ -1013,18 +1013,8 @@ Route::middleware(['ensure.installed', 'auth', 'store.selected', 'set.locale'])-
     Route::post('settings/restore/validate', [RestoreController::class, 'validateSource'])->name('settings.restore.validate');
     Route::post('settings/restore', [RestoreController::class, 'store'])->name('settings.restore.store');
 
-    // Updates — read-only feed check + channel/auto-check prefs. Installing an
-    // update is a separate `updater.run`-gated flow (later slice).
+    // System Information & Version — read-only view of current installed version and system status
     Route::get('settings/updates', [UpdateController::class, 'index'])->name('settings.updates.index');
-    Route::post('settings/updates/check', [UpdateController::class, 'check'])->name('settings.updates.check');
-    Route::patch('settings/updates', [UpdateController::class, 'update'])->name('settings.updates.update');
-    Route::get('settings/updates/preflight', [UpdateController::class, 'preflight'])->name('settings.updates.preflight');
-    Route::post('settings/updates/install', [UpdateController::class, 'install'])->name('settings.updates.install');
-    Route::post('settings/updates/skip', [UpdateController::class, 'skip'])->name('settings.updates.skip');
-    Route::get('settings/updates/history', [UpdateController::class, 'history'])->name('settings.updates.history');
-    Route::post('settings/updates/manual/upload', [UpdateController::class, 'manualUpload'])->name('settings.updates.manual.upload');
-    Route::post('settings/updates/manual/chunk', [UpdateController::class, 'manualChunk'])->name('settings.updates.manual.chunk');
-    Route::post('settings/updates/manual/install', [UpdateController::class, 'manualInstall'])->name('settings.updates.manual.install');
 
     // Sales — admin index + detail. The cashier flow itself lives at /cashier
     // (separate URL, separate route group) so the topbar's "Open POS" link

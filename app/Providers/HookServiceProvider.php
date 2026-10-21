@@ -153,20 +153,6 @@ class HookServiceProvider extends ServiceProvider
         // super-admins. Failures here never break the originating operation —
         // HookManager catches listener exceptions.
 
-        $hooks->addAction('updater.update_available', function ($version, $release = null) {
-            $key = 'update_available:'.$version;
-            if (! admins_have_unread_notification($key)) {
-                notify_admins(
-                    $key,
-                    __('notifications.update.title'),
-                    __('notifications.update.message', ['version' => $version]),
-                    'download',
-                    route('admin.settings.updates.index'),
-                    'updater.check',
-                );
-            }
-        });
-
         $hooks->addAction('backup.failed', function ($log = null, $e = null) {
             notify_admins(
                 'backup_failed:'.(optional($log)->id ?? ''),

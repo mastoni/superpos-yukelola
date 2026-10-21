@@ -437,52 +437,25 @@ if (! function_exists('forget_app_backup')) {
 
 if (! function_exists('app_updates')) {
     /**
-     * The company's updater preferences — read by the scheduler
-     * (`routes/console.php`) on every minute tick to decide whether the
-     * daily feed check should run, and by the Updates settings page.
+     * Legacy updater preferences helper kept for backward compatibility.
+     * Always returns updater disabled.
      *
      * @return array{auto_check: bool, auto_install: bool, channel: string}
      */
     function app_updates(): array
     {
-        $app = app();
-        if ($app->bound('pos.app_updates')) {
-            return $app->make('pos.app_updates');
-        }
-
-        $resolved = [
-            'auto_check' => true,
+        return [
+            'auto_check' => false,
             'auto_install' => false,
-            'channel' => (string) config('pos.updater.channel', 'stable'),
+            'channel' => 'stable',
         ];
-
-        try {
-            $row = DB::table('company')->first([
-                'update_auto_check', 'update_auto_install', 'update_channel',
-            ]);
-            if ($row) {
-                $resolved = [
-                    'auto_check' => (bool) $row->update_auto_check,
-                    'auto_install' => (bool) $row->update_auto_install,
-                    'channel' => $row->update_channel ?: $resolved['channel'],
-                ];
-            }
-        } catch (Throwable $e) {
-            // table/columns not ready yet — keep defaults
-        }
-
-        $app->instance('pos.app_updates', $resolved);
-
-        return $resolved;
     }
 }
 
 if (! function_exists('forget_app_updates')) {
     function forget_app_updates(): void
     {
-        if (app()->bound('pos.app_updates')) {
-            app()->forgetInstance('pos.app_updates');
-        }
+        // No-op
     }
 }
 

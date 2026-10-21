@@ -146,76 +146,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Auto-updater
-    |--------------------------------------------------------------------------
-    |
-    | See docs/features/updater-hooks.md. The feed is a static JSON endpoint
-    | we control; the public key verifies the Ed25519 signature on each
-    | release zip so a compromised feed or a man-in-the-middle can't push a
-    | malicious update. Per-install preferences (channel, auto-check, pinned
-    | version, skipped versions) live in the database — NOT here — so they
-    | survive an update.
-    |
-    */
-
-    'updater' => [
-
-        // Master switch for auto-updater. Defaults to false to decouple YUKelola
-        // from upstream vendor update infrastructure and prevent automated overwrites.
-        'enabled' => env('POS_UPDATER_ENABLED', false),
-
-        // The update feed URL. Defaults to empty string to ensure no outbound requests
-        // are made to upstream vendor servers (https://updates.infinitietech.com/pos.json).
-        // Official updates must be delivered through controlled YUKelola distribution channels.
-        'feed_url' => env('POS_UPDATE_FEED_URL', ''),
-
-        // Base64-encoded Ed25519 public key used to verify release signatures.
-        //
-        // The key is baked in as the env() DEFAULT rather than left to each
-        // install's .env, and that is the whole point: this file is replaced by
-        // every update, whereas a customer's .env is never touched. A key
-        // documented only in .env.example would reach fresh installs and no
-        // existing one, so every install already in the field would fail its
-        // next update with `updates.errors.no_public_key`.
-        //
-        // Generate + write it with:  php artisan pos:updater-keygen --write
-        // Then sign each release with: php artisan pos:sign-release <zip>
-        //
-        // Leaving this empty ships a product whose one-click updater cannot
-        // install anything — the pre-flight "package verification" check exists
-        // to catch that before a release goes out.
-        'public_key' => env('POS_UPDATE_PUBLIC_KEY', 'xvCWtfbAvEK9SXQOfkbfClXiQAmBDHB12Lo08yGMTCM='),
-
-        // Escape hatch for developing the update flow without a signing key.
-        //
-        // Verification used to be skipped whenever APP_ENV was not exactly
-        // "production" (SEC #3 / #100), which is the wrong default for a
-        // product installed by copying files onto shared hosting — plenty of
-        // real installs never change APP_ENV from `local`, and an install in
-        // that state would accept an unsigned or modified package and copy it
-        // over the live app. Enforcement is now unconditional unless this is
-        // explicitly turned on, and it is never on by default.
-        //
-        // NEVER set this on an install anyone else can reach.
-        'allow_unsigned' => env('POS_UPDATE_ALLOW_UNSIGNED', false),
-
-        // Default channel for a fresh install. The per-install choice is a
-        // database setting that overrides this.
-        'channel' => env('POS_UPDATE_CHANNEL', 'stable'),
-
-        // Seconds to wait on the feed endpoint before giving up. A slow or
-        // unreachable feed must never block the app — see the graceful
-        // failure handling in the update client.
-        'feed_timeout' => 15,
-
-        // Seconds allowed for streaming a release zip down (much larger than
-        // the feed JSON — tens of megabytes).
-        'download_timeout' => 300,
-
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Remote image fetching
     |--------------------------------------------------------------------------
     |
@@ -294,7 +224,7 @@ return [
         'dev_bypass' => env('POS_LICENSE_DEV_BYPASS', false),
 
         // Periodic read-only binding checks and middleware enforcement.
-        'recheck' => env('POS_LICENSE_RECHECK', true),
+        //'recheck' => env('POS_LICENSE_RECHECK', true),
         'recheck_minutes' => 15,
 
         // The activated license key + its install fingerprint, written to .env
@@ -306,16 +236,15 @@ return [
 
         // Validator v1: authenticated JSON POST to validate and bind this install.
         // Revalidating the same domain does not consume another seat.
-        'check_url' => env('POS_LICENSE_CHECK_URL', 'https://validator-new.infinitietech.com/api/v1/validate'),
-        'api_key' => '554c9a4319fd81f75586008b347f767eb9a48b6995c26b50',
-        'registration_token' => env('LICENSE_REGISTRATION_TOKEN', ''),
+
+        // file disini sudah  dibuang!!!
 
         // The product / item identifier the validator binds the key to.
         // The legacy CI codebase called this `WEB_CODE`; in this build
         // it's `POS_LICENSE_ITEM_ID` in `.env` and reads from here at
         // runtime. Required by the validator — without it every check
         // comes back invalid.
-        'item_id' => env('POS_LICENSE_ITEM_ID', '64055507'),
+        // 'item_id' => env('POS_LICENSE_ITEM_ID', '64055507'),
 
         // Seconds to wait on the license server before giving up. Offline
         // activation has been removed in this build; an unreachable server

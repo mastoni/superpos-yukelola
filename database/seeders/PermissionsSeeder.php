@@ -190,8 +190,7 @@ class PermissionsSeeder extends Seeder
             // §7.15 Backup & updater
             ['key' => 'backup.run',                      'group' => 'Backup',      'label' => 'Run backups'],
             ['key' => 'backup.restore',                  'group' => 'Backup',      'label' => 'Restore from backup',           'is_dangerous' => true],
-            ['key' => 'updater.check',                   'group' => 'Updater',     'label' => 'Check for updates'],
-            ['key' => 'updater.run',                     'group' => 'Updater',     'label' => 'Run updates',                   'is_dangerous' => true],
+            ['key' => 'updater.check',                   'group' => 'Updater',     'label' => 'View system version & information'],
 
             // §7.16 AI, §7.17 Plugins, §7.18 Audit log —
             // deferred to future releases; no routes/controllers exist yet, so

@@ -20,7 +20,6 @@ class RolesSeeder extends Seeder
         $managerExcluded = [
             'settings.update_dangerous',
             'users.create_super_admin',
-            'updater.run',
             'backup.restore',
             'accounting.unlock_period',
             'accounting.year_end_close',

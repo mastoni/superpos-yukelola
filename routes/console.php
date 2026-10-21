@@ -7,8 +7,6 @@ use App\Actions\Sales\RetryFailedGatewayReversals;
 use App\Actions\Settings\RunScheduledBackup;
 use App\Actions\System\RecordSchedulerHeartbeat;
 use App\Actions\System\RunDailyTask;
-use App\Actions\Updater\AutoInstallIfEligible;
-use App\Actions\Updater\CheckForUpdate;
 use App\Models\ScheduledTaskRun;
 use App\Support\DailyWindow;
 use Illuminate\Foundation\Inspiring;
@@ -110,24 +108,6 @@ Schedule::call(fn () => app(RunScheduledBackup::class)())
     ->when(fn () => app(RunScheduledBackup::class)->isDue())
     ->name('pos:backup')
     ->withoutOverlapping(60);
-
-/* ───────────────────────── Updates ─────────────────────────
- * Daily feed check — only when the customer left auto-check on.
- * Read-only: records whether a newer version exists so the admin
- * banner can show it. Never downloads or installs anything.
- */
-$daily('update-check', '03:00', function () {
-    if (! config('pos.updater.enabled', false)) {
-        return;
-    }
-
-    if (! app_updates()['auto_check'] && ! app_updates()['auto_install']) {
-        return;
-    }
-
-    app(CheckForUpdate::class)();
-    app(AutoInstallIfEligible::class)();
-});
 
 /* ───────────────────────── Low stock ───────────────────────
  * Daily sweep for products at/below reorder level → one admin
