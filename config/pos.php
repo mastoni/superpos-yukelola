@@ -125,27 +125,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Demo mode
-    |--------------------------------------------------------------------------
-    |
-    | When enabled, the login page shows a small notice with a link out to the
-    | configured marketing site — so visitors who land on the live demo know
-    | they're looking at a demo and can find their way back to the product
-    | website. The toggle is environment-driven (.env) so the same code can
-    | run as either the live demo or a real install without code changes.
-    |
-    */
-
-    'demo' => [
-        'enabled' => false,
-        'website_url' => '',
-        'analytics_id' => '',
-        'purchase_url' => '',
-        'credentials' => [],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Remote image fetching
     |--------------------------------------------------------------------------
     |
@@ -224,7 +203,7 @@ return [
         'dev_bypass' => env('POS_LICENSE_DEV_BYPASS', false),
 
         // Periodic read-only binding checks and middleware enforcement.
-        //'recheck' => env('POS_LICENSE_RECHECK', true),
+        // 'recheck' => env('POS_LICENSE_RECHECK', true),
         'recheck_minutes' => 15,
 
         // The activated license key + its install fingerprint, written to .env
@@ -256,11 +235,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Demo Mode & Promo Landing Configuration
+    | Demo Mode & Interactive Showcase Configuration
     |--------------------------------------------------------------------------
+    |
+    | When enabled, the application functions as an interactive showcase for
+    | prospective buyers. Demo sessions run inside isolated, ephemeral SQLite
+    | sandboxes that protect production data. In production, this MUST default
+    | to false to ensure normal operational security.
+    |
     */
     'demo' => [
-        'enabled' => (bool) env('POS_DEMO_MODE', true),
+        'enabled' => (bool) env('POS_DEMO_MODE', false),
         'website_url' => env('APP_URL', 'https://yukelola.id'),
         'support_whatsapp' => env('POS_SUPPORT_WHATSAPP', 'https://wa.me/6281234567890?text=Halo%20Admin%20YUKelola,%20saya%20tertarik%20mencoba%20aplikasi%20YUKelola'),
         'purchase_url' => env('POS_PURCHASE_URL', '#pricing'),
@@ -268,17 +253,14 @@ return [
         'credentials' => [
             [
                 'role' => 'admin',
-                'name' => 'Demo Super Admin YUKelola',
-                'email' => 'admin@yukelola.id',
-                'password' => 'password',
+                'name' => env('POS_DEMO_ADMIN_NAME', 'Demo Super Admin YUKelola'),
+                'email' => env('POS_DEMO_ADMIN_EMAIL', 'admin@yukelola.id'),
             ],
             [
                 'role' => 'cashier',
-                'name' => 'Demo Kasir YUKelola',
-                'email' => 'kasir@yukelola.id',
-                'password' => 'password',
+                'name' => env('POS_DEMO_CASHIER_NAME', 'Demo Kasir YUKelola'),
+                'email' => env('POS_DEMO_CASHIER_EMAIL', 'kasir@yukelola.id'),
             ],
         ],
     ],
-
 ];
